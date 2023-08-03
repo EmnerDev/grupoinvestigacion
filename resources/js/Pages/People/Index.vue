@@ -63,6 +63,7 @@
                                 id="id_tipo"
                                 class="mt-1 block w-full"
                             >
+                            <option value="0">Elige una Opcion</option>
                                 <option
                                     v-for="tipo in tipos"
                                     :key="tipo.id"
@@ -216,8 +217,8 @@
                                     </p>
                                 </td>
                                 <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                                    <WarningButton class="mr-1"><i class="fa-solid fa-edit"></i></WarningButton>
-                                    <DangerButton><i class="fa-solid fa-trash"></i></DangerButton>
+                                    <WarningButton class="mr-1"><i class="fa-solid fa-edit">Editar</i></WarningButton>
+                                    <DangerButton><i class="fa-solid fa-trash">Eliminar</i></DangerButton>
                                 </td>
                             </tr>
                         </tbody>
@@ -256,7 +257,7 @@ const form = useForm({
     name: "",
     first_name: "",
     last_name: "",
-    id_tipo: "",
+    id_tipo: 0,
     phone: "",
     email: "",
 });

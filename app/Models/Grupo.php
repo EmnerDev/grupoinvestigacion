@@ -27,7 +27,7 @@ class Grupo extends Model
         'id_area',
         'id_facultad',
         'id_escuela',
-        'id_integrante'
+        'id_persona'
     ];
 
     public function linea_investigacion() {
@@ -42,7 +42,7 @@ class Grupo extends Model
         return $this->belongsTo(Escuela::class);
     }
 
-    public function integrante() {
-        return $this->belongsTo(integrante::class);
+    public function persona() {
+        return $this->belongsTo(Persona::class);
     }
 }

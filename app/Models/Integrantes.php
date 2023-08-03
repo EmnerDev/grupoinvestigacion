@@ -14,8 +14,13 @@ class Integrantes extends Model
         'orcid',
         'cti_vitae',
         'google_scholar',
+        'id_grupo',
         'id_persona'
     ];
+
+    public function grupos(){
+        return $this->belongsTo(Grupo::class);
+    }
 
     public function persona() {
         return $this->belongsTo(Persona::class);

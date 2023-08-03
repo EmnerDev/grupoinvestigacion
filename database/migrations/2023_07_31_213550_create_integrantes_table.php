@@ -18,8 +18,11 @@ return new class extends Migration
             $table->string('cti_vitae');
             $table->string('google_scholar');
 
+            $table->unsignedBigInteger('id_grupo');
             $table->unsignedBigInteger('id_persona');
-            $table->foreign('id_persona')->references('id')->on('personas')->onDelete('cascade');
+            $table->foreign('id_grupo')->references('id')->on('grupos')->onDelete('cascade');            
+            $table->foreign('id_persona')->references('id')->on('personas')->onDelete('cascade');            
+
             $table->timestamps();
         });
     }

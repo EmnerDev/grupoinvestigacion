@@ -31,11 +31,11 @@ return new class extends Migration
             $table->unsignedBigInteger('id_area');
             $table->unsignedBigInteger('id_facultad');
             $table->unsignedBigInteger('id_escuela');
-            $table->unsignedBigInteger('id_integrante');
+            $table->unsignedBigInteger('id_persona');
             $table->foreign('id_area')->references('id')->on('linea_investigacions')->onDelete('cascade');
             $table->foreign('id_facultad')->references('id')->on('facultads')->onDelete('cascade');
             $table->foreign('id_escuela')->references('id')->on('escuelas')->onDelete('cascade');
-            $table->foreign('id_integrante')->references('id')->on('integrantes')->onDelete('cascade');
+            $table->foreign('id_persona')->references('id')->on('personas')->onDelete('cascade');
 
             $table->timestamps();
         });
