@@ -111,9 +111,9 @@
                 </form>
 
                 <div
-                    class=" mt-6 inline-block min-w-full overflow-hidden rounded-lg shadow"
+                    class="overflow-x-auto rounded-lg shadow mt-6"
                 >
-                    <table class="w-full whitespace-no-wrap">
+                    <table class="w-full table-auto">
                         <thead>
                             <tr
                                 class="border-b bg-gray-50 text-left text-xs font-semibold uppercase tracking-wide text-gray-500"
@@ -264,7 +264,15 @@ const form = useForm({
 
 const submit = () => {
     form.post(route("registrar.persona"), {
-        onFinish: () => form.reset('dni', 'name','first_name','last_name','id_tipo','phone', 'email'),
+        onFinish: () => { 
+            form.dni = '';
+            form.name = '';
+            form.first_name = '';
+            form.last_name = '';
+            form.id_tipo = 0;
+            form.phone = '';
+            form.email = '';
+    },
     });
 };
 </script>
