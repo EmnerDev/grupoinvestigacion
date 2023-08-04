@@ -217,8 +217,8 @@
                                     </p>
                                 </td>
                                 <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                                    <WarningButton class="mr-1"><i class="fa-solid fa-edit">Editar</i></WarningButton>
-                                    <DangerButton><i class="fa-solid fa-trash">Eliminar</i></DangerButton>
+                                    <WarningButton class="mr-1"><i class="fa-solid fa-edit"></i></WarningButton>
+                                    <DangerButton><i class="fa-solid fa-trash"></i></DangerButton>
                                 </td>
                             </tr>
                         </tbody>
@@ -243,9 +243,9 @@ import DangerButton from "@/Components/DangerButton.vue";
 import WarningButton from "@/Components/WarningButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import Pagination from '@/Components/Pagination.vue'
-
 import { Head, useForm } from "@inertiajs/vue3";
 
+import '@fortawesome/fontawesome-free/css/all.css';
 
 const props = defineProps({
     personas: Object,
