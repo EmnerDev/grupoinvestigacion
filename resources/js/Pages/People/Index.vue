@@ -113,6 +113,14 @@
                 <div
                     class="overflow-x-auto rounded-lg shadow mt-6"
                 >
+                <div class="mb-2">
+                            <input
+                                    type="text"
+                                    v-model="search"
+                                    placeholder="Buscar..."   
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-60 p-2.5 "
+                                />
+                        </div>
                     <table class="w-full table-auto">
                         <thead>
                             <tr
@@ -226,7 +234,7 @@
                     <div
                         class="flex flex-col items-center border-t bg-white px-5 py-5 xs:flex-row xs:justify-between"
                     >
-                        <pagination :links="personas.links" />
+                        <paginator class="mt-3" :paginator="personas" />
                     </div>
                 </div>
             </div>
@@ -243,13 +251,26 @@ import DangerButton from "@/Components/DangerButton.vue";
 import WarningButton from "@/Components/WarningButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import Pagination from '@/Components/Pagination.vue'
-import { Head, useForm } from "@inertiajs/vue3";
+import SelectInput from "@/Components/SelectInput.vue";
+import Modal from "@/Components/Modal.vue";
+import { Head, useForm, router } from "@inertiajs/vue3";
 
+import Swal from "sweetalert2";
 import '@fortawesome/fontawesome-free/css/all.css';
+import { nextTick, ref } from "vue";
+import { watch } from "vue";
+import Paginator from "@/Components/Paginator.vue";
 
 const props = defineProps({
-    personas: Object,
+    personas: {
+        type: Object,
+        default: () => ({}),
+    },
     tipos: Object,
+    filters: {
+        type: Object,
+        default: () => ({}),
+    },
 });
 
 const form = useForm({
@@ -262,17 +283,42 @@ const form = useForm({
     email: "",
 });
 
+let search = ref(props.filters.search);
+watch(search, (value) => {
+    router.get(
+        "/personas",
+        { search: value },
+        {
+            preserveState: true,
+            replace: true,
+        }
+    );
+});
+
 const submit = () => {
-    form.post(route("registrar.persona"), {
-        onFinish: () => { 
-            form.dni = '';
-            form.name = '';
-            form.first_name = '';
-            form.last_name = '';
-            form.id_tipo = 0;
-            form.phone = '';
-            form.email = '';
-    },
-    });
+    form.post(route("registrar.persona"),{
+        onSuccess: () => {ok('Registro creado Correctamente')},
+    
+    });    
 };
+const ok = (msj) => {
+    form.reset();
+    Swal.fire({title:msj, icon:'success'});
+}
+
+const deletePersona = (id, name) => {
+    const alerta = Swal.mixin({
+        buttonsStyling:true
+    });
+    alert.fire({
+        title:'Estas seguro de eliminar'+name+'?',
+        icon: 'question', showCancelButton:true,
+        confirmButtonText:'<i class="fa-solid fa-check"></i> Si, eliminar',
+        cancelButtonText:'<i class="fa-solid fa-ban"></i> Cancelar'
+    }).then((result) => {
+        if(result.isConfirmed) {
+            form.delete(route('personas.delete', id));
+        }
+    });
+}
 </script>

@@ -44,6 +44,8 @@ Route::middleware('auth')->group(function () {
     Route::get('personas', [PersonaController::class, 'index'])->name('personas.index');
     Route::get('registrar', [PersonaController::class, 'create'])->name('registrar.persona');
     Route::post('registrar', [PersonaController::class, 'store']);
+    Route::put('/registrar/{id}', [PersonaController::class, 'update'])->name('actualizar.persona');
+    Route::delete('/registrar/{id}', [PersonaController::class, 'delete'])->name('eliminar.persona');
     
     Route::get('grupos', [GrupoController::class, 'index'])->name('grupos.index');
 

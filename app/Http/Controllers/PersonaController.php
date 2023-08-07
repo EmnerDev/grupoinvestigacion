@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use DB;
 
 class PersonaController extends Controller
 {
@@ -19,10 +20,21 @@ class PersonaController extends Controller
     public function index()
     {
         $tipos = Tipo::all();
-        $personas = Persona::with('tipo')->orderBy('created_at','DESC')->paginate(8);
+        // $personas = Persona::with('tipo')->orderBy('created_at','DESC')->query()->when(Request::input('search'), function ($query, $search)
+        // {
+        //     $query->where('name', 'like', '%'.$search.'%')->orWhere('dni', 'like', '%'.$search.'%');
+        // })->paginate(8)->withQueryString();
                 
         return Inertia::render('People/Index', [
-            'personas' => $personas,
+            'personas' => Persona::query()->with('tipo')->orderBy('created_at','DESC')
+            ->when(\Illuminate\Support\Facades\Request::input('search'),function($query, $search) {
+                $query->where('name','like','%'.$search.'%')
+                ->OrWhere('dni','like','%'.$search.'%')
+                ->OrWhere('first_name','like','%'.$search.'%')
+                ->OrWhere('last_name','like','%'.$search.'%');
+            })->paginate(6)
+            ->withQueryString(),
+            'filters' => \Illuminate\Support\Facades\Request::only(['search']),
             'tipos' => $tipos
         ]);
 
@@ -52,7 +64,7 @@ class PersonaController extends Controller
         ]);
         $persona->save();
 
-        return Redirect::route('personas.index');
+        return Redirect::route('personas.index')->with('ok', 'ok');
     }
 
     /**
@@ -68,7 +80,7 @@ class PersonaController extends Controller
      */
     public function edit(Persona $persona)
     {
-        //
+
     }
 
     /**
@@ -76,7 +88,8 @@ class PersonaController extends Controller
      */
     public function update(Request $request, Persona $persona)
     {
-        //
+        $persona->update($request->input());
+        return Redirect::route('personas.index');
     }
 
     /**
@@ -84,6 +97,7 @@ class PersonaController extends Controller
      */
     public function destroy(Persona $persona)
     {
-        //
+        $persona->delete();
+        return Redirect::route('personas.index');
     }
 }
