@@ -53,7 +53,7 @@
                             <Link class="w-full" :href="route('personas.index')">Agregar</Link>
                         </li>
                         <li class="px-2 py-1 transition-colors duration-150">
-                            <Link class="w-full" :href="route('dashboard')">lista de Personas</Link>
+                            <Link class="w-full" :href="route('ver.persona')">lista de Personas</Link>
                         </li>
                     </ul>
                 </div>

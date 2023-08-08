@@ -225,8 +225,10 @@
                                     </p>
                                 </td>
                                 <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                                    <WarningButton class="mr-1"><i class="fa-solid fa-edit"></i></WarningButton>
-                                    <DangerButton><i class="fa-solid fa-trash"></i></DangerButton>
+                                    <WarningButton @click="openModal(2, persona.dni,persona.name,persona.first_name,persona.last_name,persona.id_tipo,persona.phone,persona.email, persona.id)" class="mr-1">
+                                        <i class="fa-solid fa-edit"></i>
+                                    </WarningButton>
+                                    <DangerButton @click="deletePersona(persona.id, persona.name, persona.first_name, persona.last_name)"><i class="fa-solid fa-trash"></i></DangerButton>
                                 </td>
                             </tr>
                         </tbody>
@@ -239,6 +241,64 @@
                 </div>
             </div>
         </div>
+        <Modal :show="modal" @close="closeModal">
+            <h2 class="p-3 text-lg font.medium text-gray-900">{{ title }}</h2>
+            <div class="grid gap-6 mb-6 md:grid-cols-2">
+                <div class="p-3">
+                    <InputLabel for="dni" value="Dni:"></InputLabel>
+                    <TextInput id="dni" ref="nameImput" v-model="form.dni" type="text" class="mt-1 block w-3/4"
+                    placeholder="Dni"></TextInput>
+                </div>
+                <div class="p-3">
+                    <InputLabel for="name" value="Nombres:"></InputLabel>
+                    <TextInput id="name" v-model="form.name" type="text" class="mt-1 block w-3/4"
+                    placeholder="Nombre" ref="nameImput"></TextInput>
+                </div>
+            </div>
+            <div class="grid gap-6 mb-6 md:grid-cols-2">
+                <div class="p-3">
+                    <InputLabel for="first_name" value="Apellido Paterno:"></InputLabel>
+                    <TextInput id="first_name" v-model="form.first_name" type="text" class="mt-1 block w-3/4"
+                    placeholder="Apellido Paterno"></TextInput>
+                </div>
+                <div class="p-3">
+                    <InputLabel for="last_name" value="Apellido Materno:"></InputLabel>
+                    <TextInput id="last_name" v-model="form.last_name" type="text" class="mt-1 block w-3/4"
+                    placeholder="Apellido Materno"></TextInput>
+                </div>
+            </div>
+            <div class="grid gap-6 mb-6 md:grid-cols-2">
+                <div class="p-3">
+                    <InputLabel for="id_tipo" value="Tipo de Persona:"></InputLabel>
+                    <SelectInput id="id_tipo" :options="tipos"
+                    v-model="form.id_tipo" type="text" class="mt-1 block w-full">
+                    </SelectInput>
+                </div>
+                <div class="p-3">
+                    <InputLabel for="phone" value="Telefono:"></InputLabel>
+                    <TextInput id="phone" v-model="form.phone" type="text" class="mt-1 block w-3/4"
+                    placeholder="Telefono"></TextInput>
+                </div>
+            </div>
+            <div class="p-3">
+                <InputLabel for="email" value="Email:"></InputLabel>
+                <TextInput id="email" v-model="form.email" type="text" class="mt-1 block w-3/4"
+                placeholder="Correo Electrónico">
+                </TextInput>
+            </div>
+            <div class="flex justify-center">
+                <div class="p-3 mt-6">
+                    <PrimaryButton :disabled="form.processing" @click="update">
+                        <i class="fa-solid fa save"></i>Guardar
+                    </PrimaryButton>
+                </div>
+                <div class="p-3 mt-6">
+                    <SecondaryButton class="ml-3" :disabled="form.processing" @click="closeModal">
+                        Cancelar
+                    </SecondaryButton>
+                </div>
+            </div>
+        </Modal>
     </AuthenticatedLayout>
 </template>
 
@@ -249,6 +309,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import WarningButton from "@/Components/WarningButton.vue";
+import SecondaryButton from "@/Components/SecondaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import Pagination from '@/Components/Pagination.vue'
 import SelectInput from "@/Components/SelectInput.vue";
@@ -261,12 +322,19 @@ import { nextTick, ref } from "vue";
 import { watch } from "vue";
 import Paginator from "@/Components/Paginator.vue";
 
+const  nameInput = ref(null);
+const  modal = ref(false);
+const title = ref('');
+const operation = ref(1);
+const id = ref('');
+
 const props = defineProps({
     personas: {
         type: Object,
         default: () => ({}),
     },
-    tipos: Object,
+    tipos: {
+        type: Object},
     filters: {
         type: Object,
         default: () => ({}),
@@ -283,6 +351,28 @@ const form = useForm({
     email: "",
 });
 
+const openModal = (op,dni, name, first_name, last_name, tipo, phone, email, persona) => {
+    modal.value = true;
+    nextTick( () => nameInput.value.focus());
+    operation.value = op;
+    id.value = persona;
+    if (op == 2){
+        title.value = 'Editar persona';
+        form.dni =dni;
+        form.name=name;
+        form.first_name=first_name;
+        form.last_name=last_name;
+        form.id_tipo=tipo;
+        form.phone=phone;
+        form.email = email;
+    }
+}
+
+const closeModal = () => {
+    modal.value = false;
+    form.reset();
+}
+
 let search = ref(props.filters.search);
 watch(search, (value) => {
     router.get(
@@ -296,28 +386,38 @@ watch(search, (value) => {
 });
 
 const submit = () => {
-    form.post(route("registrar.persona"),{
-        onSuccess: () => {ok('Registro creado Correctamente')},
-    
-    });    
+        form.post(route("registrar.persona"),{
+            onSuccess: () => {ok('Registro creado Correctamente')},
+        });    
 };
+const update = () => {
+    console.log('asdad',id.value)
+    form.put(route('actualizar.persona', id.value),{
+            onSuccess: () => {ok('Registro Actualizado Correctamente')},
+        
+        });   
+};
+
 const ok = (msj) => {
     form.reset();
+    closeModal();
     Swal.fire({title:msj, icon:'success'});
 }
 
-const deletePersona = (id, name) => {
+const deletePersona = (id, name, first_name, last_name) => {
     const alerta = Swal.mixin({
         buttonsStyling:true
     });
-    alert.fire({
-        title:'Estas seguro de eliminar'+name+'?',
+    alerta.fire({
+        title:'Estas seguro de eliminar a '+name+' '+first_name+' '+last_name+'?',
         icon: 'question', showCancelButton:true,
         confirmButtonText:'<i class="fa-solid fa-check"></i> Si, eliminar',
         cancelButtonText:'<i class="fa-solid fa-ban"></i> Cancelar'
     }).then((result) => {
         if(result.isConfirmed) {
-            form.delete(route('personas.delete', id));
+            form.delete(route('eliminar.persona', id),{
+                onSuccess: () => {ok('Registro Eliminado Correctamente')}
+            });
         }
     });
 }

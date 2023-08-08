@@ -72,7 +72,12 @@ class PersonaController extends Controller
      */
     public function show(Persona $persona)
     {
-        //
+        $lista = Persona::get();
+        $tipos = Tipo::all();
+        return Inertia::render('People/List', [
+            'personas' => $lista,
+            'tipos' => $tipos
+        ]);
     }
 
     /**
@@ -86,9 +91,9 @@ class PersonaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Persona $persona)
+    public function update(Request $request, Persona $persona):RedirectResponse
     {
-        $persona->update($request->input());
+        $persona->update($request->all());
         return Redirect::route('personas.index');
     }
 
