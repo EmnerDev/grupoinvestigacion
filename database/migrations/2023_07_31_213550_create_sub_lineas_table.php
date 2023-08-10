@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('linea_investigacions', function (Blueprint $table) {
+        Schema::create('sub_lineas', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-
-            $table->unsignedBigInteger('id_escuela');
-            $table->foreign('id_escuela')->references('id')->on('escuelas')->onDelete('cascade');
+            
+            $table->unsignedBigInteger('id_area');
+            $table->unsignedBigInteger('id_linea');
+            $table->foreign('id_area')->references('id')->on('area_investigacions')->onDelete('cascade');
+            $table->foreign('id_linea')->references('id')->on('lineas')->onDelete('cascade');
 
             $table->timestamps();
         });
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('linea_investigacions');
+        Schema::dropIfExists('sub_lineas');
     }
 };

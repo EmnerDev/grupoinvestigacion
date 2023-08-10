@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Integrantes extends Model
+class Integrante extends Model
 {
     use HasFactory;
 
-    protected $fillabole = [
+    protected $fillable = [
         'condition',
         'orcid',
         'cti_vitae',
@@ -23,6 +23,6 @@ class Integrantes extends Model
     }
 
     public function persona() {
-        return $this->belongsTo(Persona::class);
+        return $this->belongsTo(Persona::class,'id_persona');
     }
 }

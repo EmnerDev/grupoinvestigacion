@@ -49,6 +49,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/registrar/{persona}', [PersonaController::class, 'destroy'])->name('eliminar.persona');
     
     Route::get('grupos', [GrupoController::class, 'index'])->name('grupos.index');
+    Route::get('crear/grupos', [GrupoController::class, 'create'])->name('grupos.create');
+    Route::post('grupos', [GrupoController::class, 'store'])->name('registrar.grupo');
+    Route::get('grupos/ver/{grupo}', [GrupoController::class, 'show'])->name('ver.grupo');
 
 });
 

@@ -322,8 +322,8 @@ import { nextTick, ref } from "vue";
 import { watch } from "vue";
 import Paginator from "@/Components/Paginator.vue";
 
-const  nameInput = ref(null);
-const  modal = ref(false);
+const nameInput = ref(null);
+const modal = ref(false);
 const title = ref('');
 const operation = ref(1);
 const id = ref('');

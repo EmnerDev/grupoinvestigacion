@@ -59,6 +59,32 @@
                 </div>
             </transition>
 
+            <a class="flex items-center mt-4 py-2 px-6 text-gray-100" href="#" @click="showingTwoLevelMenuGrupo = !showingTwoLevelMenuGrupo">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                <span class="mx-3">Grupos</span>
+            </a>
+            <transition
+                enter-to-class="transition-all duration-300 ease-in-out"
+                enter-from-class="max-h-0 opacity-25"
+                leave-from-class="opacity-100 max-h-xl"
+                leave-to-class="max-h-0 opacity-0">
+                <div v-show="showingTwoLevelMenuGrupo">
+                    <ul class="overflow-hidden p-2 mx-4 mt-2 space-y-2 text-sm font-medium text-white bg-gray-700 bg-opacity-50 rounded-md shadow-inner"
+                        aria-label="submenu">
+                        <li class="px-2 py-1 transition-colors duration-150">
+                            <Link class="w-full" :href="route('grupos.create')">Registrar Grupo</Link>
+                        </li>
+                        <li class="px-2 py-1 transition-colors duration-150">
+                            <Link class="w-full" :href="route('grupos.index')">lista de Grupos</Link>
+                        </li>
+                    </ul>
+                </div>
+            </transition>
+<!-- 
             <nav-link :href="route('grupos.index')" :active="route().current('grupos.index')">
                 <template #icon>
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -68,7 +94,7 @@
                     </svg>
                 </template>
                 Grupos
-            </nav-link>
+            </nav-link> -->
 
             <nav-link :href="route('users.index')" :active="route().current('users.index')">
                 <template #icon>
@@ -130,12 +156,14 @@ export default {
     },
 
     setup() {
-        let showingTwoLevelMenu = ref(false)
-        let showingTwoLevelMenu1 = ref(false)
+        let showingTwoLevelMenu = ref(false);
+        let showingTwoLevelMenu1 = ref(false);
+        let showingTwoLevelMenuGrupo = ref(false);
 
         return {
             showingTwoLevelMenu,
-            showingTwoLevelMenu1
+            showingTwoLevelMenu1,
+            showingTwoLevelMenuGrupo
         }
     },
 }

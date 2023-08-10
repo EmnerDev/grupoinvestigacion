@@ -25,21 +25,31 @@ class Grupo extends Model
         'annexed',
         'phone',
         'id_area',
+        'id_linea',
+        'id_sublinea',
         'id_facultad',
         'id_escuela',
         'id_persona'
     ];
 
-    public function linea_investigacion() {
-        return $this->belongsTo(LineaInvestigacion::class);
+    public function area_investigacion() {
+        return $this->belongsTo(AreaInvestigacion::class,'id_area');
+    }
+
+    public function linea(){
+        return $this->belongsTo(Linea::class,'id_linea');
+    }
+
+    public function sublinea(){
+        return $this->belongsTo(SubLinea::class, 'id_sublinea');
     }
 
     public function facultad() {
-        return $this->belongsTo(Facultad::class);
+        return $this->belongsTo(Facultad::class,'id_facultad');
     }
 
     public function escuela() {
-        return $this->belongsTo(Escuela::class);
+        return $this->belongsTo(Escuela::class,'id_escuela');
     }
 
     public function persona() {

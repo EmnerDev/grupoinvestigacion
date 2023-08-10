@@ -14,15 +14,15 @@ return new class extends Migration
         Schema::create('integrantes', function (Blueprint $table) {
             $table->id();
             $table->enum('condition',['inv. Titular','Inv. Colaborador','Inv. En formacion', 'Inv. Posdoctorado','Coordinador'])->default('inv. Titular');
-            $table->string('orcid');
-            $table->string('cti_vitae');
-            $table->string('google_scholar');
+            $table->string('orcid')->nullable();
+            $table->string('cti_vitae')->nullable();
+            $table->string('google_scholar')->nullable();
 
             $table->unsignedBigInteger('id_grupo');
             $table->unsignedBigInteger('id_persona');
             $table->foreign('id_grupo')->references('id')->on('grupos')->onDelete('cascade');            
-            $table->foreign('id_persona')->references('id')->on('personas')->onDelete('cascade');            
-
+            $table->foreign('id_persona')->references('id')->on('personas')->onDelete('cascade');    
+            
             $table->timestamps();
         });
     }
