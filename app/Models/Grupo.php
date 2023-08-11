@@ -52,7 +52,13 @@ class Grupo extends Model
         return $this->belongsTo(Escuela::class,'id_escuela');
     }
 
-    public function persona() {
-        return $this->belongsTo(Persona::class);
+    public function integrante() {
+        return $this->hasMany(integrante::class,'id_grupo');
     }
+
+    public function tieneIntegrantes(){
+		return $this->hasMany('App\Models\Integrante','id_grupo','id')
+							->orderBy('created_at','ASC');
+	}
 }
+

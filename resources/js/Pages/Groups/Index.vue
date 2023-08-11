@@ -60,7 +60,7 @@
                                         <tr
                                             v-for="(gru, i) in grupos"
                                             :key="gru.id"
-                                            :value="gru.id"
+                                            
                                         >
                                             <td
                                                 class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
@@ -107,25 +107,26 @@
                                                     {{ gru.name }}
                                                 </p>
                                             </td>
-                                            <td
+                                            <td 
                                                 class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                             >
                                                 <p
                                                     class="text-gray-900 whitespace-no-wrap"
                                                 >
-                                                    gg
+                                                    {{ gru.integrante.id }}
                                                 </p>
                                             </td>
-                                            <td
+                                            <td 
                                                 class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                             >
                                                 <p
                                                     class="text-gray-900 whitespace-no-wrap"
                                                 >
-                                                    gg
+                                                    {{ gru.integrante.condition }}
                                                 </p>
                                             </td>
                                             <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+                                                <LinkButton class="mr-1" :href="route('ver.grupo',gru.id)"><i class="fa-solid fa-eye"></i></LinkButton>
                                                 <WarningButton  class="mr-1">
                                                     <i class="fa-solid fa-edit"></i>
                                                 </WarningButton>
@@ -149,6 +150,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import WarningButton from "@/Components/WarningButton.vue";
+import LinkButton from "@/Components/LinkButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import Pagination from "@/Components/Pagination.vue";
@@ -184,4 +186,5 @@ const ok = (msj) => {
     form.reset();
     Swal.fire({ title: msj, icon: "success" });
 };
+
 </script>

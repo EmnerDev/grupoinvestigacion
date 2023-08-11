@@ -28,7 +28,7 @@ class GrupoController extends Controller
         $integrantes = Integrante::with('persona')->get();      
 
         return Inertia::render('Groups/Index',[
-            'grupos' => Grupo::with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea')->get(),            
+            'grupos' => Grupo::with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea','integrante')->get(),            
             'integrantes' => $integrantes
         ]);
     }
@@ -92,7 +92,7 @@ class GrupoController extends Controller
         ]);
         $integrante->save();
         DB::commit();
-        return Redirect::route('ver.grupo');
+        return Redirect::route('ver.grupo',$grupo);
     }
 
     /**
@@ -100,7 +100,7 @@ class GrupoController extends Controller
      */
     public function show(Grupo $grupo)
     {        
-        $integrantes = Integrante::with('persona')->get();      
+        $integrantes = Integrante::with('persona');      
 
         return Inertia::render('Groups/Show',[
             'grupos' => Grupo::with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea')->find($grupo),            
@@ -130,5 +130,14 @@ class GrupoController extends Controller
     public function destroy(Grupo $grupo)
     {
         //
+    }
+
+    public function verGrupo($id){
+        $integrantes = Integrante::with('persona')->where('id',$id)->get();      
+
+        return Inertia::render('Groups/Show',[
+            'grupos' => Grupo::with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea')->find($id),            
+            'integrantes' => $integrantes
+        ]);
     }
 }
