@@ -24,6 +24,6 @@ class Persona extends Model
     }
 
     public function integrante() {
-        return $this->hasMany(integrante::class, 'id_persona');
+        return $this->hasMany(Integrante::class,'id_persona');
     }
 }

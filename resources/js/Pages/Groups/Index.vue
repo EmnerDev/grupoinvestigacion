@@ -111,9 +111,10 @@
                                                 class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                             >
                                                 <p
+                                                v-for="integ in gru.integrante" :key="integ.id"
                                                     class="text-gray-900 whitespace-no-wrap"
                                                 >
-                                                    {{ gru.integrante.id }}
+                                                    {{ integ.persona.name }} {{ integ.persona.first_name }} {{ integ.persona.last_name }}
                                                 </p>
                                             </td>
                                             <td 
@@ -122,7 +123,7 @@
                                                 <p
                                                     class="text-gray-900 whitespace-no-wrap"
                                                 >
-                                                    {{ gru.integrante.condition }}
+                                                    {{ gru.integrante[0].condition }}
                                                 </p>
                                             </td>
                                             <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
@@ -168,9 +169,9 @@ const props = defineProps({
     grupos: {
         type: Object,
     },
-    integrantes: {
-        type: Object,
-    },
+    // integrantes: {
+    //     type: Object,
+    // },
 });
 
 const form = useForm({});

@@ -43,7 +43,6 @@
                             <span>{{ grupos.sublinea.name }}</span>
                         </div>
                     </div>
-                    <form>
                         <div class="overflow-x-auto rounded-lg shadow mt-6">
                             <div class="mb-4">
                                 <InputLabel for="name" value="Integrantes" />
@@ -167,7 +166,7 @@
                                                 </p>
                                             </td>
                                             <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                                                <WarningButton  class="mr-1" @click="openModal(2,inte.dni, inte.name, inte.first_name, inte.last_name, inte.phone, inte.email, inte.condition, inte.orcid, inte.cti_vitae, inte.google_scholar,inte.id_grupo, inte.id_persona, inte.id)">
+                                                <WarningButton  class="mr-1" @click="openModal(2,inte.persona.dni, inte.persona.name, inte.persona.first_name, inte.persona.last_name, inte.persona.phone, inte.persona.email, inte.condition, inte.orcid, inte.cti_vitae, inte.google_scholar,inte.id_grupo, inte.id_persona, inte.id)">
                                                     <i class="fa-solid fa-edit"></i>
                                                 </WarningButton>
                                                 <DangerButton><i class="fa-solid fa-trash"></i></DangerButton>
@@ -177,7 +176,6 @@
                                 </table>
                             </div>
                         </div>
-                    </form>
                     <div class="grid gap-6 mb-6 mt-6 md:grid-cols-3">
                         <div class="flex-initial ml-6">
                             <InputLabel
@@ -259,8 +257,86 @@
             </div>
         </div>
         <Modal :show="modal" @close="closeModal">
- <h2>{{ title }}</h2>
- <InputLabel>dsfds</InputLabel>
+            <h2 class="p-3 text-lg font.medium text-gray-900">{{ title }}</h2>
+		    <TextInput type="hidden" name="id_grupo" v-model="form.id_grupo"></TextInput>
+
+            <div class="grid gap-6 mb-6 md:grid-cols-2">
+                <div class="p-3">
+                    <InputLabel for="dni" value="Dni:"></InputLabel>
+                    <TextInput id="dni" ref="nameImput" v-model="form.dni" type="text" class="mt-1 block w-3/4"
+                    placeholder="Dni"></TextInput>
+                </div>
+                <div class="p-3">
+                    <InputLabel for="name" value="Nombres:"></InputLabel>
+                    <TextInput id="name" v-model="form.name" type="text" class="mt-1 block w-3/4"
+                    placeholder="Nombre" ref="nameImput"></TextInput>
+                </div>
+            </div>
+            <div class="grid gap-6 mb-6 md:grid-cols-2">
+                <div class="p-3">
+                    <InputLabel for="first_name" value="Apellido Paterno:"></InputLabel>
+                    <TextInput id="first_name" v-model="form.first_name" type="text" class="mt-1 block w-3/4"
+                    placeholder="Apellido Paterno"></TextInput>
+                </div>
+                <div class="p-3">
+                    <InputLabel for="last_name" value="Apellido Materno:"></InputLabel>
+                    <TextInput id="last_name" v-model="form.last_name" type="text" class="mt-1 block w-3/4"
+                    placeholder="Apellido Materno"></TextInput>
+                </div>
+            </div>
+            <div class="grid gap-6 mb-6 md:grid-cols-2">
+                <div class="p-3">
+                    <InputLabel for="phone" value="Telefono:"></InputLabel>
+                    <TextInput id="phone" v-model="form.phone" type="text" class="mt-1 block w-3/4"
+                    placeholder="Telefono"></TextInput>
+                </div>
+                <div class="p-3">
+                    <InputLabel for="email" value="Email:"></InputLabel>
+                    <TextInput id="email" v-model="form.email" type="text" class="mt-1 block w-3/4"
+                    placeholder="Correo Electrónico">
+                    </TextInput>
+                </div>
+            </div>
+            <div class="grid gap-6 mb-6 md:grid-cols-2">
+                <div class="p-3">
+                    <InputLabel for="condition" value="Condicion: " />
+                    <select name="condition" id="condition" class="mt-1 block w-full" v-model="form.condition">
+                        <option v-for="(label, value) in condition" :key="value" :value="value">{{ label }}</option>
+                    </select>
+                </div>
+                <div class="p-3">
+                    <InputLabel for="orcid" value="Orcid:"></InputLabel>
+                    <TextInput id="orcid" v-model="form.orcid" type="text" class="mt-1 block w-3/4"
+                    placeholder="orcid">
+                    </TextInput>
+                </div>
+            </div>
+            <div class="grid gap-6 mb-6 md:grid-cols-2">
+                <div class="p-3">
+                    <InputLabel for="cti_vitae" value="CTI VItae: " />
+                    <TextInput id="cti_vitae" v-model="form.cti_vitae" type="text" class="mt-1 block w-3/4"
+                    placeholder="cti vitae">
+                    </TextInput>
+                </div>
+                <div class="p-3">
+                    <InputLabel for="google_scholar" value="Google Scholar:"></InputLabel>
+                    <TextInput id="google_scholar" v-model="form.google_scholar" type="text" class="mt-1 block w-3/4"
+                    placeholder="Google Scholar">
+                    </TextInput>
+                </div>
+            </div>
+            <div class="flex justify-center">
+                <div class="p-3 mt-6">
+                    <PrimaryButton :disabled="form.processing"  @click="submit">
+                        <i class="fa-solid fa save"></i>Guardar
+                    </PrimaryButton>
+                </div>
+                <div class="p-3 mt-6">
+                    <SecondaryButton class="ml-3" :disabled="form.processing" @click="closeModal">
+                        Cancelar
+                    </SecondaryButton>
+                </div>
+            </div>
         </Modal>
     </AuthenticatedLayout>
 </template>
@@ -277,13 +353,11 @@ import TextInput from "@/Components/TextInput.vue";
 import Pagination from "@/Components/Pagination.vue";
 import SelectInput from "@/Components/SelectInput.vue";
 import Modal from "@/Components/Modal.vue";
-import { Head, useForm, router } from "@inertiajs/vue3";
+import { Head, useForm, router, usePage } from "@inertiajs/vue3";
 
 import Swal from "sweetalert2";
 import "@fortawesome/fontawesome-free/css/all.css";
 import { nextTick, ref } from "vue";
-import { watch } from "vue";
-import Paginator from "@/Components/Paginator.vue";
 
 const nameInput = ref(null);
 const modal = ref(false);
@@ -294,9 +368,19 @@ const id = ref('');
 const props = defineProps({
     grupos: {
         type: Object,
+        default: () => ({}),
     },
     integrantes: {
         type: Object,
+        default: () => ({}),
+    },
+
+    condition: {
+        'inv. Titular':'inv. Titular',
+        'Inv. Colaborador':'Inv. Colaborador',
+        'Inv. En formacion':'Inv. En formacion', 
+        'Inv. Posdoctorado':'Inv. Posdoctorado',
+        'Coordinador':'Coordinador'
     },
 });
 
@@ -307,19 +391,29 @@ const form = useForm({
     last_name:'',
     phone:'',
     email:'',
-    condition:'',
+    id_tipo:4,
+    condition:'inv. Titular',
     orcid:'',
     cti_vitae:'',
     google_scholar:'',
-    id_grupo:'',
+    id_grupo:1,
     id_persona:'',
+    
 });
+//  const formIntegrante = useForm({
+//     condition:'inv. Titular',
+//     orcid:'',
+//     cti_vitae:'',
+//     google_scholar:'',
+//     id_grupo:'',
+//     id_persona:'',
+//  })
 
-const openModal = (op,dni, name, first_name, last_name, phone, email, condition, orcid, cti_vitae, google_scholar,id_grupo, id_persona, persona) => {
+const openModal = (op,dni, name, first_name, last_name, phone, email, condition, orcid, cti_vitae, google_scholar,id_grupo, id_persona, integran) => {
     modal.value = true;
     nextTick( () => nameInput.value.focus());
     operation.value = op;
-    id.value = persona;
+    id.value = integran;
     if (op == 1){
         title.value = 'Agregar Integrantes';
     } else {
@@ -328,7 +422,7 @@ const openModal = (op,dni, name, first_name, last_name, phone, email, condition,
         form.name=name;
         form.first_name=first_name;
         form.last_name=last_name;
-        form.id_tipo=tipo;
+        form.id_tipo=4;
         form.phone=phone;
         form.email = email;
         form.condition = condition;
@@ -340,15 +434,21 @@ const openModal = (op,dni, name, first_name, last_name, phone, email, condition,
     }
 }
 
+const closeModal = () => {
+    modal.value = false;
+    form.reset();
+}
+
 const submit = () => {
     if(operation.value = 1){
+        console.log('dssd',submit);
         form.post(route("grupo.registrar.integrante"), {
         onSuccess: () => {
             ok("Registro creado Correctamente");
         },
     });
     } else{
-        form.put(route("grupo.registrar.integrante"), {
+        form.put(route("grupo.actualizar.integrante"), {
         onSuccess: () => {
             ok("Registro Actualizado Correctamente");
         },

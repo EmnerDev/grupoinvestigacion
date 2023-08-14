@@ -18,11 +18,29 @@ class Integrante extends Model
         'id_persona'
     ];
 
+    protected $enumCondition = [
+        'inv. Titular' => 'inv. Titular',
+        'Inv. Colaborador' => 'Inv. Colaborador',
+        'Inv. En formacion' => 'Inv. En formacion', 
+        'Inv. Posdoctorado' => 'Inv. Posdoctorado',
+        'Coordinador' => 'Coordinador'
+    ];
+
     public function grupo(){
         return $this->belongsTo(Grupo::class,'id_grupo');
     }
 
     public function persona() {
         return $this->belongsTo(Persona::class,'id_persona');
+    }
+
+    public static function enumConditionOption() {
+        return [
+            'inv. Titular' => 'inv. Titular',
+            'Inv. Colaborador' => 'Inv. Colaborador',
+            'Inv. En formacion' => 'Inv. En formacion', 
+            'Inv. Posdoctorado' => 'Inv. Posdoctorado',
+            'Coordinador' => 'Coordinador'
+        ];
     }
 }

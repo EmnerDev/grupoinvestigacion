@@ -13,7 +13,7 @@ class Tipo extends Model
         'name'
     ];
 
-    public function personas() {
+    public function persona() {
         return $this->hasMany(Persona::class, 'id_tipo');
     }
 }

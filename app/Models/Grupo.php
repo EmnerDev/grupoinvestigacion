@@ -28,8 +28,7 @@ class Grupo extends Model
         'id_linea',
         'id_sublinea',
         'id_facultad',
-        'id_escuela',
-        'id_persona'
+        'id_escuela'
     ];
 
     public function area_investigacion() {
@@ -53,12 +52,7 @@ class Grupo extends Model
     }
 
     public function integrante() {
-        return $this->hasMany(integrante::class,'id_grupo');
+        return $this->hasMany(Integrante::class,'id_grupo');
     }
-
-    public function tieneIntegrantes(){
-		return $this->hasMany('App\Models\Integrante','id_grupo','id')
-							->orderBy('created_at','ASC');
-	}
 }
 

@@ -32,13 +32,11 @@ return new class extends Migration
             $table->unsignedBigInteger('id_sublinea');
             $table->unsignedBigInteger('id_facultad');
             $table->unsignedBigInteger('id_escuela');
-            $table->unsignedBigInteger('id_persona');
             $table->foreign('id_area')->references('id')->on('area_investigacions')->onDelete('cascade');
             $table->foreign('id_linea')->references('id')->on('lineas')->onDelete('cascade');
             $table->foreign('id_sublinea')->references('id')->on('sub_lineas')->onDelete('cascade');
             $table->foreign('id_facultad')->references('id')->on('facultads')->onDelete('cascade');
             $table->foreign('id_escuela')->references('id')->on('escuelas')->onDelete('cascade');
-            $table->foreign('id_persona')->references('id')->on('personas')->onDelete('cascade');
             
             $table->timestamps();
         });

@@ -32,6 +32,8 @@ class IntegranteController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        //dd($request->all());
+
         $persona = new Persona();
         $persona->dni = $request->dni;
         $persona->name = $request->name;
@@ -47,8 +49,8 @@ class IntegranteController extends Controller
         $integrante->orcid = $request->orcid;
         $integrante->cti_vitae = $request->cti_vitae;
         $integrante->google_scholar = $request->google_scholar;
-        $integrante->id_grupo = $request->id_grupo;
-        $integrante->id_persona = $request->id_persona;
+        $integrante->id_grupo = $request->input('id_grupo');
+        $integrante->id_persona = $persona->id;
         $integrante->save();
 
         return Redirect::route('ver.grupo',$request->id_grupo);

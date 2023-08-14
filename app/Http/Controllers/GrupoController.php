@@ -25,11 +25,12 @@ class GrupoController extends Controller
      */
     public function index()
     {
-        $integrantes = Integrante::with('persona')->get();      
+        // $integrantes = Integrante::with('persona')->get();      
+        $grupos = Grupo::with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea','integrante.persona')->get();
 
         return Inertia::render('Groups/Index',[
-            'grupos' => Grupo::with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea','integrante')->get(),            
-            'integrantes' => $integrantes
+            'grupos' =>  $grupos,                     
+            // 'integrantes' => $integrantes
         ]);
     }
 
@@ -81,13 +82,12 @@ class GrupoController extends Controller
         $grupo->id_linea = $request->id_linea;
         $grupo->id_sublinea = $request->id_sublinea;
         $grupo->id_facultad = $request->id_facultad;
-        $grupo->id_escuela = $request->id_escuela;
-        $grupo->id_persona = $request->id_persona;        
+        $grupo->id_escuela = $request->id_escuela;       
         $grupo->save();
 
         $integrante = Integrante::create([
                 'id_grupo' => $grupo->id,
-                'id_persona' => $grupo->id_persona
+                'id_persona' => $request->id_persona
 
         ]);
         $integrante->save();
@@ -100,12 +100,12 @@ class GrupoController extends Controller
      */
     public function show(Grupo $grupo)
     {        
-        $integrantes = Integrante::with('persona');      
+        // $integrantes = Integrante::with('persona');      
 
-        return Inertia::render('Groups/Show',[
-            'grupos' => Grupo::with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea')->find($grupo),            
-            'integrantes' => $integrantes
-        ]);
+        // return Inertia::render('Groups/Show',[
+        //     'grupos' => Grupo::with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea')->find($grupo),            
+        //     'integrantes' => $integrantes
+        // ]);
     }
 
     /**
@@ -133,11 +133,12 @@ class GrupoController extends Controller
     }
 
     public function verGrupo($id){
-        $integrantes = Integrante::with('persona')->where('id',$id)->get();      
+        $integrantes = Integrante::with('persona')->where('id_grupo',$id)->get();      
 
         return Inertia::render('Groups/Show',[
             'grupos' => Grupo::with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea')->find($id),            
-            'integrantes' => $integrantes
+            'integrantes' => $integrantes,
+            'condition' =>Integrante::enumConditionOption()
         ]);
     }
 }
