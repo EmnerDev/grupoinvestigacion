@@ -162,7 +162,7 @@
                                                 <p
                                                     class="text-gray-900 whitespace-no-wrap"
                                                 >
-                                                    {{ inte.google_escholar }}
+                                                    {{ inte.google_scholar }}
                                                 </p>
                                             </td>
                                             <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
@@ -378,7 +378,7 @@ const props = defineProps({
     condition: {
         'inv. Titular':'inv. Titular',
         'Inv. Colaborador':'Inv. Colaborador',
-        'Inv. En formacion':'Inv. En formacion', 
+        'Inv. En formacion':'Inv. En formacion',
         'Inv. Posdoctorado':'Inv. Posdoctorado',
         'Coordinador':'Coordinador'
     },
@@ -396,9 +396,9 @@ const form = useForm({
     orcid:'',
     cti_vitae:'',
     google_scholar:'',
-    id_grupo:1,
+    id_grupo: props.grupos.id,
     id_persona:'',
-    
+
 });
 //  const formIntegrante = useForm({
 //     condition:'inv. Titular',
@@ -440,21 +440,21 @@ const closeModal = () => {
 }
 
 const submit = () => {
-    if(operation.value = 1){
-        console.log('dssd',submit);
+    if(operation.value === 1){
         form.post(route("grupo.registrar.integrante"), {
         onSuccess: () => {
             ok("Registro creado Correctamente");
         },
     });
     } else{
-        form.put(route("grupo.actualizar.integrante"), {
+        console.log('aquiiii', operation.value);
+        form.put(route("grupo.actualizar.integrante", id.value), {
         onSuccess: () => {
             ok("Registro Actualizado Correctamente");
         },
     });
     }
-    
+
 };
 const ok = (msj) => {
     form.reset();

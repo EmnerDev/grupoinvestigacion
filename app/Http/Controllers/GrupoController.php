@@ -25,11 +25,11 @@ class GrupoController extends Controller
      */
     public function index()
     {
-        // $integrantes = Integrante::with('persona')->get();      
+        // $integrantes = Integrante::with('persona')->get();
         $grupos = Grupo::with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea','integrante.persona')->get();
 
         return Inertia::render('Groups/Index',[
-            'grupos' =>  $grupos,                     
+            'grupos' =>  $grupos,
             // 'integrantes' => $integrantes
         ]);
     }
@@ -45,7 +45,7 @@ class GrupoController extends Controller
         $linea = Linea::all();
         $sublinea = SubLinea::all();
         $tipos = Tipo::all();
-        $personas = Persona::with('tipo')->get();        
+        $personas = Persona::with('tipo')->get();
 
         return Inertia::render('Groups/Create',[
             'grupos' => Grupo::paginate(),
@@ -82,7 +82,7 @@ class GrupoController extends Controller
         $grupo->id_linea = $request->id_linea;
         $grupo->id_sublinea = $request->id_sublinea;
         $grupo->id_facultad = $request->id_facultad;
-        $grupo->id_escuela = $request->id_escuela;       
+        $grupo->id_escuela = $request->id_escuela;
         $grupo->save();
 
         $integrante = Integrante::create([
@@ -99,11 +99,11 @@ class GrupoController extends Controller
      * Display the specified resource.
      */
     public function show(Grupo $grupo)
-    {        
-        // $integrantes = Integrante::with('persona');      
+    {
+        // $integrantes = Integrante::with('persona');
 
         // return Inertia::render('Groups/Show',[
-        //     'grupos' => Grupo::with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea')->find($grupo),            
+        //     'grupos' => Grupo::with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea')->find($grupo),
         //     'integrantes' => $integrantes
         // ]);
     }
@@ -119,9 +119,10 @@ class GrupoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Grupo $grupo)
+    public function update(Request $request, Grupo $grupo): RedirectResponse
     {
-        //
+        $grupo->update($request->all());
+        return Redirect::route('ver.grupo');
     }
 
     /**
@@ -133,10 +134,10 @@ class GrupoController extends Controller
     }
 
     public function verGrupo($id){
-        $integrantes = Integrante::with('persona')->where('id_grupo',$id)->get();      
+        $integrantes = Integrante::with('persona')->where('id_grupo',$id)->get();
 
         return Inertia::render('Groups/Show',[
-            'grupos' => Grupo::with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea')->find($id),            
+            'grupos' => Grupo::with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea')->find($id),
             'integrantes' => $integrantes,
             'condition' =>Integrante::enumConditionOption()
         ]);

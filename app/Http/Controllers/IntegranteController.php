@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Grupo;
 use App\Models\Integrante;
 use App\Models\Persona;
 use Illuminate\Http\Request;
@@ -75,9 +76,10 @@ class IntegranteController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Integrante $integrantes)
+    public function update(Request $request, Integrante $integrante, Grupo $grupo): RedirectResponse
     {
-        //
+        $integrante->update($request->all());
+        return Redirect::route('ver.grupo',$request->id_grupo);
     }
 
     /**
