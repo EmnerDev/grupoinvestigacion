@@ -15,54 +15,54 @@
                                     <thead>
                                         <tr>
                                             <th
-                                                class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
+                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                                             >
                                                 N°
                                             </th>
                                             <th
-                                                class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
+                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                                             >
                                                 Area de Investigacion
                                             </th>
                                             <th
-                                                class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
+                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                                             >
                                                 Linea
                                             </th>
                                             <th
-                                                class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
+                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                                             >
                                                 Sublinea
                                             </th>
                                             <th
-                                                class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
+                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                                             >
                                                 Nombre del grupo
                                             </th>
                                             <th
-                                                class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
+                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
+                                            >
+                                                Acciones
+                                            </th>
+                                            <th
+                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                                             >
                                                 Integrantes
                                             </th>
                                             <th
-                                                class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
+                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                                             >
                                                 Condicion
-                                            </th>
-                                            <th
-                                                class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
-                                            >
-                                                Acciones
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr
-                                            v-for="(gru, i) in grupos"
-                                            :key="gru.id"
+                                        <template v-for="(gru, i) in grupos"
+                                            :key="gru.id">
+                                        <tr                                           
                                             
                                         >
-                                            <td
+                                            <td :rowspan="gru.integrante.length+1"
                                                 class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                             >
                                                 <p
@@ -71,7 +71,7 @@
                                                     {{ i + 1 }}
                                                 </p>
                                             </td>
-                                            <td
+                                            <td :rowspan="gru.integrante.length+1"
                                                 class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                             >
                                                 <p
@@ -80,7 +80,7 @@
                                                     {{ gru.area_investigacion.name }}
                                                 </p>
                                             </td>
-                                            <td
+                                            <td :rowspan="gru.integrante.length+1"
                                                 class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                             >
                                                 <p
@@ -89,7 +89,7 @@
                                                     {{ gru.linea.name }}
                                                 </p>
                                             </td>
-                                            <td
+                                            <td :rowspan="gru.integrante.length+1"
                                                 class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                             >
                                                 <p
@@ -98,7 +98,7 @@
                                                     {{ gru.sublinea.name }}
                                                 </p>
                                             </td>
-                                            <td
+                                            <td :rowspan="gru.integrante.length+1"
                                                 class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                             >
                                                 <p
@@ -106,34 +106,38 @@
                                                 >
                                                     {{ gru.name }}
                                                 </p>
-                                            </td>
+                                            </td>  
+                                            <td :rowspan="gru.integrante.length+1"                                            
+                                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+                                                <LinkButton class="mr-1" :href="route('ver.grupo',gru.id)"><i class="fa-solid fa-eye"></i></LinkButton>
+                                                <WarningButton  class="mr-1">
+                                                    <i class="fa-solid fa-edit" :title="editMode ? 'Editar':'Editar Grupo'"></i>
+                                                </WarningButton>
+                                                <DangerButton><i class="fa-solid fa-trash"></i></DangerButton>
+                                            </td>                                          
+                                        </tr>
+                                        <tr v-for="integ in gru.integrante" :key="integ.id">
                                             <td 
-                                                class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                                                class="border-b border-gray-200 bg-white px-5 text-sm"
                                             >
                                                 <p
-                                                v-for="integ in gru.integrante" :key="integ.id"
+                                                
                                                     class="text-gray-900 whitespace-no-wrap"
                                                 >
                                                     {{ integ.persona.name }} {{ integ.persona.first_name }} {{ integ.persona.last_name }}
                                                 </p>
                                             </td>
                                             <td 
-                                                class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                                                class=" border-b border-gray-200 bg-white px-5 text-sm"
                                             >
                                                 <p
                                                     class="text-gray-900 whitespace-no-wrap"
                                                 >
-                                                    {{ gru.integrante[0].condition }}
+                                                    {{ integ.condition }}
                                                 </p>
-                                            </td>
-                                            <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                                                <LinkButton class="mr-1" :href="route('ver.grupo',gru.id)"><i class="fa-solid fa-eye"></i></LinkButton>
-                                                <WarningButton  class="mr-1">
-                                                    <i class="fa-solid fa-edit"></i>
-                                                </WarningButton>
-                                                <DangerButton><i class="fa-solid fa-trash"></i></DangerButton>
-                                            </td>
+                                            </td>                                            
                                         </tr>
+                                        </template>
                                     </tbody>
                                 </table>
                             </div>
@@ -172,6 +176,7 @@ const props = defineProps({
     // integrantes: {
     //     type: Object,
     // },
+    editMode: false,
 });
 
 const form = useForm({});

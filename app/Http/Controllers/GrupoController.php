@@ -39,21 +39,21 @@ class GrupoController extends Controller
      */
     public function create(): Response
     {
-        $facultad = Facultad::all();
-        $escuela = Escuela::all();
-        $area = AreaInvestigacion::all();
-        $linea = Linea::all();
-        $sublinea = SubLinea::all();
+        $facultades = Facultad::all();
+        $escuelas = Escuela::all();
+        $areas = AreaInvestigacion::all();
+        $lineas = Linea::all();
+        $sublineas = SubLinea::all();
         $tipos = Tipo::all();
-        $personas = Persona::with('tipo')->get();
+        $personas = Persona::with('tipo')->where('id_tipo', 1)->get();
 
         return Inertia::render('Groups/Create',[
             'grupos' => Grupo::paginate(),
-            'facultad' => $facultad,
-            'escuela' => $escuela,
-            'area' => $area,
-            'linea' => $linea,
-            'sublinea' => $sublinea,
+            'facultades' => $facultades,
+            'escuelas' => $escuelas,
+            'areas' => $areas,
+            'lineas' => $lineas,
+            'sublineas' => $sublineas,
             'personas' => $personas,
             'tipos' => $tipos
         ]);

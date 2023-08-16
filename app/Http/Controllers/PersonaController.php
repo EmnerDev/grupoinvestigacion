@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PersonaCreateRequest;
+use App\Http\Requests\PersonaUpdateRequest;
 use App\Models\Persona;
 use App\Models\Tipo;
 use Illuminate\Http\RedirectResponse;
@@ -51,7 +53,7 @@ class PersonaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(PersonaCreateRequest $request): RedirectResponse
     {
         $persona = Persona::create([
             'dni' => $request->dni,
@@ -91,7 +93,7 @@ class PersonaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Persona $persona):RedirectResponse
+    public function update(PersonaUpdateRequest $request, Persona $persona):RedirectResponse
     {
         $persona->update($request->all());
         return Redirect::route('personas.index');

@@ -14,7 +14,7 @@ class Facultad extends Model
     ];
 
     public function escuela(){
-        return $this->belongsTo(Escuela::class,'id_facultad');
+        return $this->hasMany(Escuela::class,'id_facultad');
     }
 
     public function grupo() {

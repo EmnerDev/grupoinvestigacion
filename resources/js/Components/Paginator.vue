@@ -74,7 +74,7 @@
                         </Link>
                     <div v-for="link in paginator.links" :key="index">
                         <Link v-if="!isFirstOrLastOrDots(index,paginator.links.length,link.label)"
-                        class="relative inline-flex items-center px-3 py-3 mr-1 mb-1 text-sm leading-4 rounded border hover:bg-indigo-500 hover:text-white focus:border-indigo-500 focus:text-white" :class="{ 'text-white bg-indigo-600': link.active }" :href="link.url"
+                        class="relative inline-flex items-center px-3 py-3 mr-1 mb-1 text-sm leading-4 rounded border hover:bg-gray-500 hover:text-white focus:border-gray-500 focus:text-white" :class="{ 'text-white bg-gray-700': link.active }" :href="link.url"
                         ><span v-if="(link.label).length == 16">Anterior</span>
                         <span v-else-if="(link.label).length == 12">Siguiente</span>
                         <span v-else>{{ link.label }}</span>

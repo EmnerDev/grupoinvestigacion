@@ -17,7 +17,7 @@
                                 class="mt-1"
                                 v-model="form.dni"
                             />
-                            <InputError class="mt-2" />
+                            <InputError class="mt-2" :message="form.errors.dni" />
                         </div>
                         <div class="flex-initial w-64 ml-6">
                             <InputLabel for="name" value="Nombre" />
@@ -28,7 +28,7 @@
                                 class="mt-1"
                                 v-model="form.name"
                             />
-                            <InputError class="mt-2" />
+                            <InputError class="mt-2" :message="form.errors.name" />
                         </div>
                         <div class="flex-initial w-64 ml-6">
                             <InputLabel for="name" value="Apellido Paterno" />
@@ -39,7 +39,7 @@
                                 class="mt-1"
                                 v-model="form.first_name"
                             />
-                            <InputError class="mt-2" />
+                            <InputError class="mt-2" :message="form.errors.first_name" />
                         </div>
                         <div class="flex-initial w-64 ml-6">
                             <InputLabel for="name" value="Apellido Materno" />
@@ -50,7 +50,7 @@
                                 class="mt-1"
                                 v-model="form.last_name"
                             />
-                            <InputError class="mt-2" />
+                            <InputError class="mt-2" :message="form.errors.last_name" />
                         </div>
                     </div>
 
@@ -72,6 +72,7 @@
                                     {{ tipo.name }}
                                 </option>
                             </select>
+                            <InputError class="mt-2" :message="form.errors.id_tipo" />
                         </div>
                         <div class="flex-initial w-64 ml-6">
                             <InputLabel for="name" value="Telefono" />
@@ -82,7 +83,7 @@
                                 class="mt-1"
                                 v-model="form.phone"
                             />
-                            <InputError class="mt-2" />
+                            <InputError class="mt-2" :message="form.errors.phone" />
                         </div>
                         <div class="flex-initial w-64 ml-6">
                             <InputLabel for="name" value="Email" />
@@ -93,7 +94,7 @@
                                 class="mt-1"
                                 v-model="form.email"
                             />
-                            <InputError class="mt-2" />
+                            <InputError class="mt-2" :message="form.errors.email" />
                         </div>
                     </div>
 
@@ -127,42 +128,42 @@
                                 class="border-b bg-gray-50 text-left text-xs font-semibold uppercase tracking-wide text-gray-500"
                             >
                                 <th
-                                    class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
+                                    class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                                 >
                                     N°
                                 </th>
                                 <th
-                                    class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
+                                    class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                                 >
                                     Dni
                                 </th>
                                 <th
-                                    class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
+                                    class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                                 >
                                     Nombre
                                 </th>
                                 <th
-                                    class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
+                                    class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                                 >
                                     Apellidos
                                 </th>
                                 <th
-                                    class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
+                                    class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                                 >
                                     Condicion
                                 </th>
                                 <th
-                                    class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
+                                    class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                                 >
                                     Telefono
                                 </th>
                                 <th
-                                    class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
+                                    class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                                 >
                                     Email
                                 </th>
                                 <th
-                                    class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
+                                    class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                                 >
                                     Acciones
                                 </th>
@@ -248,11 +249,13 @@
                     <InputLabel for="dni" value="Dni:"></InputLabel>
                     <TextInput id="dni" ref="nameImput" v-model="form.dni" type="text" class="mt-1 block w-3/4"
                     placeholder="Dni"></TextInput>
+                    <InputError class="mt-2" :message="form.errors.dni" />
                 </div>
                 <div class="p-3">
                     <InputLabel for="name" value="Nombres:"></InputLabel>
                     <TextInput id="name" v-model="form.name" type="text" class="mt-1 block w-3/4"
                     placeholder="Nombre" ref="nameImput"></TextInput>
+                    <InputError class="mt-2" :message="form.errors.name" />
                 </div>
             </div>
             <div class="grid gap-6 mb-6 md:grid-cols-2">
@@ -260,11 +263,13 @@
                     <InputLabel for="first_name" value="Apellido Paterno:"></InputLabel>
                     <TextInput id="first_name" v-model="form.first_name" type="text" class="mt-1 block w-3/4"
                     placeholder="Apellido Paterno"></TextInput>
+                    <InputError class="mt-2" :message="form.errors.first_name" />
                 </div>
                 <div class="p-3">
                     <InputLabel for="last_name" value="Apellido Materno:"></InputLabel>
                     <TextInput id="last_name" v-model="form.last_name" type="text" class="mt-1 block w-3/4"
                     placeholder="Apellido Materno"></TextInput>
+                    <InputError class="mt-2" :message="form.errors.last_name" />
                 </div>
             </div>
             <div class="grid gap-6 mb-6 md:grid-cols-2">
@@ -273,18 +278,21 @@
                     <SelectInput id="id_tipo" :options="tipos"
                     v-model="form.id_tipo" type="text" class="mt-1 block w-full">
                     </SelectInput>
+                    <InputError class="mt-2" :message="form.errors.id_tipo" />
                 </div>
                 <div class="p-3">
                     <InputLabel for="phone" value="Telefono:"></InputLabel>
                     <TextInput id="phone" v-model="form.phone" type="text" class="mt-1 block w-3/4"
                     placeholder="Telefono"></TextInput>
+                    <InputError class="mt-2" :message="form.errors.phone" />
                 </div>
             </div>
             <div class="p-3">
                 <InputLabel for="email" value="Email:"></InputLabel>
                 <TextInput id="email" v-model="form.email" type="text" class="mt-1 block w-3/4"
                 placeholder="Correo Electrónico">
-                </TextInput>
+            </TextInput>
+            <InputError class="mt-2" :message="form.errors.email" />
             </div>
             <div class="flex justify-center">
                 <div class="p-3 mt-6">

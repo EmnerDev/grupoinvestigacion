@@ -17,8 +17,9 @@
                         </div>
                         <div class=" flex-initial ml-6">
                             <InputLabel for="name" value="Facultad" />
-                            <select name="id_facultad" id="id_facultad" class="mt-1 block w-full" v-model="form.id_facultad">
-                                <option v-for="fac in facultad" :key="fac.id" :value="fac.id">{{ fac.name }}</option>
+                            <select name="id_facultad" id="id_facultad" class="mt-1 block w-full" v-model="form.id_facultad"  @change="updateEscuelas">
+                                <option value="0">Seleccione su Facultad</option>
+                                <option v-for="fac in facultades" :key="fac.id" :value="fac.id">{{ fac.name }}</option>
                             </select>
                         </div>
                     </div>
@@ -26,27 +27,31 @@
                         <div class="flex-initial  ml-6">
                             <InputLabel for="name" value="Escuela" />
                             <select  name="id_escuela" id="id_escuela" class="mt-1 block w-full" v-model="form.id_escuela">
-                                <option v-for="es in escuela" :key="es.id" :value="es.id">{{ es.name }}</option>
+                                <option value="0">Seleccione la Escuela</option>
+                                <option v-for="esc in escuelasfilter" :key="esc.id" :value="esc.id">{{ esc.name }}</option>
                             </select>
                         </div>
                         <div class="flex-initial ml-6">
                             <InputLabel for="name" value="Area de Investigación" />
-                            <select name="id_area" id="id_area" class="mt-1 block w-full" v-model="form.id_area">
-                                <option v-for="ar in area" :key="ar.id" :value="ar.id">{{ ar.name }}</option>
+                            <select name="id_area" id="id_area" class="mt-1 block w-full" v-model="form.id_area" @change="updatelineas">
+                                <option value="0">Seleccione el Area</option>
+                                <option v-for="ar in areas" :key="ar.id" :value="ar.id">{{ ar.name }}</option>
                             </select>
                         </div>
                     </div>
                     <div class="grid gap-6 mb-6 md:grid-cols-2">
                         <div class="flex-initial ml-6">
                             <InputLabel for="name" value="Linea" />
-                            <select  name="id_linea" id="id_linea" class="mt-1 block w-full" v-model="form.id_linea">
-                                <option v-for="li in linea" :key="li.id" :value="li.id">{{ li.name }}</option>
+                            <select  name="id_linea" id="id_linea" class="mt-1 block w-full" v-model="form.id_linea" @change="updateSublineas">
+                                <option value="0">Seleccione la Linea</option>
+                                <option v-for="li in lineasfiltered" :key="li.id" :value="li.id">{{ li.name }}</option>
                             </select>
                         </div>
                         <div class="flex-initial ml-6">
                             <InputLabel for="name" value="Sublinea" />
                             <select name="id_sublinea" id="id_sublinea" class="mt-1 block w-full" v-model="form.id_sublinea">
-                                <option v-for="su in sublinea" :key="su.id" :value="su.id">{{ su.name }}</option>
+                                <option value="0">Seleccione la Sublinea</option>
+                                <option v-for="su in sublineasFiltered" :key="su.id" :value="su.id">{{ su.name }}</option>
                             </select>
                         </div>
                     </div>
@@ -54,6 +59,7 @@
                         <div class="flex-initial ml-6">
                                 <InputLabel for="name" value="Responsable" />
                                 <select name="id_persona" id="id_persona" class="mt-1 block w-full" v-model="form.id_persona">
+                                    <option value="0">Seleccione Responsable</option>
                                     <option v-for="per in personas" :key="per.id" :value="per.id">{{ per.name }} {{ per.first_name }} {{ per.last_name }} - {{ per.tipo.name }}</option>
                                 </select>
                         </div>
@@ -132,31 +138,7 @@
                         <DangerButton class="px-10">
                             Cancelar
                         </DangerButton>
-                    </div>
-
-                    <div class="mt-4 flex flex-col">
-                        <InputLabel for="name" value="Integrantes" />                       
-                        <PrimaryButton class="">
-                            Agregar Integrantes
-                        </PrimaryButton>
-                        <table class="mt-4">
-                            <thead>
-                                <tr>
-                                    <th>Nombres</th>
-                                    <th>Apellidos</th>
-                                    <th>condicion</th>
-                                    <th>Orcid</th>
-                                    <th>Cti Vitae</th>
-                                    <th>google Scholar</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
-                    </div>
-
+                    </div>                   
                 </form>
             </div>
         </div>
@@ -180,32 +162,26 @@ import { Head, useForm, router } from "@inertiajs/vue3";
 import Swal from "sweetalert2";
 import '@fortawesome/fontawesome-free/css/all.css';
 import { nextTick, ref } from "vue";
-import { watch } from "vue";
+import { watch, reactive } from "vue";
 import Paginator from "@/Components/Paginator.vue";
 
-const props = defineProps({
-    facultad:{
-        type: Object,
 
-    },
-    escuela: {
-        type: Object,
-    },
-    area: {
-        type: Object,
-    },
-    linea: {
-        type: Object,
-    },
-    sublinea: {
-        type: Object,
-    },
-    personas: {
-        type: Object,
-    },
-    tipos: {
-        type: Object,
-    },
+const selectedFacultadId = ref(0);
+const selectedAreaId = ref(0);
+const selectedlineaId = ref(0);
+
+let escuelasfilter = [];
+let lineasfiltered = [];
+let sublineasFiltered = [];
+
+const props = defineProps({
+    facultades: Array,
+    escuelas: Array,
+    areas: Object,
+    lineas: Object,
+    sublineas: Object,
+    personas: Object,
+    tipos: Object,
 });
 
 const form = useForm({
@@ -222,13 +198,56 @@ const form = useForm({
     office:"",
     annexed:"",
     phone:"",
-    id_area:"",
-    id_linea:"",
-    id_sublinea:"",
-    id_facultad:"",
-    id_escuela:"",
-    id_persona:""
+    id_area:0,
+    id_linea:0,
+    id_sublinea:0,
+    id_facultad:0,
+    id_escuela:0,
+    id_persona:0
 });
+
+watch(() => form.id_facultad, (newId, oldId) => {
+    if(newId !== oldId) {
+        selectedFacultadId.value = newId;
+        updateEscuelas();
+    }
+})
+
+const updateEscuelas = () => {
+    const selectedFacultad = props.facultades.find(fac => fac.id === selectedFacultadId.value);
+    escuelasfilter = selectedFacultad ? props.escuelas.filter(es => es.id_facultad === selectedFacultad.id) : [];
+    console.log('escuela', escuelasfilter);
+    console.log('facu', selectedFacultad);
+    form.id_escuela = 0;
+};
+
+watch(() => form.id_area, (newId, oldId) =>{
+    if(newId !== oldId) {
+        selectedAreaId.value = newId;
+        form.id_linea = 0;
+        form.id_sublinea = 0;
+        updatelineas();
+    }
+});
+
+watch(() => form.id_linea, (newId, oldId) => {
+    if(newId !== oldId){
+        selectedlineaId.value = newId;
+        form.id_sublinea = 0;
+        updateSublineas();
+    }
+});
+
+const updatelineas = () => {
+    const selectedArea = props.areas.find(area => area.id === selectedAreaId.value);
+    lineasfiltered = selectedArea ? props.lineas.filter(linea => linea.id_area === selectedArea.id) : [];
+};
+
+const updateSublineas = () => {
+    const selectedLinea = props.lineas.find(linea => linea.id === selectedlineaId.value);
+    sublineasFiltered = selectedLinea ? props.sublineas.filter(sublinea => sublinea.id_linea === selectedLinea.id) : [];
+};
+
 
 const submit = () => {
         form.post(route("registrar.grupo"),{
