@@ -26,12 +26,28 @@ class GrupoController extends Controller
     public function index()
     {
         // $integrantes = Integrante::with('persona')->get();
-        $grupos = Grupo::with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea','integrante.persona')->get();
+        //$grupos = Grupo::with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea','integrante.persona')->get();
 
         return Inertia::render('Groups/Index',[
-            'grupos' =>  $grupos,
+            'grupos' =>  Grupo::query()->with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea','integrante.persona')->orderBy('created_at','DESC')
+            ->when(\Illuminate\Support\Facades\Request::input('search'), function($query, $search) {
+            $query->where('name','like','%'.$search.'%');
+            })->get(),
+            //->withQueryString(),
             // 'integrantes' => $integrantes
+            'filters' => \Illuminate\Support\Facades\Request::only(['search']),
         ]);
+
+        // $grupos = Grupo::query()->with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea','integrante.persona')->orderBy('created_at','DESC')
+        //                         ->when(\Illuminate\Support\Facades\Request::input('search'), function($query, $search) {
+        //                         $query->where('name','like','%'.$search.'%');
+        //                         })->paginate(6);
+
+        // return Inertia::render('Groups/Index',[
+        //     'grupos' =>  $grupos,
+        //     'filters' => \Illuminate\Support\Facades\Request::only(['search']),
+        //     // 'integrantes' => $integrantes
+        // ]);
     }
 
     /**

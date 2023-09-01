@@ -31,4 +31,22 @@ class PersonaUpdateRequest extends FormRequest
             'id_tipo' => 'required|exists:tipos,id'
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'dni.required' => 'El campo DNI es obligatorio',
+            'dni.digits' => 'El DNI debe de tener 8 digitos',
+            'dni.unique' => 'El DNI ya esta registrado',
+            'dni.integer' => 'El campo DNI debe ser un numero entero',
+            'name.required' => 'El campo Nombre es obligatorio',
+            'first_name.required' => 'El campo Apellido Paterno es obligatorio',
+            'last_name.required' => 'El campo Apellido Materno es obligatorio',
+            'id_tipo.required' => 'El campo Tipo es obligatorio',
+            'id_tipo.exists' => 'El Tipo Persona seleccionado no es valido',
+            'phone.required' => 'El campo Telefono es obligatorio',
+            'phone.digits' => 'El Telefono debe de tener 9 digitos',
+            'email.required' => 'El campo Email es obligatorio',
+        ];
+    }
 }

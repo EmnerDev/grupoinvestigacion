@@ -51,7 +51,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('grupos', [GrupoController::class, 'index'])->name('grupos.index');
     Route::get('crear/grupos', [GrupoController::class, 'create'])->name('grupos.create');
-    Route::post('grupos', [GrupoController::class, 'store'])->name('registrar.grupo');
+    Route::post('grupos/agregar', [GrupoController::class, 'store'])->name('registrar.grupo');
     Route::get('grupos/ver/{id}', [GrupoController::class, 'verGrupo'])->name('ver.grupo');
 
     Route::post('integrantes', [IntegranteController::class, 'store'])->name('grupo.registrar.integrante');

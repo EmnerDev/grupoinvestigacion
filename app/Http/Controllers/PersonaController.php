@@ -30,7 +30,7 @@ class PersonaController extends Controller
         return Inertia::render('People/Index', [
             'personas' => Persona::query()->with('tipo')->orderBy('created_at','DESC')
             ->when(\Illuminate\Support\Facades\Request::input('search'),function($query, $search) {
-                $query->where('name','like','%'.$search.'%')
+                $query->whereRaw("CONCAT(name,' ',first_name,' ',last_name) like ?", ['%'.$search.'%'])
                 ->OrWhere('dni','like','%'.$search.'%')
                 ->OrWhere('first_name','like','%'.$search.'%')
                 ->OrWhere('last_name','like','%'.$search.'%');

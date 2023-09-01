@@ -9,7 +9,7 @@
                 <form @submit.prevent="submit">
                     <div class="flex justify-around">
                         <div class="flex-initial w-64 ml-6">
-                            <InputLabel for="name" value="DNI" />
+                            <InputLabel for="name" value="DNI" /><span style="color: #e53e3e;"> *</span>
                             <TextInput
                                 name="dni"
                                 id="dni"
@@ -20,7 +20,7 @@
                             <InputError class="mt-2" :message="form.errors.dni" />
                         </div>
                         <div class="flex-initial w-64 ml-6">
-                            <InputLabel for="name" value="Nombre" />
+                            <InputLabel for="name" value="Nombre" /><span style="color: #e53e3e;"> *</span>
                             <TextInput
                                 name="name"
                                 id="name"
@@ -31,7 +31,7 @@
                             <InputError class="mt-2" :message="form.errors.name" />
                         </div>
                         <div class="flex-initial w-64 ml-6">
-                            <InputLabel for="name" value="Apellido Paterno" />
+                            <InputLabel for="name" value="Apellido Paterno" /><span style="color: #e53e3e;"> *</span>
                             <TextInput
                                 name="first_name"
                                 id="first_name"
@@ -42,7 +42,7 @@
                             <InputError class="mt-2" :message="form.errors.first_name" />
                         </div>
                         <div class="flex-initial w-64 ml-6">
-                            <InputLabel for="name" value="Apellido Materno" />
+                            <InputLabel for="name" value="Apellido Materno" /><span style="color: #e53e3e;"> *</span>
                             <TextInput
                                 name="last_name"
                                 id="last_name"
@@ -56,7 +56,7 @@
 
                     <div class="flex justify-around mt-6">
                         <div class="flex-initial w-64 ml-6" id="app">
-                            <InputLabel for="name" value="Tipo de Persona" />
+                            <InputLabel for="name" value="Tipo de Persona" /><span style="color: #e53e3e;"> *</span>
                             <select
                                 v-model="form.id_tipo"
                                 name="id_tipo"
@@ -79,7 +79,7 @@
                             <TextInput
                                 name="phone"
                                 id="phone"
-                                type="number"
+                                type="text"
                                 class="mt-1"
                                 v-model="form.phone"
                             />
@@ -121,7 +121,7 @@
                                     placeholder="Buscar..."   
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-60 p-2.5 "
                                 />
-                        </div>
+                </div>
                     <table class="w-full table-auto">
                         <thead>
                             <tr
@@ -246,13 +246,13 @@
             <h2 class="p-3 text-lg font.medium text-gray-900">{{ title }}</h2>
             <div class="grid gap-6 mb-6 md:grid-cols-2">
                 <div class="p-3">
-                    <InputLabel for="dni" value="Dni:"></InputLabel>
+                    <InputLabel for="dni" value="Dni: " /><span style="color: #e53e3e;"> *</span>
                     <TextInput id="dni" ref="nameImput" v-model="form.dni" type="text" class="mt-1 block w-3/4"
                     placeholder="Dni"></TextInput>
                     <InputError class="mt-2" :message="form.errors.dni" />
                 </div>
                 <div class="p-3">
-                    <InputLabel for="name" value="Nombres:"></InputLabel>
+                    <InputLabel for="name" value="Nombres: "/><span style="color: #e53e3e;"> *</span>
                     <TextInput id="name" v-model="form.name" type="text" class="mt-1 block w-3/4"
                     placeholder="Nombre" ref="nameImput"></TextInput>
                     <InputError class="mt-2" :message="form.errors.name" />
@@ -260,13 +260,13 @@
             </div>
             <div class="grid gap-6 mb-6 md:grid-cols-2">
                 <div class="p-3">
-                    <InputLabel for="first_name" value="Apellido Paterno:"></InputLabel>
+                    <InputLabel for="first_name" value="Apellido Paterno:"></InputLabel><span style="color: #e53e3e;"> *</span>
                     <TextInput id="first_name" v-model="form.first_name" type="text" class="mt-1 block w-3/4"
                     placeholder="Apellido Paterno"></TextInput>
                     <InputError class="mt-2" :message="form.errors.first_name" />
                 </div>
                 <div class="p-3">
-                    <InputLabel for="last_name" value="Apellido Materno:"></InputLabel>
+                    <InputLabel for="last_name" value="Apellido Materno:"></InputLabel><span style="color: #e53e3e;"> *</span>
                     <TextInput id="last_name" v-model="form.last_name" type="text" class="mt-1 block w-3/4"
                     placeholder="Apellido Materno"></TextInput>
                     <InputError class="mt-2" :message="form.errors.last_name" />
@@ -274,7 +274,7 @@
             </div>
             <div class="grid gap-6 mb-6 md:grid-cols-2">
                 <div class="p-3">
-                    <InputLabel for="id_tipo" value="Tipo de Persona:"></InputLabel>
+                    <InputLabel for="id_tipo" value="Tipo de Persona:"></InputLabel><span style="color: #e53e3e;"> *</span>
                     <SelectInput id="id_tipo" :options="tipos"
                     v-model="form.id_tipo" type="text" class="mt-1 block w-full">
                     </SelectInput>

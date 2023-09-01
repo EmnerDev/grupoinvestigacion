@@ -10,7 +10,15 @@
             <div class="p-6 border-b border-gray-200">
                 <form>
                         <div class="overflow-x-auto rounded-lg shadow mt-6">
-                            <div class="mb-4">                              
+                            <div class="mb-4"> 
+                                <div class="mb-2">
+                                    <input
+                                            type="text"
+                                            v-model="search"
+                                            placeholder="Buscar..."   
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-60 p-2.5 "
+                                        />
+                                </div>                             
                                 <table class="w-full table-auto">
                                     <thead>
                                         <tr>
@@ -62,7 +70,8 @@
                                         <tr                                           
                                             
                                         >
-                                            <td :rowspan="gru.integrante.length+1"
+                                            <td v-if="gru.integrante && gru.integrante.length"
+                                            :rowspan="gru.integrante.length+1"
                                                 class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                             >
                                                 <p
@@ -71,7 +80,8 @@
                                                     {{ i + 1 }}
                                                 </p>
                                             </td>
-                                            <td :rowspan="gru.integrante.length+1"
+                                            <td v-if="gru.integrante && gru.integrante.length"
+                                            :rowspan="gru.integrante.length+1"
                                                 class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                             >
                                                 <p
@@ -80,7 +90,8 @@
                                                     {{ gru.area_investigacion.name }}
                                                 </p>
                                             </td>
-                                            <td :rowspan="gru.integrante.length+1"
+                                            <td v-if="gru.integrante && gru.integrante.length"
+                                            :rowspan="gru.integrante.length+1"
                                                 class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                             >
                                                 <p
@@ -89,7 +100,8 @@
                                                     {{ gru.linea.name }}
                                                 </p>
                                             </td>
-                                            <td :rowspan="gru.integrante.length+1"
+                                            <td v-if="gru.integrante && gru.integrante.length"
+                                            :rowspan="gru.integrante.length+1"
                                                 class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                             >
                                                 <p
@@ -98,7 +110,8 @@
                                                     {{ gru.sublinea.name }}
                                                 </p>
                                             </td>
-                                            <td :rowspan="gru.integrante.length+1"
+                                            <td v-if="gru.integrante && gru.integrante.length"
+                                            :rowspan="gru.integrante.length+1"
                                                 class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                             >
                                                 <p
@@ -107,7 +120,8 @@
                                                     {{ gru.name }}
                                                 </p>
                                             </td>  
-                                            <td :rowspan="gru.integrante.length+1"                                            
+                                            <td v-if="gru.integrante && gru.integrante.length"
+                                             :rowspan="gru.integrante.length+1"                                            
                                             class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
                                                 <LinkButton class="mr-1" :href="route('ver.grupo',gru.id)"><i class="fa-solid fa-eye"></i></LinkButton>
                                                 <WarningButton  class="mr-1">
@@ -140,6 +154,11 @@
                                         </template>
                                     </tbody>
                                 </table>
+                                <!-- <div
+                                    class="flex flex-col items-center border-t bg-white px-5 py-5 xs:flex-row xs:justify-between"
+                                >
+                                    <paginator class="mt-3" :paginator="grupos" />
+                                </div> -->
                             </div>
                         </div>
                     </form>
@@ -176,6 +195,10 @@ const props = defineProps({
     // integrantes: {
     //     type: Object,
     // },
+    filters: {
+        type: Object,
+        default: () => ({}),
+    },
     editMode: false,
 });
 
@@ -192,5 +215,17 @@ const ok = (msj) => {
     form.reset();
     Swal.fire({ title: msj, icon: "success" });
 };
+
+let search = ref(props.filters.search);
+watch(search, (value) => {
+    router.get(
+        "/grupos",
+        { search: value },
+        {
+            preserveState: true,
+            replace: true,
+        }
+    );
+});
 
 </script>
