@@ -51,8 +51,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('grupos', [GrupoController::class, 'index'])->name('grupos.index');
     Route::get('crear/grupos', [GrupoController::class, 'create'])->name('grupos.create');
+    Route::get('edit/grupos/{grupo}', [GrupoController::class, 'edit'])->name('grupos.editar');
     Route::post('grupos/agregar', [GrupoController::class, 'store'])->name('registrar.grupo');
     Route::get('grupos/ver/{id}', [GrupoController::class, 'verGrupo'])->name('ver.grupo');
+    Route::put('grupos/actualizar/{grupo}',[GrupoController::class, 'update'])->name('actualizar.grupo');
 
     Route::post('integrantes', [IntegranteController::class, 'store'])->name('grupo.registrar.integrante');
     Route::put('integrantes/{integrante}', [IntegranteController::class, 'update'])->name('grupo.actualizar.integrante');

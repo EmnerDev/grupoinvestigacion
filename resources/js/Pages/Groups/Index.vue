@@ -65,8 +65,8 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <template v-for="(gru, i) in grupos"
-                                            :key="gru.id">
+                                        <template v-for="(gru, i) in grupos.data"
+                                            :key="gru.id" :value="gru.id">
                                         <tr                                           
                                             
                                         >
@@ -124,9 +124,9 @@
                                              :rowspan="gru.integrante.length+1"                                            
                                             class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
                                                 <LinkButton class="mr-1" :href="route('ver.grupo',gru.id)"><i class="fa-solid fa-eye"></i></LinkButton>
-                                                <WarningButton  class="mr-1">
+                                                <LinkWarningButton  class="mr-1" :href="route('grupos.editar',gru.id)">
                                                     <i class="fa-solid fa-edit" :title="editMode ? 'Editar':'Editar Grupo'"></i>
-                                                </WarningButton>
+                                                </LinkWarningButton>
                                                 <DangerButton><i class="fa-solid fa-trash"></i></DangerButton>
                                             </td>                                          
                                         </tr>
@@ -154,11 +154,11 @@
                                         </template>
                                     </tbody>
                                 </table>
-                                <!-- <div
+                                <div
                                     class="flex flex-col items-center border-t bg-white px-5 py-5 xs:flex-row xs:justify-between"
                                 >
                                     <paginator class="mt-3" :paginator="grupos" />
-                                </div> -->
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -174,6 +174,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import WarningButton from "@/Components/WarningButton.vue";
+import LinkWarningButton from "@/Components/LinkWarningButton.vue";
 import LinkButton from "@/Components/LinkButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";

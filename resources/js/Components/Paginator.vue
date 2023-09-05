@@ -41,9 +41,9 @@
         <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between gap-44">
             <div>
                 <p class="text-sm text-gray-700 leading-5">
-                    Mostrando
+                    Mostrando del
                     <span class="font-medium" v-text="firstItem"></span>
-                    a
+                    al
                     <span class="font-medium" v-text="lastItem"></span>
                     de
                     <span class="font-medium" v-text="total"></span>

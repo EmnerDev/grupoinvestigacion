@@ -31,8 +31,12 @@ class GrupoController extends Controller
         return Inertia::render('Groups/Index',[
             'grupos' =>  Grupo::query()->with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea','integrante.persona')->orderBy('created_at','DESC')
             ->when(\Illuminate\Support\Facades\Request::input('search'), function($query, $search) {
-            $query->where('name','like','%'.$search.'%');
-            })->get(),
+            $query->where(function ($subquery) use ($search){
+                $subquery->wherehas('integrante.persona', function($q) use ($search) {
+                    $q->whereRaw("CONCAT(name,' ',first_name,' ',last_name) like ?", ['%'.$search.'%']);
+                })->orwhere('name','like','%'.$search.'%');
+            });
+            })->paginate(5),
             //->withQueryString(),
             // 'integrantes' => $integrantes
             'filters' => \Illuminate\Support\Facades\Request::only(['search']),
@@ -128,8 +132,25 @@ class GrupoController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(Grupo $grupo)
-    {
-        //
+    {        
+        $facultades = Facultad::all();
+        $escuelas = Escuela::all();
+        $areas = AreaInvestigacion::all();
+        $lineas = Linea::all();
+        $sublineas = SubLinea::all();
+        $tipos = Tipo::all();
+        $personas = Persona::with('tipo')->where('id_tipo', 1)->get();
+
+        return Inertia::render('Groups/Edit',[
+            'grupos' =>$grupo,
+            'facultades' => $facultades,
+            'escuelas' => $escuelas,
+            'areas' => $areas,
+            'lineas' => $lineas,
+            'sublineas' => $sublineas,
+            'personas' => $personas,
+            'tipos' => $tipos
+        ]);
     }
 
     /**
@@ -138,7 +159,15 @@ class GrupoController extends Controller
     public function update(Request $request, Grupo $grupo): RedirectResponse
     {
         $grupo->update($request->all());
-        return Redirect::route('ver.grupo');
+
+        if($request->has('integrantes')) {
+            foreach($request->input('integrantes') as $integranteData){
+                $integrante = Integrante::find($integranteData['id']);
+                $integrante->update($integranteData);
+            }
+        }
+        
+        return Redirect::route('grupos.index');
     }
 
     /**
@@ -146,7 +175,8 @@ class GrupoController extends Controller
      */
     public function destroy(Grupo $grupo)
     {
-        //
+        $grupo->delete();
+        return Redirect::route('ver.grupo');
     }
 
     public function verGrupo($id){

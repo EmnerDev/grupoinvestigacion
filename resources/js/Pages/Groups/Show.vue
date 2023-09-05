@@ -11,41 +11,41 @@
                 <div>
                     <div class="grid gap-6 mb-6 md:grid-cols-2">
                         <div class="flex-initial ml-6">
-                            <InputLabel for="name" value="Nombre del Grupo" />
+                            <InputLabel for="name" value="Nombre del Grupo: " />
                             <span>{{ grupos.name }}</span>
                             <InputError class="mt-2" />
                         </div>
                         <div class="flex-initial ml-6">
-                            <InputLabel for="name" value="Facultad" />
+                            <InputLabel for="name" value="Facultad: " />
                             <span>{{ grupos.facultad.name }}</span>
                         </div>
                     </div>
                     <div class="grid gap-6 mb-6 md:grid-cols-2">
                         <div class="flex-initial ml-6">
-                            <InputLabel for="name" value="Escuela" />
+                            <InputLabel for="name" value="Escuela: " />
                             <span>{{ grupos.escuela.name }}</span>
                         </div>
                         <div class="flex-initial ml-6">
                             <InputLabel
                                 for="name"
-                                value="Area de Investigación"
+                                value="Area de Investigación: "
                             />
                             <span>{{ grupos.area_investigacion.name }}</span>
                         </div>
                     </div>
                     <div class="grid gap-6 mb-6 md:grid-cols-2">
                         <div class="flex-initial ml-6">
-                            <InputLabel for="name" value="Linea" />
+                            <InputLabel for="name" value="Linea: " />
                             <span>{{ grupos.linea.name }}</span>
                         </div>
                         <div class="flex-initial ml-6">
-                            <InputLabel for="name" value="Sublinea" />
+                            <InputLabel for="name" value="Sublinea: " />
                             <span>{{ grupos.sublinea.name }}</span>
                         </div>
                     </div>
                         <div class="overflow-x-auto rounded-lg shadow mt-6">
                             <div class="mb-4">
-                                <InputLabel for="name" value="Integrantes" />
+                                <InputLabel for="name" value="Integrantes: " />
                                 <div class="flex justify-center mb-6">
                                     <PrimaryButton @click="openModal(1)" class="">
                                         <i class="fa-solid fa-plus-circle"></i>
@@ -180,7 +180,7 @@
                         <div class="flex-initial ml-6">
                             <InputLabel
                                 for="name"
-                                value="Espacio de Investigación"
+                                value="Espacio de Investigación: "
                             />
                             <span>{{ grupos.space_inves }}</span>
                             <InputError class="mt-2" />
@@ -188,13 +188,13 @@
                         <div class="flex-initial ml-6">
                             <InputLabel
                                 for="name"
-                                value="Presentacion del grupo"
+                                value="Presentacion del grupo: "
                             />
                             <span>{{ grupos.pre_group_inv }}</span>
                             <InputError class="mt-2" />
                         </div>
                         <div class="flex-initial ml-6">
-                            <InputLabel for="name" value="objetivos" />
+                            <InputLabel for="name" value="objetivos: " />
                             <span>{{ grupos.objective }}</span>
                             <InputError class="mt-2" />
                         </div>
@@ -203,18 +203,18 @@
                         <div class="flex-initial ml-6">
                             <InputLabel
                                 for="name"
-                                value="Objetivo desarrollo sostenible"
+                                value="Objetivo desarrollo sostenible: "
                             />
                             <span>{{ grupos.obj_desa_soste_l_i }}</span>
                             <InputError class="mt-2" />
                         </div>
                         <div class="flex-initial ml-6">
-                            <InputLabel for="name" value="Servicios" />
+                            <InputLabel for="name" value="Servicios: " />
                             <span>{{ grupos.services }}</span>
                             <InputError class="mt-2" />
                         </div>
                         <div class="flex-initial ml-6">
-                            <InputLabel for="name" value="Laboratorio" />
+                            <InputLabel for="name" value="Laboratorio: " />
                             <span>{{ grupos.laboratory }}</span>
                             <InputError class="mt-2" />
                         </div>
@@ -223,7 +223,7 @@
                         <div class="flex-initial ml-6">
                             <InputLabel
                                 for="name"
-                                value="Equipamiento de  laboratorio"
+                                value="Equipamiento de  laboratorio: "
                             />
                             <span>{{ grupos.labora_equip }}</span>
                             <InputError class="mt-2" />
@@ -231,24 +231,24 @@
                     </div>
                     <div class="grid gap-6 mb-6 md:grid-cols-2">
                         <div class="flex-initial ml-6">
-                            <InputLabel for="name" value="Pagina Web" />
+                            <InputLabel for="name" value="Pagina Web: " />
                             <span>{{ grupos.pagina }}</span>
                             <InputError class="mt-2" />
                         </div>
                         <div class="flex-initial ml-6">
-                            <InputLabel for="name" value="Oficina" />
+                            <InputLabel for="name" value="Oficina: " />
                             <span>{{ grupos.office }}</span>
                             <InputError class="mt-2" />
                         </div>
                     </div>
                     <div class="grid gap-6 mb-6 md:grid-cols-2">
                         <div class="flex-initial ml-6">
-                            <InputLabel for="name" value="Telefono" />
+                            <InputLabel for="name" value="Telefono: " />
                             <span>{{ grupos.phone }}</span>
                             <InputError class="mt-2" />
                         </div>
                         <div class="flex-initial ml-6">
-                            <InputLabel for="name" value="anexo" />
+                            <InputLabel for="name" value="anexo: " />
                             <span>{{ grupos.annexed }}</span>
                             <InputError class="mt-2" />
                         </div>
