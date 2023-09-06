@@ -58,6 +58,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('integrantes', [IntegranteController::class, 'store'])->name('grupo.registrar.integrante');
     Route::put('integrantes/{integrante}', [IntegranteController::class, 'update'])->name('grupo.actualizar.integrante');
+    Route::get('/search-integrante/{dni}', [GrupoController::class, 'searchIntegrante']);
 
 });
 

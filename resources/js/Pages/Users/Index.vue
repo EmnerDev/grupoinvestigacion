@@ -21,7 +21,12 @@
                 </div>
             </div>
         </div>
-        
+        <div class="flex justify-center mb-6">
+            <LinkPrimaryButton :href="route('register')" class="">
+                <i class="fa-solid fa-plus-circle"></i>
+                Agregar Integrantes
+            </LinkPrimaryButton>
+        </div>
         <div class="inline-block min-w-full overflow-hidden rounded-lg shadow">
             <table class="w-full whitespace-no-wrap">
                 <thead>
@@ -55,7 +60,9 @@
 
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import LinkPrimaryButton from '@/Components/LinkPrimaryButton.vue'
 import Pagination from '@/Components/Pagination.vue'
+
 import { Head } from '@inertiajs/vue3';
 
 const props = defineProps({

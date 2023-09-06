@@ -181,11 +181,20 @@ class GrupoController extends Controller
 
     public function verGrupo($id){
         $integrantes = Integrante::with('persona')->where('id_grupo',$id)->get();
-
+        //$personas = Persona::get();
+        //$persoObje = collect($personas)->all();
+        //dd($persoObje);
         return Inertia::render('Groups/Show',[
             'grupos' => Grupo::with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea')->find($id),
             'integrantes' => $integrantes,
-            'condition' =>Integrante::enumConditionOption()
+            'condition' =>Integrante::enumConditionOption(),
+            //'personas' => $personas
         ]);
+    }
+
+    public function searchIntegrante(Request $request,$dni) {
+       // $dni = $request->input('dni');
+        $persona = Persona::where('dni', $dni)->first();
+        return response()->json($persona);
     }
 }

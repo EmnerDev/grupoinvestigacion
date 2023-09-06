@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('integrantes', function (Blueprint $table) {
             $table->id();
-            $table->enum('condition',['inv. Titular','Inv. Colaborador','Inv. En formacion', 'Inv. Posdoctorado','Coordinador'])->default('inv. Titular');
+            $table->enum('condition',['inv. Titular','Inv. Colaborador','Inv. En formacion', 'Inv. Posdoctorado','Coordinador'])->default('Coordinador');
             $table->string('orcid')->nullable();
             $table->string('cti_vitae')->nullable();
             $table->string('google_scholar')->nullable();

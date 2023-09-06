@@ -263,7 +263,7 @@
             <div class="grid gap-6 mb-6 md:grid-cols-2">
                 <div class="p-3">
                     <InputLabel for="dni" value="Dni:"></InputLabel>
-                    <TextInput id="dni" ref="nameImput" v-model="form.dni" type="text" class="mt-1 block w-3/4"
+                    <TextInput id="dni" ref="nameImput" v-model="form.dni" @input="searchIntegranteVue" type="text" class="mt-1 block w-3/4"
                     placeholder="Dni"></TextInput>
                 </div>
                 <div class="p-3">
@@ -358,6 +358,7 @@ import { Head, useForm, router, usePage } from "@inertiajs/vue3";
 import Swal from "sweetalert2";
 import "@fortawesome/fontawesome-free/css/all.css";
 import { nextTick, ref } from "vue";
+import axios from "axios";
 
 const nameInput = ref(null);
 const modal = ref(false);
@@ -374,7 +375,7 @@ const props = defineProps({
         type: Object,
         default: () => ({}),
     },
-
+    personas: Object,
     condition: {
         'inv. Titular':'inv. Titular',
         'Inv. Colaborador':'Inv. Colaborador',
@@ -434,6 +435,28 @@ const openModal = (op,dni, name, first_name, last_name, phone, email, condition,
     }
 }
 
+const searchIntegranteVue =() => {
+    axios.get(`/search-integrante/${form.dni}`)
+        .then(response => {
+            const persona = response.data;
+            if(persona) {
+                form.name = persona.name;
+                form.first_name = persona.first_name;
+                form.last_name = persona.last_name;
+                form.phone = persona.phone;
+                form.email = persona.email;
+            } else {
+                form.name ='';
+                form.first_name = '';
+                form.last_name = '';
+                form.phone = '';
+                form.email = '';
+            }
+        })
+        .catch(error => {
+            console.error(error);
+        });
+}
 const closeModal = () => {
     modal.value = false;
     form.reset();
