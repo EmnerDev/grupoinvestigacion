@@ -350,10 +350,8 @@ import DangerButton from "@/Components/DangerButton.vue";
 import WarningButton from "@/Components/WarningButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
-import Pagination from "@/Components/Pagination.vue";
-import SelectInput from "@/Components/SelectInput.vue";
 import Modal from "@/Components/Modal.vue";
-import { Head, useForm, router, usePage } from "@inertiajs/vue3";
+import { Head, useForm } from "@inertiajs/vue3";
 
 import Swal from "sweetalert2";
 import "@fortawesome/fontawesome-free/css/all.css";

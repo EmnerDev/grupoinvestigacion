@@ -24,6 +24,8 @@ class Grupo extends Model
         'office',
         'annexed',
         'phone',
+        'puntaje_total',
+        'categorias',
         'id_area',
         'id_linea',
         'id_sublinea',

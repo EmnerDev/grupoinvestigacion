@@ -50,6 +50,11 @@
                                             <th
                                                 class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                                             >
+                                                Categoria del grupo
+                                            </th>
+                                            <th
+                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
+                                            >
                                                 Acciones
                                             </th>
                                             <th
@@ -61,7 +66,7 @@
                                                 class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                                             >
                                                 Condicion
-                                            </th>
+                                            </th>                                            
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -119,10 +124,23 @@
                                                 >
                                                     {{ gru.name }}
                                                 </p>
+                                            </td>
+                                            <td v-if="gru.integrante && gru.integrante.length"
+                                                :rowspan="gru.integrante.length+1"
+                                                class=" border-b border-gray-200 bg-white px-5 text-sm"
+                                            >
+                                                <p
+                                                    class="text-gray-900 whitespace-no-wrap"
+                                                >
+                                                    {{ gru.categorias }}
+                                                </p>
                                             </td>  
                                             <td v-if="gru.integrante && gru.integrante.length"
                                              :rowspan="gru.integrante.length+1"                                            
                                             class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+                                                <LinkPrimaryButton :href="route('evaluacion.create')" class="">
+                                                    <i class="fa-solid fa-plus-circle"></i>
+                                                </LinkPrimaryButton>
                                                 <LinkButton class="mr-1" :href="route('ver.grupo',gru.id)"><i class="fa-solid fa-eye"></i></LinkButton>
                                                 <LinkWarningButton  class="mr-1" :href="route('grupos.editar',gru.id)">
                                                     <i class="fa-solid fa-edit" :title="editMode ? 'Editar':'Editar Grupo'"></i>
@@ -149,7 +167,7 @@
                                                 >
                                                     {{ integ.condition }}
                                                 </p>
-                                            </td>                                            
+                                            </td>                                                                                        
                                         </tr>
                                         </template>
                                     </tbody>
@@ -175,6 +193,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import WarningButton from "@/Components/WarningButton.vue";
 import LinkWarningButton from "@/Components/LinkWarningButton.vue";
+import LinkPrimaryButton from "@/Components/LinkPrimaryButton.vue";
 import LinkButton from "@/Components/LinkButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";

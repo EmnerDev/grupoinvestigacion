@@ -34,9 +34,19 @@ class IntegranteController extends Controller
     public function store(Request $request): RedirectResponse
     {
         //dd($request->all());
+        $dni = $request->dni;
 
-        $persona = new Persona();
-        $persona->dni = $request->dni;
+        $persona = Persona::where('dni', $dni)->first();
+
+        if(!$persona) {
+            $persona = new Persona();
+            $persona->dni = $dni;
+        }
+        $integranteExistente = Integrante::where('id_persona', $persona->id)->first();
+
+        if($integranteExistente){
+            return redirect()->back()->with('error', 'El integrante ya esta registrado en otro grupo');
+        }
         $persona->name = $request->name;
         $persona->first_name = $request->first_name;
         $persona->last_name = $request->last_name;

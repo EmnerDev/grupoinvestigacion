@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PruebaSeeder::class,
             LineaSeeder::class,
+            PersonaSeeder::class,
         ]);
     }
 }

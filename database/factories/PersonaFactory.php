@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Persona;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class PersonaFactory extends Factory
 {
+    protected $model = Persona::class;
     /**
      * Define the model's default state.
      *
@@ -17,7 +19,13 @@ class PersonaFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'dni' => $this->faker->unique()->numerify('########'),
+            'name' => $this->faker->name(),
+            'first_name' => $this->faker->firstName(),
+            'last_name' => $this->faker->lastName(),
+            'phone' => $this->faker->numerify('#########'),
+            'email' => $this->faker->email(),
+            'id_tipo' => 1,
         ];
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EvaluacionGrupoController;
 use App\Http\Controllers\GrupoController;
 use App\Http\Controllers\IntegranteController;
 use App\Http\Controllers\PersonaController;
@@ -60,6 +61,8 @@ Route::middleware('auth')->group(function () {
     Route::put('integrantes/{integrante}', [IntegranteController::class, 'update'])->name('grupo.actualizar.integrante');
     Route::get('/search-integrante/{dni}', [GrupoController::class, 'searchIntegrante']);
 
+    Route::get('evaluacion', [EvaluacionGrupoController::class, 'index'])->name('evaluacion.index');
+    Route::get('crear/evaluacion', [EvaluacionGrupoController::class, 'create'])->name('evaluacion.create');
 });
 
 require __DIR__.'/auth.php';
