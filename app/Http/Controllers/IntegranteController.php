@@ -8,6 +8,7 @@ use App\Models\Persona;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\RedirectResponse;
+use Inertia\Inertia;
 use Inertia\Response;
 
 class IntegranteController extends Controller
@@ -31,7 +32,7 @@ class IntegranteController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
         //dd($request->all());
         $dni = $request->dni;
@@ -40,19 +41,23 @@ class IntegranteController extends Controller
 
         if(!$persona) {
             $persona = new Persona();
-            $persona->dni = $dni;
+            $persona->dni = $dni;            
+            $persona->id_tipo = 4;
         }
         $integranteExistente = Integrante::where('id_persona', $persona->id)->first();
 
         if($integranteExistente){
-            return redirect()->back()->with('error', 'El integrante ya esta registrado en otro grupo');
+            //return redirect()->back()->with('integrante_existente', 'El integrante ya esta registrado en otro grupo');
+            //return response()->json(['integrante_existente' => 'El integrante ya esta registrado en otro grupo'], 422);
+            return Inertia::render('Groups/Show', [
+                'integrante_existente' => 'El integrante ya esta registrado en otro grupo',
+            ]);
         }
         $persona->name = $request->name;
         $persona->first_name = $request->first_name;
         $persona->last_name = $request->last_name;
         $persona->phone = $request->phone;
         $persona->email = $request->email;
-        $persona->id_tipo = 4;
         $persona->save();
 
         $integrante = new Integrante();
@@ -64,7 +69,7 @@ class IntegranteController extends Controller
         $integrante->id_persona = $persona->id;
         $integrante->save();
 
-        return Redirect::route('ver.grupo',$request->id_grupo);
+        return redirect()->route('ver.grupo',$request->id_grupo);
     }
 
     /**

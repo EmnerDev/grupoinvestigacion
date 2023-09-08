@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\EvaluacionGrupo;
+use App\Models\Indicador;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 
-class EvaluacionGrupoController extends Controller
+class IndicadorController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,9 +20,7 @@ class EvaluacionGrupoController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Evaluacion/Create',[
-            'evaluaciones' => EvaluacionGrupo::paginate(),
-        ]);
+        //
     }
 
     /**
@@ -37,7 +34,7 @@ class EvaluacionGrupoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(EvaluacionGrupo $evaluacionGrupo)
+    public function show(Indicador $indicador)
     {
         //
     }
@@ -45,7 +42,7 @@ class EvaluacionGrupoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(EvaluacionGrupo $evaluacionGrupo)
+    public function edit(Indicador $indicador)
     {
         //
     }
@@ -53,7 +50,7 @@ class EvaluacionGrupoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, EvaluacionGrupo $evaluacionGrupo)
+    public function update(Request $request, Indicador $indicador)
     {
         //
     }
@@ -61,7 +58,7 @@ class EvaluacionGrupoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(EvaluacionGrupo $evaluacionGrupo)
+    public function destroy(Indicador $indicador)
     {
         //
     }

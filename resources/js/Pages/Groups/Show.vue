@@ -259,7 +259,9 @@
         <Modal :show="modal" @close="closeModal">
             <h2 class="p-3 text-lg font.medium text-gray-900">{{ title }}</h2>
 		    <TextInput type="hidden" name="id_grupo" v-model="form.id_grupo"></TextInput>
-
+            <!-- <div v-if="integrante_existente" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                {{ integrante_existente }}
+            </div> -->
             <div class="grid gap-6 mb-6 md:grid-cols-2">
                 <div class="p-3">
                     <InputLabel for="dni" value="Dni:"></InputLabel>
@@ -381,6 +383,7 @@ const props = defineProps({
         'Inv. Posdoctorado':'Inv. Posdoctorado',
         'Coordinador':'Coordinador'
     },
+    integrante_existente: String,
 });
 
 const form = useForm({
@@ -462,24 +465,44 @@ const closeModal = () => {
 
 const submit = () => {
     if(operation.value === 1){
-        form.post(route("grupo.registrar.integrante"), {
-        onSuccess: () => {
+        form.post(route("grupo.registrar.integrante"))
+        .then(() => {
             ok("Registro creado Correctamente");
-        },
-    });
+        })
+        .catch((error) => {
+            if(error.response && error.response.data.hasOwnProperty("integrante_existente")){
+                Swal.fire({
+                    title: "Error",
+                    text: "El integrante ya esta registrado en otro grupo",
+                    icon: "error",
+                });
+            }else{
+                error("Ocurrio un error durante el registro");
+            }
+        });
     } else{
         console.log('aquiiii', operation.value);
-        form.put(route("grupo.actualizar.integrante", id.value), {
-        onSuccess: () => {
+        form.put(route("grupo.actualizar.integrante", id.value))
+        .then(() => {
             ok("Registro Actualizado Correctamente");
-        },
+        })
+        .catch((error) => {
+            if(error.response && error.response.data.hasOwnProperty("integrante_existente")){
+                Swal.fire({
+                    title: "Error",
+                    text: "El integrante ya esta registrado en otro grupo",
+                    icon: "error",
+                });
+            }else{
+                error("Ocurrio un error durante la Actualizacion");
+            }
     });
     }
-
 };
 const ok = (msj) => {
     form.reset();
     closeModal();
     Swal.fire({ title: msj, icon: "success" });
 };
+
 </script>
