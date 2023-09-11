@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Criterio extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'id_integrante',
+        'id_grupo',
+    ];
 }

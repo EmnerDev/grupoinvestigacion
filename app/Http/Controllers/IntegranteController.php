@@ -48,10 +48,10 @@ class IntegranteController extends Controller
 
         if($integranteExistente){
             //return redirect()->back()->with('integrante_existente', 'El integrante ya esta registrado en otro grupo');
-            //return response()->json(['integrante_existente' => 'El integrante ya esta registrado en otro grupo'], 422);
-            return Inertia::render('Groups/Show', [
-                'integrante_existente' => 'El integrante ya esta registrado en otro grupo',
-            ]);
+            return response()->json(['error' => 'El integrante ya esta registrado en otro grupo'], 422);
+            // return Inertia::render('Groups/Show', [
+            //     'integrante_existente' => 'El integrante ya esta registrado en otro grupo',
+            // ]);
         }
         $persona->name = $request->name;
         $persona->first_name = $request->first_name;
@@ -69,7 +69,10 @@ class IntegranteController extends Controller
         $integrante->id_persona = $persona->id;
         $integrante->save();
 
-        return redirect()->route('ver.grupo',$request->id_grupo);
+        //return redirect()->route('ver.grupo',$request->id_grupo);
+        $integrantes = Integrante::with('persona')->where('id_grupo',$request->id_grupo)->get();
+
+        return response()->json(['message' =>'Registro creado correctamente',$integrante,'data'=>$integrantes], 201);
     }
 
     /**
@@ -91,10 +94,13 @@ class IntegranteController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Integrante $integrante, Grupo $grupo): RedirectResponse
+    public function update(Request $request, Integrante $integrante, Grupo $grupo)
     {
         $integrante->update($request->all());
-        return Redirect::route('ver.grupo',$request->id_grupo);
+        //return Redirect::route('ver.grupo',$request->id_grupo);
+        $integrantes = Integrante::with('persona')->where('id_grupo',$request->id_grupo)->get();
+
+        return response()->json(['message' =>'Registro Actualizado correctamente',$integrante,'data'=>$integrantes], 201);
     }
 
     /**

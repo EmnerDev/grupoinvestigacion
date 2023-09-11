@@ -43,139 +43,166 @@
                             <span>{{ grupos.sublinea.name }}</span>
                         </div>
                     </div>
-                        <div class="overflow-x-auto rounded-lg shadow mt-6">
-                            <div class="mb-4">
-                                <InputLabel for="name" value="Integrantes: " />
-                                <div class="flex justify-center mb-6">
-                                    <PrimaryButton @click="openModal(1)" class="">
-                                        <i class="fa-solid fa-plus-circle"></i>
-                                        Agregar Integrantes
-                                    </PrimaryButton>
-                                </div>
-                                <table class="w-full table-auto">
-                                    <thead>
-                                        <tr>
-                                            <th
-                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
-                                            >
-                                                N°
-                                            </th>
-                                            <th
-                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
-                                            >
-                                                Nombres
-                                            </th>
-                                            <th
-                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
-                                            >
-                                                Apellidos
-                                            </th>
-                                            <th
-                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
-                                            >
-                                                condicion
-                                            </th>
-                                            <th
-                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
-                                            >
-                                                Orcid
-                                            </th>
-                                            <th
-                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
-                                            >
-                                                Cti Vitae
-                                            </th>
-                                            <th
-                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
-                                            >
-                                                google Scholar
-                                            </th>
-                                            <th
-                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
-                                            >
-                                                Acciones
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr
-                                            v-for="(inte, i) in integrantes"
-                                            :key="inte.id"
-                                        >
-                                            <td
-                                                class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
-                                            >
-                                                <p
-                                                    class="text-gray-900 whitespace-no-wrap"
-                                                >
-                                                    {{ i + 1 }}
-                                                </p>
-                                            </td>
-                                            <td
-                                                class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
-                                            >
-                                                <p
-                                                    class="text-gray-900 whitespace-no-wrap"
-                                                >
-                                                    {{ inte.persona.name }}
-                                                </p>
-                                            </td>
-                                            <td
-                                                class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
-                                            >
-                                                <p
-                                                    class="text-gray-900 whitespace-no-wrap"
-                                                >
-                                                    {{ inte.persona.first_name }} {{ inte.persona.last_name }}
-                                                </p>
-                                            </td>
-                                            <td
-                                                class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
-                                            >
-                                                <p
-                                                    class="text-gray-900 whitespace-no-wrap"
-                                                >
-                                                    {{ inte.condition }}
-                                                </p>
-                                            </td>
-                                            <td
-                                                class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
-                                            >
-                                                <p
-                                                    class="text-gray-900 whitespace-no-wrap"
-                                                >
-                                                    {{ inte.orcid }}
-                                                </p>
-                                            </td>
-                                            <td
-                                                class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
-                                            >
-                                                <p
-                                                    class="text-gray-900 whitespace-no-wrap"
-                                                >
-                                                    {{ inte.cti_vitae }}
-                                                </p>
-                                            </td>
-                                            <td
-                                                class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
-                                            >
-                                                <p
-                                                    class="text-gray-900 whitespace-no-wrap"
-                                                >
-                                                    {{ inte.google_scholar }}
-                                                </p>
-                                            </td>
-                                            <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                                                <WarningButton  class="mr-1" @click="openModal(2,inte.persona.dni, inte.persona.name, inte.persona.first_name, inte.persona.last_name, inte.persona.phone, inte.persona.email, inte.condition, inte.orcid, inte.cti_vitae, inte.google_scholar,inte.id_grupo, inte.id_persona, inte.id)">
-                                                    <i class="fa-solid fa-edit"></i>
-                                                </WarningButton>
-                                                <DangerButton><i class="fa-solid fa-trash"></i></DangerButton>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                    <div class="overflow-x-auto rounded-lg shadow mt-6">
+                        <div class="mb-4">
+                            <InputLabel for="name" value="Integrantes: " />
+                            <div class="flex justify-center mb-6">
+                                <PrimaryButton @click="openModal(1)" class="">
+                                    <i class="fa-solid fa-plus-circle"></i>
+                                    Agregar Integrantes
+                                </PrimaryButton>
                             </div>
+                            <table class="w-full table-auto">
+                                <thead>
+                                    <tr>
+                                        <th
+                                            class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
+                                        >
+                                            N°
+                                        </th>
+                                        <th
+                                            class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
+                                        >
+                                            Nombres
+                                        </th>
+                                        <th
+                                            class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
+                                        >
+                                            Apellidos
+                                        </th>
+                                        <th
+                                            class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
+                                        >
+                                            condicion
+                                        </th>
+                                        <th
+                                            class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
+                                        >
+                                            Orcid
+                                        </th>
+                                        <th
+                                            class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
+                                        >
+                                            Cti Vitae
+                                        </th>
+                                        <th
+                                            class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
+                                        >
+                                            google Scholar
+                                        </th>
+                                        <th
+                                            class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
+                                        >
+                                            Acciones
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        v-for="(inte, i) in intePerson"
+                                        :key="inte.id" :value="inte.id"
+                                    >
+                                        <td
+                                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                                        >
+                                            <p
+                                                class="text-gray-900 whitespace-no-wrap"
+                                            >
+                                                {{ i + 1 }}
+                                            </p>
+                                        </td>
+                                        <td
+                                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                                        >
+                                            <p
+                                                class="text-gray-900 whitespace-no-wrap"
+                                            >
+                                                {{ inte.persona.name }}
+                                            </p>
+                                        </td>
+                                        <td
+                                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                                        >
+                                            <p
+                                                class="text-gray-900 whitespace-no-wrap"
+                                            >
+                                                {{ inte.persona.first_name }}
+                                                {{ inte.persona.last_name }}
+                                            </p>
+                                        </td>
+                                        <td
+                                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                                        >
+                                            <p
+                                                class="text-gray-900 whitespace-no-wrap"
+                                            >
+                                                {{ inte.condition }}
+                                            </p>
+                                        </td>
+                                        <td
+                                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                                        >
+                                            <p
+                                                class="text-gray-900 whitespace-no-wrap"
+                                            >
+                                                {{ inte.orcid }}
+                                            </p>
+                                        </td>
+                                        <td
+                                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                                        >
+                                            <p
+                                                class="text-gray-900 whitespace-no-wrap"
+                                            >
+                                                {{ inte.cti_vitae }}
+                                            </p>
+                                        </td>
+                                        <td
+                                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                                        >
+                                            <p
+                                                class="text-gray-900 whitespace-no-wrap"
+                                            >
+                                                {{ inte.google_scholar }}
+                                            </p>
+                                        </td>
+                                        <td
+                                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                                        >
+                                            <WarningButton
+                                                class="mr-1"
+                                                @click="
+                                                    openModal(
+                                                        2,
+                                                        inte.persona.dni,
+                                                        inte.persona.name,
+                                                        inte.persona.first_name,
+                                                        inte.persona.last_name,
+                                                        inte.persona.phone,
+                                                        inte.persona.email,
+                                                        inte.condition,
+                                                        inte.orcid,
+                                                        inte.cti_vitae,
+                                                        inte.google_scholar,
+                                                        inte.id_grupo,
+                                                        inte.id_persona,
+                                                        inte.id
+                                                    )
+                                                "
+                                            >
+                                                <i class="fa-solid fa-edit"></i>
+                                            </WarningButton>
+                                            <DangerButton
+                                                ><i
+                                                    class="fa-solid fa-trash"
+                                                ></i
+                                            ></DangerButton>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
+                    </div>
                     <div class="grid gap-6 mb-6 mt-6 md:grid-cols-3">
                         <div class="flex-initial ml-6">
                             <InputLabel
@@ -258,83 +285,159 @@
         </div>
         <Modal :show="modal" @close="closeModal">
             <h2 class="p-3 text-lg font.medium text-gray-900">{{ title }}</h2>
-		    <TextInput type="hidden" name="id_grupo" v-model="form.id_grupo"></TextInput>
+            <TextInput
+                type="hidden"
+                name="id_grupo"
+                v-model="form.id_grupo"
+            ></TextInput>
             <!-- <div v-if="integrante_existente" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
                 {{ integrante_existente }}
             </div> -->
             <div class="grid gap-6 mb-6 md:grid-cols-2">
                 <div class="p-3">
                     <InputLabel for="dni" value="Dni:"></InputLabel>
-                    <TextInput id="dni" ref="nameImput" v-model="form.dni" @input="searchIntegranteVue" type="text" class="mt-1 block w-3/4"
-                    placeholder="Dni"></TextInput>
+                    <TextInput
+                        id="dni"
+                        ref="nameImput"
+                        v-model="form.dni"
+                        @input="searchIntegranteVue"
+                        type="text"
+                        class="mt-1 block w-3/4"
+                        placeholder="Dni"
+                    ></TextInput>
                 </div>
                 <div class="p-3">
                     <InputLabel for="name" value="Nombres:"></InputLabel>
-                    <TextInput id="name" v-model="form.name" type="text" class="mt-1 block w-3/4"
-                    placeholder="Nombre" ref="nameImput"></TextInput>
+                    <TextInput
+                        id="name"
+                        v-model="form.name"
+                        type="text"
+                        class="mt-1 block w-3/4"
+                        placeholder="Nombre"
+                        ref="nameImput"
+                    ></TextInput>
                 </div>
             </div>
             <div class="grid gap-6 mb-6 md:grid-cols-2">
                 <div class="p-3">
-                    <InputLabel for="first_name" value="Apellido Paterno:"></InputLabel>
-                    <TextInput id="first_name" v-model="form.first_name" type="text" class="mt-1 block w-3/4"
-                    placeholder="Apellido Paterno"></TextInput>
+                    <InputLabel
+                        for="first_name"
+                        value="Apellido Paterno:"
+                    ></InputLabel>
+                    <TextInput
+                        id="first_name"
+                        v-model="form.first_name"
+                        type="text"
+                        class="mt-1 block w-3/4"
+                        placeholder="Apellido Paterno"
+                    ></TextInput>
                 </div>
                 <div class="p-3">
-                    <InputLabel for="last_name" value="Apellido Materno:"></InputLabel>
-                    <TextInput id="last_name" v-model="form.last_name" type="text" class="mt-1 block w-3/4"
-                    placeholder="Apellido Materno"></TextInput>
+                    <InputLabel
+                        for="last_name"
+                        value="Apellido Materno:"
+                    ></InputLabel>
+                    <TextInput
+                        id="last_name"
+                        v-model="form.last_name"
+                        type="text"
+                        class="mt-1 block w-3/4"
+                        placeholder="Apellido Materno"
+                    ></TextInput>
                 </div>
             </div>
             <div class="grid gap-6 mb-6 md:grid-cols-2">
                 <div class="p-3">
                     <InputLabel for="phone" value="Telefono:"></InputLabel>
-                    <TextInput id="phone" v-model="form.phone" type="text" class="mt-1 block w-3/4"
-                    placeholder="Telefono"></TextInput>
+                    <TextInput
+                        id="phone"
+                        v-model="form.phone"
+                        type="text"
+                        class="mt-1 block w-3/4"
+                        placeholder="Telefono"
+                    ></TextInput>
                 </div>
                 <div class="p-3">
                     <InputLabel for="email" value="Email:"></InputLabel>
-                    <TextInput id="email" v-model="form.email" type="text" class="mt-1 block w-3/4"
-                    placeholder="Correo Electrónico">
+                    <TextInput
+                        id="email"
+                        v-model="form.email"
+                        type="text"
+                        class="mt-1 block w-3/4"
+                        placeholder="Correo Electrónico"
+                    >
                     </TextInput>
                 </div>
             </div>
             <div class="grid gap-6 mb-6 md:grid-cols-2">
                 <div class="p-3">
                     <InputLabel for="condition" value="Condicion: " />
-                    <select name="condition" id="condition" class="mt-1 block w-full" v-model="form.condition">
-                        <option v-for="(label, value) in condition" :key="value" :value="value">{{ label }}</option>
+                    <select
+                        name="condition"
+                        id="condition"
+                        class="mt-1 block w-full"
+                        v-model="form.condition"
+                    >
+                        <option
+                            v-for="(label, value) in condition"
+                            :key="value"
+                            :value="value"
+                        >
+                            {{ label }}
+                        </option>
                     </select>
                 </div>
                 <div class="p-3">
                     <InputLabel for="orcid" value="Orcid:"></InputLabel>
-                    <TextInput id="orcid" v-model="form.orcid" type="text" class="mt-1 block w-3/4"
-                    placeholder="orcid">
+                    <TextInput
+                        id="orcid"
+                        v-model="form.orcid"
+                        type="text"
+                        class="mt-1 block w-3/4"
+                        placeholder="orcid"
+                    >
                     </TextInput>
                 </div>
             </div>
             <div class="grid gap-6 mb-6 md:grid-cols-2">
                 <div class="p-3">
                     <InputLabel for="cti_vitae" value="CTI VItae: " />
-                    <TextInput id="cti_vitae" v-model="form.cti_vitae" type="text" class="mt-1 block w-3/4"
-                    placeholder="cti vitae">
+                    <TextInput
+                        id="cti_vitae"
+                        v-model="form.cti_vitae"
+                        type="text"
+                        class="mt-1 block w-3/4"
+                        placeholder="cti vitae"
+                    >
                     </TextInput>
                 </div>
                 <div class="p-3">
-                    <InputLabel for="google_scholar" value="Google Scholar:"></InputLabel>
-                    <TextInput id="google_scholar" v-model="form.google_scholar" type="text" class="mt-1 block w-3/4"
-                    placeholder="Google Scholar">
+                    <InputLabel
+                        for="google_scholar"
+                        value="Google Scholar:"
+                    ></InputLabel>
+                    <TextInput
+                        id="google_scholar"
+                        v-model="form.google_scholar"
+                        type="text"
+                        class="mt-1 block w-3/4"
+                        placeholder="Google Scholar"
+                    >
                     </TextInput>
                 </div>
             </div>
             <div class="flex justify-center">
                 <div class="p-3 mt-6">
-                    <PrimaryButton :disabled="form.processing"  @click="submit">
+                    <PrimaryButton :disabled="form.processing" @click="submit">
                         <i class="fa-solid fa save"></i>Guardar
                     </PrimaryButton>
                 </div>
                 <div class="p-3 mt-6">
-                    <SecondaryButton class="ml-3" :disabled="form.processing" @click="closeModal">
+                    <SecondaryButton
+                        class="ml-3"
+                        :disabled="form.processing"
+                        @click="closeModal"
+                    >
                         Cancelar
                     </SecondaryButton>
                 </div>
@@ -359,12 +462,15 @@ import Swal from "sweetalert2";
 import "@fortawesome/fontawesome-free/css/all.css";
 import { nextTick, ref } from "vue";
 import axios from "axios";
+import { onMounted } from "vue";
 
 const nameInput = ref(null);
 const modal = ref(false);
-const title = ref('');
+const title = ref("");
 const operation = ref(1);
-const id = ref('');
+const id = ref("");
+
+const intePerson = ref([]);
 
 const props = defineProps({
     grupos: {
@@ -377,30 +483,34 @@ const props = defineProps({
     },
     personas: Object,
     condition: {
-        'inv. Titular':'inv. Titular',
-        'Inv. Colaborador':'Inv. Colaborador',
-        'Inv. En formacion':'Inv. En formacion',
-        'Inv. Posdoctorado':'Inv. Posdoctorado',
-        'Coordinador':'Coordinador'
+        "inv. Titular": "inv. Titular",
+        "Inv. Colaborador": "Inv. Colaborador",
+        "Inv. En formacion": "Inv. En formacion",
+        "Inv. Posdoctorado": "Inv. Posdoctorado",
+        Coordinador: "Coordinador",
     },
-    integrante_existente: String,
 });
 
-const form = useForm({
-    dni:'',
-    name:'',
-    first_name:'',
-    last_name:'',
-    phone:'',
-    email:'',
-    id_tipo:4,
-    condition:'inv. Titular',
-    orcid:'',
-    cti_vitae:'',
-    google_scholar:'',
-    id_grupo: props.grupos.id,
-    id_persona:'',
+onMounted(async() =>{
+    intePerson.value = props.integrantes;
+    //console.log('comenta', intePerson.value);
+    
+})
 
+const form = useForm({    
+    dni: "",
+    name: "",
+    first_name: "",
+    last_name: "",
+    phone: "",
+    email: "",
+    id_tipo: 4,
+    condition: "inv. Titular",
+    orcid: "",
+    cti_vitae: "",
+    google_scholar: "",
+    id_grupo: props.grupos.id,
+    id_persona: "",
 });
 //  const formIntegrante = useForm({
 //     condition:'inv. Titular',
@@ -411,21 +521,36 @@ const form = useForm({
 //     id_persona:'',
 //  })
 
-const openModal = (op,dni, name, first_name, last_name, phone, email, condition, orcid, cti_vitae, google_scholar,id_grupo, id_persona, integran) => {
+const openModal = (
+    op,
+    dni,
+    name,
+    first_name,
+    last_name,
+    phone,
+    email,
+    condition,
+    orcid,
+    cti_vitae,
+    google_scholar,
+    id_grupo,
+    id_persona,
+    integran
+) => {
     modal.value = true;
-    nextTick( () => nameInput.value.focus());
+    nextTick(() => nameInput.value.focus());
     operation.value = op;
     id.value = integran;
-    if (op == 1){
-        title.value = 'Agregar Integrantes';
+    if (op == 1) {
+        title.value = "Agregar Integrantes";
     } else {
-        title.value = 'Editar Integrantes';
-        form.dni =dni;
-        form.name=name;
-        form.first_name=first_name;
-        form.last_name=last_name;
-        form.id_tipo=4;
-        form.phone=phone;
+        title.value = "Editar Integrantes";
+        form.dni = dni;
+        form.name = name;
+        form.first_name = first_name;
+        form.last_name = last_name;
+        form.id_tipo = 4;
+        form.phone = phone;
         form.email = email;
         form.condition = condition;
         form.orcid = orcid;
@@ -434,69 +559,84 @@ const openModal = (op,dni, name, first_name, last_name, phone, email, condition,
         form.id_grupo = id_grupo;
         form.id_persona = id_persona;
     }
-}
+};
 
-const searchIntegranteVue =() => {
-    axios.get(`/search-integrante/${form.dni}`)
-        .then(response => {
+const searchIntegranteVue = () => {
+    axios
+        .get(`/search-integrante/${form.dni}`)
+        .then((response) => {
             const persona = response.data;
-            if(persona) {
+            if (persona) {
                 form.name = persona.name;
                 form.first_name = persona.first_name;
                 form.last_name = persona.last_name;
                 form.phone = persona.phone;
                 form.email = persona.email;
             } else {
-                form.name ='';
-                form.first_name = '';
-                form.last_name = '';
-                form.phone = '';
-                form.email = '';
+                form.name = "";
+                form.first_name = "";
+                form.last_name = "";
+                form.phone = "";
+                form.email = "";
             }
         })
-        .catch(error => {
+        .catch((error) => {
             console.error(error);
         });
-}
+};
 const closeModal = () => {
     modal.value = false;
     form.reset();
-}
+};
 
 const submit = () => {
-    if(operation.value === 1){
-        form.post(route("grupo.registrar.integrante"))
-        .then(() => {
-            ok("Registro creado Correctamente");
+    if (operation.value === 1) {
+        // Para una solicitud POST
+        axios
+            .post(route("grupo.registrar.integrante"), form)
+            .then((res) => {
+                // Manejar la respuesta exitosa aquí
+                console.log(res.data); 
+                // Puedes acceder a los datos de la respuesta
+                intePerson.value = res.data.data;
+                form.reset();
+                closeModal();              
+                ok("Registro Creado Correctamente");
+            })
+            .catch((error) => {
+                // Manejar el error aquí
+                console.error(error);
+                if (error.response && error.response.status == 422) {
+                    //alert("El usuario ya esta registrado en otro grupo");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'El Integrante ya esta Registrado en otro Grupo',
+                    })
+                }
+            });
+    } else {
+        // Para una solicitud PUT
+    //     form.put(route("grupo.actualizar.integrante", id.value), {
+    //     onSuccess: () => {
+    //         ok("Registro Actualizado Correctamente");
+    //     },
+    // });
+    axios
+        .put(route("grupo.actualizar.integrante", id.value), form)
+        .then((updateRes) => {
+            // Manejar la respuesta exitosa aquí
+            console.log(updateRes.data); 
+            // Puedes acceder a los datos de la respuesta
+            intePerson.value = updateRes.data.data;
+            form.reset();
+            closeModal();              
+            ok("Registro Creado Correctamente");
         })
         .catch((error) => {
-            if(error.response && error.response.data.hasOwnProperty("integrante_existente")){
-                Swal.fire({
-                    title: "Error",
-                    text: "El integrante ya esta registrado en otro grupo",
-                    icon: "error",
-                });
-            }else{
-                error("Ocurrio un error durante el registro");
-            }
+            // Manejar el error aquí
+            console.error(error);
         });
-    } else{
-        console.log('aquiiii', operation.value);
-        form.put(route("grupo.actualizar.integrante", id.value))
-        .then(() => {
-            ok("Registro Actualizado Correctamente");
-        })
-        .catch((error) => {
-            if(error.response && error.response.data.hasOwnProperty("integrante_existente")){
-                Swal.fire({
-                    title: "Error",
-                    text: "El integrante ya esta registrado en otro grupo",
-                    icon: "error",
-                });
-            }else{
-                error("Ocurrio un error durante la Actualizacion");
-            }
-    });
     }
 };
 const ok = (msj) => {
@@ -504,5 +644,4 @@ const ok = (msj) => {
     closeModal();
     Swal.fire({ title: msj, icon: "success" });
 };
-
 </script>
