@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GrupoCreateRequest;
+use App\Http\Requests\GrupoUpdateRequest;
 use App\Models\AreaInvestigacion;
 use App\Models\Escuela;
 use App\Models\Facultad;
@@ -82,8 +84,9 @@ class GrupoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(GrupoCreateRequest $request): RedirectResponse
     {
+        //return $request->all();
         $grupo = new Grupo;
         $grupo->name = $request->name;
         $grupo->space_inves = $request->space_inves;
@@ -156,7 +159,7 @@ class GrupoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Grupo $grupo): RedirectResponse
+    public function update(GrupoUpdateRequest $request, Grupo $grupo): RedirectResponse
     {
         $grupo->update($request->all());
 

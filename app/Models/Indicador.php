@@ -10,14 +10,9 @@ class Indicador extends Model
     use HasFactory;
     protected $fillable = [ 
         'name',
-        'ptj1',
-        'ptj2',
-        'ptj3',
-        'ptj4',
-        'ptj5',
-        'ptj6',
-        'ptj7',
-        'ptj_subtotal',
+        'puntaje',
+        'cantidad',
+        'ptj_por_indicador',
         'ptj_total',
         'total',
         'gran_total',
@@ -25,4 +20,16 @@ class Indicador extends Model
         'id_integrante',
         'id_grupo',
     ];
+
+    public function criterio(){
+        return $this->belongsTo(Criterio::class,'id_criterio');
+    }
+
+    public function integrante(){
+        return $this->belongsTo(Integrante::class,'id_integrante');
+    }
+
+    public function grupo(){
+        return $this->belongsTo(Grupo::class,'id_grupo');
+    }
 }

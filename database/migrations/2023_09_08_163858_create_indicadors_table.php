@@ -14,14 +14,9 @@ return new class extends Migration
         Schema::create('indicadors', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
-            $table->decimal('ptj1',2,2)->nullable();
-            $table->decimal('ptj2',2,2)->nullable();
-            $table->decimal('ptj3',2,2)->nullable();
-            $table->decimal('ptj4',2,2)->nullable();
-            $table->decimal('ptj5',2,2)->nullable();
-            $table->decimal('ptj6',2,2)->nullable();
-            $table->decimal('ptj7',2,2)->nullable();
-            $table->decimal('ptj_subtotal',3,2)->nullable();
+            $table->decimal('puntaje',2,2)->nullable();
+            $table->integer('cantidad')->nullable();
+            $table->decimal('ptj_por_indicador',3,2)->nullable();
             $table->decimal('ptj_total',3,2)->nullable();            
             $table->decimal('total',3,2)->nullable();
             $table->decimal('gran_total',3,2)->nullable();

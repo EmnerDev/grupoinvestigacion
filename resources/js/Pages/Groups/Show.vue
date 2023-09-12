@@ -46,12 +46,20 @@
                     <div class="overflow-x-auto rounded-lg shadow mt-6">
                         <div class="mb-4">
                             <InputLabel for="name" value="Integrantes: " />
-                            <div class="flex justify-center mb-6">
-                                <PrimaryButton @click="openModal(1)" class="">
-                                    <i class="fa-solid fa-plus-circle"></i>
-                                    Agregar Integrantes
-                                </PrimaryButton>
-                            </div>
+                            <div class="flex justify-center gap-5">
+                                <div class="flex justify-center mb-6">
+                                    <PrimaryButton @click="openModal(1)" class="">
+                                        <i class="fa-solid fa-plus-circle"></i>
+                                        Agregar Integrantes
+                                    </PrimaryButton>
+                                </div>
+                                <div class="flex justify-center mb-6">
+                                    <a :href="route('grupos.index')" class="rounded-md bg-blue-700 px-4 py-2 text-center text-sm text-white hover:bg-blue-500">
+                                        <i class="fa-solid fa-right-from-bracket"></i>
+                                        Regresar
+                                    </a>
+                                </div>
+                            </div>                            
                             <table class="w-full table-auto">
                                 <thead>
                                     <tr>
@@ -453,6 +461,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import WarningButton from "@/Components/WarningButton.vue";
+import LinkWarningButton from "@/Components/LinkWarningButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import Modal from "@/Components/Modal.vue";
@@ -471,6 +480,7 @@ const operation = ref(1);
 const id = ref("");
 
 const intePerson = ref([]);
+const gruposIntegra = ref([]);
 
 const props = defineProps({
     grupos: {
@@ -493,6 +503,7 @@ const props = defineProps({
 
 onMounted(async() =>{
     intePerson.value = props.integrantes;
+    gruposIntegra.value = props.grupos;
     //console.log('comenta', intePerson.value);
     
 })
@@ -599,6 +610,7 @@ const submit = () => {
                 console.log(res.data); 
                 // Puedes acceder a los datos de la respuesta
                 intePerson.value = res.data.data;
+                gruposIntegra.value = res.data.data;
                 form.reset();
                 closeModal();              
                 ok("Registro Creado Correctamente");
@@ -644,4 +656,8 @@ const ok = (msj) => {
     closeModal();
     Swal.fire({ title: msj, icon: "success" });
 };
+
+const goBack = () => {
+    window.history.back();
+}
 </script>

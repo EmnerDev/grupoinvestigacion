@@ -56,5 +56,13 @@ class Grupo extends Model
     public function integrante() {
         return $this->hasMany(Integrante::class,'id_grupo');
     }
+
+    public function criterio(){
+        return $this->hasMany(Criterio::class,'id_grupo');
+    }
+
+    public function indicador(){
+        return $this->hasMany(Indicador::class, 'id_grupo');
+    }
 }
 

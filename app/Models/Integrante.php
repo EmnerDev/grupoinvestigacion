@@ -34,6 +34,14 @@ class Integrante extends Model
         return $this->belongsTo(Persona::class,'id_persona');
     }
 
+    public function criterio() {
+        return $this->hasMany(Criterio::class,'id_integrante');
+    }
+
+    public function indicador(){
+        return $this->hasMany(Indicador::class,'id_integrante');
+    }
+
     public static function enumConditionOption() {
         return [
             'inv. Titular' => 'inv. Titular',

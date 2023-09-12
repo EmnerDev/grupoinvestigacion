@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('criterios', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->decimal('puntaje_total_criterio',3,2)->nullable();
+            $table->decimal('puntaje_total',3,2)->nullable();
 
             $table->unsignedBigInteger('id_integrante');
             $table->unsignedBigInteger('id_grupo');

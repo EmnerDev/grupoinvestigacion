@@ -11,91 +11,97 @@
                 <form @submit.prevent="update">
                     <div class="grid gap-6 mb-6 md:grid-cols-2">
                         <div class="flex-initial ml-6">
-                            <InputLabel for="name" value="Nombre del Grupo" />
+                            <InputLabel for="name" value="Nombre del Grupo" /><span style="color: #e53e3e;"> *</span>
                             <TextInput id="name" name="name" type="text" class="mt-1" v-model="form.name"/>
-                            <InputError class="mt-2" />
+                            <InputError class="mt-2" :message="form.errors.name" />
                         </div>
                         <div class=" flex-initial ml-6">
-                            <InputLabel for="name" value="Facultad" />
+                            <InputLabel for="name" value="Facultad" /><span style="color: #e53e3e;"> *</span>
                             <select name="id_facultad" id="id_facultad" class="mt-1 block w-full" v-model="form.id_facultad"  @change="updateEscuelas">
                                 <option value="0">Seleccione su Facultad</option>
                                 <option v-for="fac in facultades" :key="fac.id" :value="fac.id">{{ fac.name }}</option>
                             </select>
+                            <InputError class="mt-2" :message="form.errors.id_facultad" />
                         </div>
                     </div>
                     <div class="grid gap-6 mb-6 md:grid-cols-2">
                         <div class="flex-initial  ml-6">
-                            <InputLabel for="name" value="Escuela" />
+                            <InputLabel for="name" value="Escuela" /><span style="color: #e53e3e;"> *</span>
                             <select  name="id_escuela" id="id_escuela" class="mt-1 block w-full" v-model="form.id_escuela">
                                 <option value="0">Seleccione la Escuela</option>
                                 <option v-for="esc in escuelasfilter" :key="esc.id" :value="esc.id">{{ esc.name }}</option>
                             </select>
+                            <InputError class="mt-2" :message="form.errors.id_escuela" />
                         </div>
                         <div class="flex-initial ml-6">
-                            <InputLabel for="name" value="Area de Investigación" />
+                            <InputLabel for="name" value="Area de Investigación" /><span style="color: #e53e3e;"> *</span>
                             <select name="id_area" id="id_area" class="mt-1 block w-full" v-model="form.id_area" @change="updatelineas">
                                 <option value="0">Seleccione el Area</option>
                                 <option v-for="ar in areas" :key="ar.id" :value="ar.id">{{ ar.name }}</option>
                             </select>
+                            <InputError class="mt-2" :message="form.errors.id_area" />
                         </div>
                     </div>
                     <div class="grid gap-6 mb-6 md:grid-cols-2">
                         <div class="flex-initial ml-6">
-                            <InputLabel for="name" value="Linea" />
+                            <InputLabel for="name" value="Linea" /><span style="color: #e53e3e;"> *</span>
                             <select  name="id_linea" id="id_linea" class="mt-1 block w-full" v-model="form.id_linea" @change="updateSublineas">
                                 <option value="0">Seleccione la Linea</option>
                                 <option v-for="li in lineasfiltered" :key="li.id" :value="li.id">{{ li.name }}</option>
                             </select>
+                            <InputError class="mt-2" :message="form.errors.id_linea" />
                         </div>
                         <div class="flex-initial ml-6">
-                            <InputLabel for="name" value="Sublinea" />
+                            <InputLabel for="name" value="Sublinea" /><span style="color: #e53e3e;"> *</span>
                             <select name="id_sublinea" id="id_sublinea" class="mt-1 block w-full" v-model="form.id_sublinea">
                                 <option value="0">Seleccione la Sublinea</option>
                                 <option v-for="su in sublineasFiltered" :key="su.id" :value="su.id">{{ su.name }}</option>
                             </select>
+                            <InputError class="mt-2" :message="form.errors.id_sublinea" />
                         </div>
                     </div>
                     <div class="grid gap-6 mb-6 md:grid-cols-1">
                         <div class="flex-initial ml-6">
-                                <InputLabel for="name" value="Responsable" />
+                                <InputLabel for="name" value="Responsable" /><span style="color: #e53e3e;"> *</span>
                                 <select name="id_persona" id="id_persona" class="mt-1 block w-full" v-model="form.id_persona">
                                     <option value="0">Seleccione Responsable</option>
                                     <option v-for="per in personas" :key="per.id" :value="per.id">{{ per.name }} {{ per.first_name }} {{ per.last_name }} - {{ per.tipo.name }}</option>
                                 </select>
+                                <InputError class="mt-2" :message="form.errors.id_persona" />
                         </div>
                     </div>
                     <div class="grid gap-6 mb-6 md:grid-cols-3">
                         <div class="flex-initial ml-6">
-                            <InputLabel for="name" value="Espacio de Investigación" />
+                            <InputLabel for="name" value="Espacio de Investigación" /><span style="color: #e53e3e;"> *</span>
                             <textarea name="space_inves" id="space_inves" cols="20" rows="5" class="w-full" v-model="form.space_inves"></textarea>
                             <InputError class="mt-2" />
                         </div>
                         <div class=" flex-initial ml-6">
-                            <InputLabel for="name" value="Presentacion del grupo" />
+                            <InputLabel for="name" value="Presentacion del grupo" /><span style="color: #e53e3e;"> *</span>
                             <textarea name="pre_group_inv" id="pre_group_inv" cols="20" rows="5" class="w-full" v-model="form.pre_group_inv"></textarea>
-                            <InputError class="mt-2" />
+                            <InputError class="mt-2" :message="form.errors.pre_group_inv" />
                         </div>
                         <div class=" flex-initial ml-6">
-                            <InputLabel for="name" value="objetivos" />
+                            <InputLabel for="name" value="objetivos" /><span style="color: #e53e3e;"> *</span>
                             <textarea name="objective" id="objective" cols="20" rows="5" class="w-full" v-model="form.objective"></textarea>
-                            <InputError class="mt-2" />
+                            <InputError class="mt-2" :message="form.errors.objective" />
                         </div>
                     </div>
                     <div class="grid gap-6 mb-6 md:grid-cols-3">
                         <div class="flex-initial ml-6">
-                            <InputLabel for="name" value="Objetivo desarrollo sostenible" />
+                            <InputLabel for="name" value="Objetivo desarrollo sostenible" /><span style="color: #e53e3e;"> *</span>
                             <textarea name="obj_desa_soste_l_i" id="obj_desa_soste_l_i" cols="20" rows="5" class="w-full" v-model="form.obj_desa_soste_l_i"></textarea>
-                            <InputError class="mt-2" />
+                            <InputError class="mt-2" :message="form.errors.obj_desa_soste_l_i" />
                         </div>
                         <div class=" flex-initial ml-6">
-                            <InputLabel for="name" value="Servicios" />
+                            <InputLabel for="name" value="Servicios" /><span style="color: #e53e3e;"> *</span>
                             <textarea name="services" id="services" cols="20" rows="5" class="w-full" v-model="form.services"></textarea>
-                            <InputError class="mt-2" />
+                            <InputError class="mt-2" :message="form.errors.services" />
                         </div>
                         <div class=" flex-initial ml-6">
-                            <InputLabel for="name" value="Laboratorio" />
+                            <InputLabel for="name" value="Laboratorio" /><span style="color: #e53e3e;"> *</span>
                             <textarea name="laboratory" id="laboratory" cols="20" rows="5" class="w-full" v-model="form.laboratory"></textarea>
-                            <InputError class="mt-2" />
+                            <InputError class="mt-2" :message="form.errors.laboratory" />
                         </div>
                     </div>
                     <div class="grid gap-6 mb-6 md:grid-cols-1">
