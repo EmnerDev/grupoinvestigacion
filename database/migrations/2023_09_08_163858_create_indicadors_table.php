@@ -14,19 +14,11 @@ return new class extends Migration
         Schema::create('indicadors', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
-            $table->decimal('puntaje',2,2)->nullable();
-            $table->integer('cantidad')->nullable();
-            $table->decimal('ptj_por_indicador',3,2)->nullable();
-            $table->decimal('ptj_total',3,2)->nullable();            
-            $table->decimal('total',3,2)->nullable();
-            $table->decimal('gran_total',3,2)->nullable();
+            $table->decimal('ptj_por_indicador',10,8)->nullable();
+            $table->decimal('ptj_max_indicador',10,8)->nullable();
 
             $table->unsignedBigInteger('id_criterio');
-            $table->unsignedBigInteger('id_integrante');
-            $table->unsignedBigInteger('id_grupo');
             $table->foreign('id_criterio')->references('id')->on('criterios')->onDelete('cascade');
-            $table->foreign('id_grupo')->references('id')->on('grupos')->onDelete('cascade');          
-            $table->foreign('id_integrante')->references('id')->on('integrantes')->onDelete('cascade'); 
             $table->timestamps();
         });
     }

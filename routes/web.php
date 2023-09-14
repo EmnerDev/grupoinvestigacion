@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CriterioController;
+use App\Http\Controllers\EvaluacionController;
 use App\Http\Controllers\GrupoController;
 use App\Http\Controllers\IntegranteController;
 use App\Http\Controllers\PersonaController;
@@ -63,6 +64,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('evaluacion', [CriterioController::class, 'index'])->name('evaluacion.index');
     Route::get('crear/evaluacion', [CriterioController::class, 'create'])->name('evaluacion.create');
+    Route::get('grupos/evaluar/{id}', [EvaluacionController::class, 'evaluarGrupo'])->name('evaluar.grupo');
+
 });
 
 require __DIR__.'/auth.php';

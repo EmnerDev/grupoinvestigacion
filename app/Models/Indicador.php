@@ -10,26 +10,17 @@ class Indicador extends Model
     use HasFactory;
     protected $fillable = [ 
         'name',
-        'puntaje',
-        'cantidad',
         'ptj_por_indicador',
-        'ptj_total',
-        'total',
-        'gran_total',
+        'ptj_max_indicador',
         'id_criterio',
-        'id_integrante',
-        'id_grupo',
     ];
 
     public function criterio(){
         return $this->belongsTo(Criterio::class,'id_criterio');
     }
 
-    public function integrante(){
-        return $this->belongsTo(Integrante::class,'id_integrante');
+    public function evaluacion(){
+        return $this->hasMany(Evaluacion::class, 'id_indicador');
     }
 
-    public function grupo(){
-        return $this->belongsTo(Grupo::class,'id_grupo');
-    }
 }

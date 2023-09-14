@@ -3,14 +3,13 @@
 
     <AuthenticatedLayout>
         <template #header>
-            Evaluacion de Grupos de Investigacion
+            Evaluacion de Grupos de Investigacion -{{ gruposIntegra.name }}
         </template>
 
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 border-b border-gray-200">
                 <div class="overflow-x-auto rounded-lg shadow mt-6">
                         <div class="mb-4">
-                            <InputLabel for="name" value="Integrantes: " />
                             <div class="flex justify-center mb-6">
                                 <PrimaryButton @click="openModal(1)" class="">
                                     <i class="fa-solid fa-plus-circle"></i>
@@ -28,32 +27,67 @@
                                         <th
                                             class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                                         >
-                                            Grupos
-                                        </th>
-                                        <th
-                                            class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
-                                        >
                                             Integrantes
                                         </th>
                                         <th
                                             class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                                         >
-                                            condicion
+                                            Condicion
                                         </th>
                                         <th
                                             class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                                         >
-                                            Orcid
+                                            C1
                                         </th>
                                         <th
                                             class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                                         >
-                                            Cti Vitae
+                                            C2
                                         </th>
                                         <th
                                             class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                                         >
-                                            google Scholar
+                                            C3
+                                        </th>
+                                        <th
+                                            class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
+                                        >
+                                            C4
+                                        </th>
+                                        <th
+                                            class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
+                                        >
+                                            C5
+                                        </th>
+                                        <th
+                                            class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
+                                        >
+                                            C6
+                                        </th>
+                                        <th
+                                            class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
+                                        >
+                                            C7
+                                        </th>
+                                        <th
+                                            class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
+                                        >
+                                            C8
+                                        </th>
+                                        <th
+                                            class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
+                                        >
+                                            C9
+                                        </th>
+                                        <th
+                                            class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
+                                        >
+                                            C10
+                                        </th>
+                                        <th
+                                            class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
+                                        >
+                                            C11
                                         </th>
                                         <th
                                             class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
@@ -82,16 +116,7 @@
                                             <p
                                                 class="text-gray-900 whitespace-no-wrap"
                                             >
-                                                {{ inte.persona.name }}
-                                            </p>
-                                        </td>
-                                        <td
-                                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
-                                        >
-                                            <p
-                                                class="text-gray-900 whitespace-no-wrap"
-                                            >
-                                                {{ inte.persona.first_name }}
+                                                {{ inte.persona.name }} {{ inte.persona.first_name }} 
                                                 {{ inte.persona.last_name }}
                                             </p>
                                         </td>
@@ -101,7 +126,7 @@
                                             <p
                                                 class="text-gray-900 whitespace-no-wrap"
                                             >
-                                                {{ inte.condition }}
+                                            {{ inte.condition }} 
                                             </p>
                                         </td>
                                         <td
@@ -110,7 +135,7 @@
                                             <p
                                                 class="text-gray-900 whitespace-no-wrap"
                                             >
-                                                {{ inte.orcid }}
+                                                
                                             </p>
                                         </td>
                                         <td
@@ -119,7 +144,7 @@
                                             <p
                                                 class="text-gray-900 whitespace-no-wrap"
                                             >
-                                                {{ inte.cti_vitae }}
+                                               
                                             </p>
                                         </td>
                                         <td
@@ -128,32 +153,86 @@
                                             <p
                                                 class="text-gray-900 whitespace-no-wrap"
                                             >
-                                                {{ inte.google_scholar }}
+                                                
+                                            </p>
+                                        </td>
+                                        <td
+                                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                                        >
+                                            <p
+                                                class="text-gray-900 whitespace-no-wrap"
+                                            >
+                                                
+                                            </p>
+                                        </td>
+                                        <td
+                                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                                        >
+                                            <p
+                                                class="text-gray-900 whitespace-no-wrap"
+                                            >
+                                                
+                                            </p>
+                                        </td>
+                                        <td
+                                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                                        >
+                                            <p
+                                                class="text-gray-900 whitespace-no-wrap"
+                                            >
+                                                
+                                            </p>
+                                        </td>
+                                        <td
+                                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                                        >
+                                            <p
+                                                class="text-gray-900 whitespace-no-wrap"
+                                            >
+                                                
+                                            </p>
+                                        </td>
+                                        <td
+                                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                                        >
+                                            <p
+                                                class="text-gray-900 whitespace-no-wrap"
+                                            >
+                                                
+                                            </p>
+                                        </td>
+                                        <td
+                                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                                        >
+                                            <p
+                                                class="text-gray-900 whitespace-no-wrap"
+                                            >
+                                                
+                                            </p>
+                                        </td>
+                                        <td
+                                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                                        >
+                                            <p
+                                                class="text-gray-900 whitespace-no-wrap"
+                                            >
+                                                
+                                            </p>
+                                        </td>
+                                        <td
+                                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                                        >
+                                            <p
+                                                class="text-gray-900 whitespace-no-wrap"
+                                            >
+                                                
                                             </p>
                                         </td>
                                         <td
                                             class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                         >
                                             <WarningButton
-                                                class="mr-1"
-                                                @click="
-                                                    openModal(
-                                                        2,
-                                                        inte.persona.dni,
-                                                        inte.persona.name,
-                                                        inte.persona.first_name,
-                                                        inte.persona.last_name,
-                                                        inte.persona.phone,
-                                                        inte.persona.email,
-                                                        inte.condition,
-                                                        inte.orcid,
-                                                        inte.cti_vitae,
-                                                        inte.google_scholar,
-                                                        inte.id_grupo,
-                                                        inte.id_persona,
-                                                        inte.id
-                                                    )
-                                                "
+                                                class="mr-1"                                                
                                             >
                                                 <i class="fa-solid fa-edit"></i>
                                             </WarningButton>
@@ -174,6 +253,41 @@
 </template>
 
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head } from '@inertiajs/vue3';
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import InputError from "@/Components/InputError.vue";
+import InputLabel from "@/Components/InputLabel.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import DangerButton from "@/Components/DangerButton.vue";
+import WarningButton from "@/Components/WarningButton.vue";
+import LinkWarningButton from "@/Components/LinkWarningButton.vue";
+import SecondaryButton from "@/Components/SecondaryButton.vue";
+import TextInput from "@/Components/TextInput.vue";
+import Modal from "@/Components/Modal.vue";
+import { Head, useForm } from "@inertiajs/vue3";
+
+import Swal from "sweetalert2";
+import "@fortawesome/fontawesome-free/css/all.css";
+import { nextTick, ref } from "vue";
+import axios from "axios";
+import { onMounted } from "vue";
+const intePerson = ref([]);
+const gruposIntegra = ref([]);
+
+const props = defineProps({
+    grupos: {
+        type: Object,
+        default: () => ({}),
+    },
+    integrantes: {
+        type: Object,
+        default: () => ({}),
+    },
+    personas: Object,
+});
+onMounted(async() =>{
+    intePerson.value = props.integrantes;
+    gruposIntegra.value = props.grupos;
+    //console.log('comenta', intePerson.value);
+    
+})
 </script>

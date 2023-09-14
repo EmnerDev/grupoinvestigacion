@@ -14,13 +14,8 @@ return new class extends Migration
         Schema::create('criterios', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->decimal('puntaje_total_criterio',3,2)->nullable();
-            $table->decimal('puntaje_total',3,2)->nullable();
-
-            $table->unsignedBigInteger('id_integrante');
-            $table->unsignedBigInteger('id_grupo');
-            $table->foreign('id_grupo')->references('id')->on('grupos')->onDelete('cascade');          
-            $table->foreign('id_integrante')->references('id')->on('integrantes')->onDelete('cascade'); 
+            $table->decimal('ptj_max_criterio',10,8)->nullable();
+            $table->decimal('ptj_min_criterio', 10,8)->nullable();
             $table->timestamps();
         });
     }

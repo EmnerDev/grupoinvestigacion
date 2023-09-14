@@ -138,7 +138,7 @@
                                             <td v-if="gru.integrante && gru.integrante.length"
                                              :rowspan="gru.integrante.length+1"                                            
                                             class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                                                <LinkPrimaryButton :href="route('evaluacion.create')" class="">
+                                                <LinkPrimaryButton :href="route('evaluar.grupo',gru.id)" class="">
                                                     <i class="fa-solid fa-plus-circle"></i>
                                                 </LinkPrimaryButton>
                                                 <LinkButton class="mr-1" :href="route('ver.grupo',gru.id)"><i class="fa-solid fa-eye"></i></LinkButton>

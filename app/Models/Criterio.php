@@ -11,21 +11,19 @@ class Criterio extends Model
 
     protected $fillable = [
         'name',
-        'puntaje_total_criterio',
-        'puntaje_total',
-        'id_integrante',
-        'id_grupo',
+        'ptj_max_criterio',
+        'ptj_min_criterio',
     ];
-
-    public function integrante(){
-        return $this->belongsTo(Integrante::class, 'id_integrante');
-    }
-
-    public function grupo(){
-        return $this->belongsTo(Grupo::class, 'id_grupo');
-    }
 
     public function indicador(){
         return $this->hasMany(Indicador::class,'id_criterio');
+    }
+
+    public function evaluacion(){
+        return $this->hasMany(Evaluacion::class, 'id_criterio');
+    }
+
+    public function evaluacionCriterio(){
+        return $this->hasMany(EvaluacionCriterio::class, 'id_criterio');
     }
 }

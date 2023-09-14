@@ -57,12 +57,16 @@ class Grupo extends Model
         return $this->hasMany(Integrante::class,'id_grupo');
     }
 
-    public function criterio(){
-        return $this->hasMany(Criterio::class,'id_grupo');
+    public function evaluacion() {
+        return $this->hasMany(Evaluacion::class, 'id_grupo');
     }
 
-    public function indicador(){
-        return $this->hasMany(Indicador::class, 'id_grupo');
+    public function evaluacionCriterio(){
+        return $this->hasMany(EvaluacionCriterio::class, 'id_grupo');
+    }
+
+    public function evaluacionTotal(){
+        return $this->hasMany(EvaluacionTotal::class, 'id_grupo');
     }
 }
 
