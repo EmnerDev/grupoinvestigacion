@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Criterio;
 use App\Models\Evaluacion;
 use App\Models\Grupo;
+use App\Models\Indicador;
 use App\Models\Integrante;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -23,7 +25,10 @@ class EvaluacionController extends Controller
      */
     public function create()
     {
-        //
+        
+        return Inertia::render('Evaluacion/Create',[            
+            'criterios' => Criterio::with('indicador')->get(),
+        ]);
     }
 
     /**

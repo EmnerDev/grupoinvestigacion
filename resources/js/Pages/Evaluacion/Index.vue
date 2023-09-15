@@ -231,11 +231,11 @@
                                         <td
                                             class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                         >
-                                            <WarningButton
+                                            <LinkWarningButton :href="route('evaluacion.create')"
                                                 class="mr-1"                                                
                                             >
                                                 <i class="fa-solid fa-edit"></i>
-                                            </WarningButton>
+                                            </LinkWarningButton>
                                             <DangerButton
                                                 ><i
                                                     class="fa-solid fa-trash"
