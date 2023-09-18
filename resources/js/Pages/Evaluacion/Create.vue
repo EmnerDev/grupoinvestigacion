@@ -20,11 +20,11 @@
                                             >Rubro I: Produccion Cientìfica, tecnològica y/o industrial orientada a la linea de investigacion</th>
                                         </tr>
                                         <tr>
-                                            <!-- <th
+                                            <th
                                                 class="border-b-2 border-blue-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                                             >
                                             N°
-                                            </th> -->
+                                            </th>
                                             <th
                                                 class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                                             >
@@ -102,7 +102,7 @@
                                                     <p
                                                         class="text-gray-900 whitespace-no-wrap"
                                                     >
-
+                                                    {{ puntajeIndicador[i] }}
                                                     </p>
                                                 </td>
                                                 <td v-if="i===0" :rowspan="cri.indicador.length"
@@ -116,9 +116,9 @@
                                                 </td>
                                                 <td v-if="i===0" :rowspan="cri.indicador.length"
                                                     class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-sm">
-                                                <LinkPrimaryButton class="pl-7">
+                                                <PrimaryButton class="pl-7" @click="addItem(indi)">
                                                     <i class="fa-solid fa-plus-circle"></i>Guardar
-                                                </LinkPrimaryButton>
+                                                </PrimaryButton>
                                                 <DangerButton><i class="fa-solid fa-trash"></i>Cancelar</DangerButton>
                                             </td>
                                             </tr>
@@ -161,71 +161,56 @@ import { onBeforeMount } from 'vue';
 
 
 const props = defineProps({
+    evaluaciones: Object,
     criterios: Object,
+    indicadores: Object,
 });
 const indicadores = ref([]);
-const criData = ref(props.criterios || []);
 const cantidades = ref([]);
-onBeforeMount(() => {
-  criData.value = props.criterios || [];
-});
-//console.log('probando', criterios);
+const newItem = '';
+
+const form = useForm({
+    cantidad:'',
+    puntaje:'',
+    id_criterio:'',
+    id_indicador:'',
+    id_integrante:'',
+    id_grupo:'',
+    ptj_por_indicador:''
+})
 
 const addItem = (item) => {
     if(indicadores.value.length > 0){
+    
         indicadores.value.forEach(element => {
             let data = indicadores.value.find(ele => ele.id === item.id);
             if(!data)
             {
-                indicadores.value.push(item,1)
+                indicadores.value.push({...item, puntaje: 0})
             }
         })
         console.log('indicadores', indicadores.value);
     } else {
-        indicadores.value.push(item,1);
+        indicadores.value.push({...item, puntaje: 0});
         console.log('probando', item);
         console.log('indicadores', indicadores.value);
     }
-
-
+    
 }
 
-const CalcularCantidadTotalPorIndicador = (criterioIndex) => {
-    if(!cantidades.value[criterioIndex]) return 0;
-        const cantidadesPorIndex = cantidades.value[criterioIndex];
-        return cantidadesPorIndex.reduce((acc, cantidad) => acc + Number(cantidad), 0);
-
-};
-
-const inicializarCantidades = () => {
-    cantidades.value = criData.value.map((criterio) => criterio.indicador.map(() => 0));
-}
-
-const cantidaadTotalPorIndicador = computed(() => {
-    const totals = [];
-    for(let i = 0; i < cantidades.value[0].length;i++){
-        let total = 0;
-        for(let j = 0; j < cantidades.value.length; j++){
-            total += Number(cantidades.value[j][i]);
-        }
-        totals.push(total);
+const puntajeIndicador = (newItem) => {
+    if(!isNaN(newItem)){
+        const multiplicacion = parseFloat(newItem)*3
+        newItem='';
+       return multiplicacion;
+       } else {
+         alert('ingrese un numero valido')
+         return 0;
     }
-    return totals;
-});
+    
+}
 
+const resulado = puntajeIndicador(newItem);
+console.log('suma', resulado);
 
-
-onMounted( async() => {
-    inicializarCantidades();
-});
-
-
-
-// return{
-
-//     cantidades,
-//     CalcularCantidadTotalPorIndicador,
-//     inicializarCantidades,
-//     cantidaadTotalPorIndicador,
-// };
 </script>
