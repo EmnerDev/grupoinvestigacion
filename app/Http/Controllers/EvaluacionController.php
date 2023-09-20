@@ -28,7 +28,7 @@ class EvaluacionController extends Controller
         $indicador = Indicador::get();
 
         return Inertia::render('Evaluacion/Create',[  
-            'evaluaciones' => Evaluacion::paginate(),          
+            'evaluaciones' => Evaluacion::with('criterio','indicador')->get(),          
             'criterios' => Criterio::with('indicador')->get(),
             'indicadores' => $indicador,
         ]);
