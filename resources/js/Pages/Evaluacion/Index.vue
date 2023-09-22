@@ -231,7 +231,7 @@
                                         <td
                                             class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                         >
-                                            <LinkWarningButton :href="route('evaluacion.create')"
+                                            <LinkWarningButton :href="route('evaluacion.create', inte.id)"
                                                 class="mr-1"                                                
                                             >
                                                 <i class="fa-solid fa-edit"></i>

@@ -322,31 +322,31 @@ class EvaluacionSeeder extends Seeder
         //criterio 11
         $indicador = new Indicador();
         $indicador->name = "Evaluador en concursos internacionales de investigación";
-        $indicador->ptj_por_indicador = 2;
+        $indicador->ptj_por_indicador = 1.5;
         $indicador->id_criterio = 11;
         $indicador->save();
 
         $indicador = new Indicador();
         $indicador->name = " Evaluador en concursos nacionales de investigación";
-        $indicador->ptj_por_indicador = 2;
+        $indicador->ptj_por_indicador = 1;
         $indicador->id_criterio = 11;
         $indicador->save();
 
         $indicador = new Indicador();
         $indicador->name = " Miembro del comité científico – académico en congresos internacionales";
-        $indicador->ptj_por_indicador = 2;
+        $indicador->ptj_por_indicador = 1;
         $indicador->id_criterio = 11;
         $indicador->save();
 
         $indicador = new Indicador();
         $indicador->name = " Arbitro/evaluador de revistas indizadas";
-        $indicador->ptj_por_indicador = 2;
+        $indicador->ptj_por_indicador = 1;
         $indicador->id_criterio = 11;
         $indicador->save();
 
         $indicador = new Indicador();
         $indicador->name = "Jurado invitado en sustentaciones de grado académico";
-        $indicador->ptj_por_indicador = 2;
+        $indicador->ptj_por_indicador = 0.5;
         $indicador->id_criterio = 11;
         $indicador->save();
 

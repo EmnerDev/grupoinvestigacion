@@ -8,125 +8,81 @@
 
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 border-b border-gray-700">
+                <div>
+                    <div>
+                        <InputLabel>Grupo: </InputLabel>
+                        <span>{{ intePerson }}</span>
+                    </div>
+                    <div>
+                     <InputLabel>Integrante: </InputLabel>
+                     <span></span>
+                    </div>
+                </div>
                 <form @submit.prevent="submit">
                     <div class="overflow-x-auto rounded-lg shadow mt-6">
                         <div>
                             <table class="w-full">
-                                    <thead>
+                                    <thead>                                        
                                         <tr>
-                                            <th
-                                            class="w-full border-b-2 border-blue-200 bg-blue-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
-                                            :colspan="7"
-                                            >Rubro I: Produccion Cientìfica, tecnològica y/o industrial orientada a la linea de investigacion</th>
-                                        </tr>
-                                        <tr>
-                                            <!-- <th
-                                                class="border-b-2 border-blue-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
-                                            >
-                                            N°
-                                            </th> -->
-                                            <th
-                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
-                                            >
-                                            Criterio
-                                            </th>
-                                            <th
-                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
-                                            >
-                                            Indicador
-                                            </th>
-                                            <th
-                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
-                                            >
-                                            Cantidad
-                                            </th>
-                                            <!-- <th
-                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
-                                            >
-                                            Puntaje Indicador
-                                            </th>
-                                            <th
-                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
-                                            >
-                                            Puntaje Criterio
-                                            </th> -->
-                                            <th
-                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
-                                            >
-                                            Accion
-                                            </th>
+                                            <th class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white">N°</th>
+                                            <th class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white">Criterio</th>
+                                            <th class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white">Indicador</th>
+                                            <th class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white">Cantidad</th>
+                                            <th class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white">Puntaje Indicador</th>
+                                            <th class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white">Puntaje Criterio</th>
+                                            <!-- <th class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white">Accion</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <template v-for="cri,j  in criterios" :key="cri.id">
                                             <tr  v-for=" indi, i in cri.indicador" :key="indi.id">
-                                                <td v-if="i===0" :rowspan="cri.indicador.length"
-                                                    class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-sm"
-                                                >
-                                                    <p
-                                                        class="text-gray-900 whitespace-no-wrap"
-                                                    >
+                                                <td class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-sm"
+                                                v-if="i===0" :rowspan="cri.indicador.length">
                                                     {{ j+1 }}
-                                                    </p>
                                                 </td>
-                                                <td v-if="i===0" :rowspan="cri.indicador.length"
-                                                    class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-sm"
-                                                >
-                                                    <p
-                                                        class="text-gray-900 whitespace-no-wrap"
-                                                    >
+                                                <td class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-sm"
+                                                v-if="i===0" :rowspan="cri.indicador.length">
                                                     {{ cri.name }}
-                                                    </p>
                                                 </td>
-                                                <td
-                                                    class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-sm"
+                                                <td class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-sm"
                                                 >
-                                                    <p
-                                                        class="text-gray-900 whitespace-no-wrap"
-                                                    >
                                                     {{ indi.name }}
-                                                    </p>
                                                 </td>
-                                                <td
-                                                    class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-sm"
+                                                <td class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-sm"
                                                 >
-                                                    <p
-                                                        class="text-gray-900 whitespace-no-wrap"
-                                                    >
-                                                    <!-- <TextInput v-model="newItem" @blur="addItem(indi)"></TextInput> -->
-                                                    <TextInput v-model="indi.cantidad" @input="calcularTotal(indi)"></TextInput>
-                                                    </p>
+                                                    <TextInput v-model="indi.cantidad" @input="calcularTotal(indi, j, i)"></TextInput>
                                                 </td>
-                                                <td
-                                                    class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-sm"
+                                                <td class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-sm"
                                                 >
-                                                    <p
-                                                        class="text-gray-900 whitespace-no-wrap"
-                                                    >
                                                     <InputLabel v-model="indi.puntaje" >{{ calcularTotalIndicador(indi) }}</InputLabel>
-                                                    </p>
                                                 </td>
-                                                <td v-if="i===0" :rowspan="cri.indicador.length"
-                                                    class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-sm"
-                                                >
-                                                    <p
-                                                        class="text-gray-900 whitespace-no-wrap"
+                                                <td class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-sm"
+                                                v-if="i===0" :rowspan="cri.indicador.length"
                                                     >
-                                                    <InputLabel v-model="cri.puntaje">{{ calcularTotalCriterio(cri,j) }}</InputLabel>
-                                                    </p>
+                                                    <InputLabel v-model="cri.puntaje">{{ calcularTotalCriterio(j) }}</InputLabel>
                                                 </td>
-                                                <td v-if="i===0" :rowspan="cri.indicador.length"
-                                                    class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-sm">
+                                                <!-- <td class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-sm"
+                                                v-if="i===0" :rowspan="cri.indicador.length">
                                                 <PrimaryButton class="pl-7">
                                                     <i class="fa-solid fa-plus-circle"></i>Guardar
                                                 </PrimaryButton>
                                                 <DangerButton><i class="fa-solid fa-trash"></i>Cancelar</DangerButton>
-                                            </td>
+                                                </td> -->
                                             </tr>
                                         </template>
-
-                                    </tbody>
-                                </table>
+                                </tbody>
+                            </table>
+                                <h1 class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-lg text-center font-bold	" >Puntaje Total: <InputLabel>{{ calcularTotalGeneral() }}</InputLabel></h1>
+                                <div class="flex justify-center">
+                                    <div class="p-3 mt-6">
+                                        <PrimaryButton class="pl-7">
+                                            <i class="fa-solid fa-plus-circle"></i>Guardar
+                                        </PrimaryButton>
+                                    </div>
+                                    <div class="p-3 mt-6">
+                                        <DangerButton><i class="fa-solid fa-trash"></i>Cancelar</DangerButton>
+                                    </div>
+                                </div>
                         </div>
                     </div>
                 </form>
@@ -165,6 +121,8 @@ const props = defineProps({
     evaluaciones: Array,
     criterios: Object,
     indicadores: Object,
+    integrantes: Object,
+    grupos: Object,
 
 });
 
@@ -174,6 +132,9 @@ console.log('evaluaciones', props.evaluaciones);
 // console.log('indicadores', props.indicadores);
 const cantidades = ref([]);
 const puntajeCriterio = ref(props.criterios);
+const totalGeneral = ref(0);
+const intePerson = ref([]);
+const gruposIntegra = ref([]);
 
 const form = useForm({
     cantidad:'',
@@ -185,96 +146,84 @@ const form = useForm({
     ptj_por_indicador:''
 })
 
-const  addItem = (item) => {
-    cantidades.value.push({
-        id: item.id,
-        cantidad: '',
-        ptj_por_indicador:item.ptj_por_indicador,
-        puntaje:0,
-        criterio: item.id_criterio
-    });
-    console.log('probando', cantidades.value);
-}
+// const  addItem = (item) => {
+//     cantidades.value.push({
+//         id: item.id,
+//         cantidad: '',
+//         ptj_por_indicador:item.ptj_por_indicador,
+//         puntaje:0,
+//         criterio: item.id_criterio
+//     });
+//     console.log('probando', cantidades.value);
+// }
 
 
-const calcularTotal = (indi) => {
-    indi.puntaje = parseFloat(indi.cantidad)* parseFloat(indi.ptj_por_indicador);
-}
+const calcularTotal = (indi, j , i) => {
+    const cantidad = parseFloat(indi.cantidad);
+    if(isNaN(cantidad)){
+
+        indi.puntaje = cantidad * parseFloat(indi.ptj_por_indicador);
+        //indi.puntaje = parseFloat(indi.cantidad)* parseFloat(indi.ptj_por_indicador);
+
+        const criterio = props.criterios[j];
+        criterio.puntaje = calcularTotalCriterio(j);
+
+        calcularTotalGeneral();
+    }else{
+        indi.puntaje = 0;
+
+        const criterio = props.criterios[j];
+        criterio.puntaje = calcularTotalCriterio(j);
+
+        calcularTotalGeneral();
+    }
+};
 
 const calcularTotalIndicador = (indi) => {
     return parseFloat(indi.cantidad)*parseFloat(indi.ptj_por_indicador);
-}
+};
 
-const calcularTotalCriterio = computed( () => {
-    return (cri,index) => {
-        let total = 0;
-        // puntajeCriterio.value.forEach(element => {
 
-            if(index == 0){
-                puntajeCriterio.value[index].indicador.forEach( ele => {
-                total += ele.puntaje;
-                console.log('total2',total);
-            });
-            }
-
-            //total += total2;
-            console.log('total',total);
-        // });
-        return total;
-        // const totalCriterio = criterioCantidades.reduce((puntaje,item) => {
-        //     return puntaje + parseFloat(item.puntaje || 0)
-        // }, 0);
-        // console.log('puntaje total',  totalCriterio)
-        // return totalCriterio;
+const calcularTotalCriterio = (j) => {
+    //console.log('llegando', j);
+    const criterio = props.criterios[j];
+    //console.log('prueba', criterio);
+    let total = 0;
+    for(const indi of criterio.indicador){
+        //console.log('datos indi', indi);
+        total += calcularTotalIndicador(indi);
+        console.log('suma', total)
     }
-    // return function(obj){
-    //     let resulCriterio = 0;
-    //     resulCriterio =  obj.cantidades.reduce((puntaje, indi)=>{
-    //      return indi;
-    //  }, 0);
-    //     console.log('llegando', resulCriterio)
-    //     return resulCriterio;
-    // }
+    console.log('suma fuera del for', total)
+    return total;
+};
+
+const calcularTotalGeneral = () => {
+    let total = 0
+    for(const criterio of puntajeCriterio.value){
+        total +=  criterio.puntaje;
+    }
+    return totalGeneral.value = total;
+    
+};
+
+onMounted(() =>{
+    calcularTotalGeneral();
+    intePerson.value = props.integrantes;
+    gruposIntegra.value = props.grupos;
 });
-// const calcularTotalCriterio = (cri) => {
-//     const criterio = props.criterios[cri];
-//     return criterio.value.reduce((puntaje, indi)=>{
-//         return puntaje + (parseFloat(indi.puntaje) || 0);
-//     }, 0);
-// }
-//  watch(cantidades, () => {
-//     calcularTotalCriterio();
-//  },{deep: true});
-
-//console.log('criterio', calcularTotalCriterio())
-// const addItem = (item) => {
-//     if(cantidades.value.length > 0){
-
-//         cantidades.value.forEach(element => {
-//             let data = cantidades.value.find(ele => ele.id === item.id);
-//             if(!data)
-//             {
-//                 cantidades.value.push(item)
-//             }
-//         })
-//         console.log('cantidadesdd', cantidades.value);
-//     } else {
-//         cantidades.value.push(item);
-//         console.log('probando', item);
-//         console.log('cantidades', cantidades.value);
+// const calcularTotalCriterioPrueba = computed( () => { 
+//     return (j) =>{
+//         const criterio = props.criterios[j];
+//     //console.log('prueba', criterio);
+//     let total = 0;
+//     for(const indi of criterio.indicador){
+//         //console.log('datos indi', indi);
+//         total += calcularTotalIndicador(indi);
+//         console.log('suma', total)
 //     }
-
-// }
-
-// const puntajeIndicador = () => {
-//     const resultado = parseFloat(newItem.value)* parseFloat(form.ptj_por_indicador);
-//     console.log('resultado', resultado);
-
-// }
-
-
-
-// const resulado = puntajeIndicador(newItem);
-// console.log('suma', resulado);
-
+//     console.log('suma fuera del for', total)
+//     return total;
+//     }
+// });
 </script>

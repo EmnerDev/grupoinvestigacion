@@ -23,14 +23,17 @@ class EvaluacionController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
+    public function create($id)
+    {   
+        $integrante = Integrante::with('persona')->where('id_grupo', $id)->get();
         $indicador = Indicador::with('criterio')->get();
 
         return Inertia::render('Evaluacion/Create',[  
             'evaluaciones' => Evaluacion::with('criterio','indicador')->get(),          
             'criterios' => Criterio::with('indicador')->get(),
             'indicadores' => $indicador,
+            'integrantes' => $integrante,
+            'grupos' => Grupo::find($id)
         ]);
     }
 
