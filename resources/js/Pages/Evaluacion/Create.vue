@@ -58,16 +58,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <template v-for="(evaluacion, index) in evaluaciones" :key="evaluacion.id" :value="evaluacion.id">
-                                            <tr>
-                                                <td>{{ evaluacion.criterio.name }}</td>
-                                                <td>{{ evaluacion.indicador.name }}</td>
-                                                <td>
-                                                    <InputLabel @input="calcularTotales"></InputLabel>
-                                                </td>
-                                            </tr>
-                                        </template>
-                                        <!-- <template v-for="cri,j  in criterios">
+                                        <template v-for="cri,j  in criterios" :key="cri.id">
                                             <tr  v-for=" indi, i in cri.indicador" :key="indi.id">
                                                 <td v-if="i===0" :rowspan="cri.indicador.length"
                                                     class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-sm"
@@ -101,12 +92,12 @@
                                                 >
                                                     <p
                                                         class="text-gray-900 whitespace-no-wrap"
-                                                    > -->
+                                                    >
                                                     <!-- <TextInput v-model="newItem" @blur="addItem(indi)"></TextInput> -->
-                                                    <!-- <TextInput v-model="indi.cantidad" @input="calcularTotal(indi)"></TextInput>
+                                                    <TextInput v-model="indi.cantidad" @input="calcularTotal(indi)"></TextInput>
                                                     </p>
                                                 </td>
-                                                <td 
+                                                <td
                                                     class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-sm"
                                                 >
                                                     <p
@@ -121,7 +112,7 @@
                                                     <p
                                                         class="text-gray-900 whitespace-no-wrap"
                                                     >
-                                                    <InputLabel v-model="cri.puntaje">{{ calcularTotalCriterio(cri) }}</InputLabel>
+                                                    <InputLabel v-model="cri.puntaje">{{ calcularTotalCriterio(cri,j) }}</InputLabel>
                                                     </p>
                                                 </td>
                                                 <td v-if="i===0" :rowspan="cri.indicador.length"
@@ -132,22 +123,10 @@
                                                 <DangerButton><i class="fa-solid fa-trash"></i>Cancelar</DangerButton>
                                             </td>
                                             </tr>
-                                        </template> -->
+                                        </template>
 
                                     </tbody>
                                 </table>
-                                <!-- <h3>Total por criterio</h3>
-                                <ul>
-                                    <li v-for="(total, criterioId) in totalesPorCriterio" :key="criterioId">
-                                        {{ criterioId }}: {{ total }}
-                                    </li>
-                                </ul>
-                                <h3>Total por Indicador</h3>
-                                <ul>
-                                    <li v-for="(total, indicadorId) in totalesPorIndicadores" :key="indicadorId">
-                                        {{ indicadorId }}: {{ total }}
-                                    </li>
-                                </ul> -->
                         </div>
                     </div>
                 </form>
@@ -186,18 +165,15 @@ const props = defineProps({
     evaluaciones: Array,
     criterios: Object,
     indicadores: Object,
-    
+
 });
 
 
 console.log('evaluaciones', props.evaluaciones);
 // console.log('criterios', props.criterios);
 // console.log('indicadores', props.indicadores);
-// const cantidades = ref(props.evaluaciones);
-// const puntajeCriterio = ref([]);
-
-const totalesPorCriterio = ref({});
-const totalesPorIndicadores = ref({});
+const cantidades = ref([]);
+const puntajeCriterio = ref(props.criterios);
 
 const form = useForm({
     cantidad:'',
@@ -209,73 +185,62 @@ const form = useForm({
     ptj_por_indicador:''
 })
 
-const calcularTotales = () => {
-    totalesPorCriterio.value = {};
-    totalesPorIndicadores.value = {};
-
-    props.evaluaciones.forEach((evaluacion)=> {
-        //calcula los totales por criterio
-        if(!totalesPorCriterio.value[evaluacion.criterio.id]) {
-            totalesPorCriterio.value[evaluacion.criterio.id] = 0;
-        }
-        totalesPorCriterio.value[evaluacion.criterio.id] += evaluacion.puntaje;
-
-        //calcula los totales por indicador
-
-        if(!totalesPorIndicadores.value[evaluacion.indicador.id]){
-            totalesPorIndicadores.value[evaluacion.indicador.id] = 0;
-        }
-        totalesPorIndicadores.value[evaluacion.indicador.id] * evaluacion.indicador.ptj_por_indicador;
+const  addItem = (item) => {
+    cantidades.value.push({
+        id: item.id,
+        cantidad: '',
+        ptj_por_indicador:item.ptj_por_indicador,
+        puntaje:0,
+        criterio: item.id_criterio
     });
+    console.log('probando', cantidades.value);
 }
 
-watch(() => props.evaluaciones, calcularTotales);
 
+const calcularTotal = (indi) => {
+    indi.puntaje = parseFloat(indi.cantidad)* parseFloat(indi.ptj_por_indicador);
+}
 
-// const  addItem = (item) => {
-//     cantidades.value.push({
-//         id: item.id,
-//         cantidad: '',
-//         ptj_por_indicador:item.ptj_por_indicador,
-//         puntaje:0,
-//         criterio: item.id_criterio
-//     });
-//     console.log('probando', cantidades.value);
-// }
+const calcularTotalIndicador = (indi) => {
+    return parseFloat(indi.cantidad)*parseFloat(indi.ptj_por_indicador);
+}
 
+const calcularTotalCriterio = computed( () => {
+    return (cri,index) => {
+        let total = 0;
+        // puntajeCriterio.value.forEach(element => {
 
-// const calcularTotal = (indi) => {
-//     indi.puntaje = parseFloat(indi.cantidad)* parseFloat(indi.ptj_por_indicador);
-// }
+            if(index == 0){
+                puntajeCriterio.value[index].indicador.forEach( ele => {
+                total += ele.puntaje;
+                console.log('total2',total);
+            });
+            }
 
-// const calcularTotalIndicador = (indi) => {
-//     return parseFloat(indi.cantidad)*parseFloat(indi.ptj_por_indicador);
-// }
-
-// const calcularTotalCriterio = computed( () => {
-//     return (cri) => {
-//         const criterioCantidades = puntajeCriterio.value.filter( (item) => item.criterio === cri.id);
-//         console.log('puntaje total del criterio', puntajeCriterio.value);
-//         const totalCriterio = criterioCantidades.reduce((puntaje,item) => {
-//             return puntaje + parseFloat(item.puntaje || 0)
-//         }, 0);
-//         console.log('puntaje total',  totalCriterio)
-//         return totalCriterio;
-//     }
-//     // return function(obj){    
-//     //     let resulCriterio = 0;
-//     //     resulCriterio =  obj.cantidades.reduce((puntaje, indi)=>{
-//     //      return indi;
-//     //  }, 0);     
-//     //     console.log('llegando', resulCriterio)
-//     //     return resulCriterio;
-//     // }
-// });
+            //total += total2;
+            console.log('total',total);
+        // });
+        return total;
+        // const totalCriterio = criterioCantidades.reduce((puntaje,item) => {
+        //     return puntaje + parseFloat(item.puntaje || 0)
+        // }, 0);
+        // console.log('puntaje total',  totalCriterio)
+        // return totalCriterio;
+    }
+    // return function(obj){
+    //     let resulCriterio = 0;
+    //     resulCriterio =  obj.cantidades.reduce((puntaje, indi)=>{
+    //      return indi;
+    //  }, 0);
+    //     console.log('llegando', resulCriterio)
+    //     return resulCriterio;
+    // }
+});
 // const calcularTotalCriterio = (cri) => {
 //     const criterio = props.criterios[cri];
 //     return criterio.value.reduce((puntaje, indi)=>{
 //         return puntaje + (parseFloat(indi.puntaje) || 0);
-//     }, 0);        
+//     }, 0);
 // }
 //  watch(cantidades, () => {
 //     calcularTotalCriterio();
@@ -284,7 +249,7 @@ watch(() => props.evaluaciones, calcularTotales);
 //console.log('criterio', calcularTotalCriterio())
 // const addItem = (item) => {
 //     if(cantidades.value.length > 0){
-    
+
 //         cantidades.value.forEach(element => {
 //             let data = cantidades.value.find(ele => ele.id === item.id);
 //             if(!data)
@@ -298,13 +263,13 @@ watch(() => props.evaluaciones, calcularTotales);
 //         console.log('probando', item);
 //         console.log('cantidades', cantidades.value);
 //     }
-    
+
 // }
 
 // const puntajeIndicador = () => {
 //     const resultado = parseFloat(newItem.value)* parseFloat(form.ptj_por_indicador);
 //     console.log('resultado', resultado);
-    
+
 // }
 
 
