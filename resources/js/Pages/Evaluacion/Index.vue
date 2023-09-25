@@ -231,16 +231,16 @@
                                         <td
                                             class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                         >
-                                            <LinkWarningButton :href="route('evaluacion.create', inte.id)"
+                                            <LinkEvaluarButton :href="route('evaluacion.integrante', {grupo_id:inte.id_grupo, id:inte.id})"
                                                 class="mr-1"                                                
                                             >
-                                                <i class="fa-solid fa-edit"></i>
-                                            </LinkWarningButton>
-                                            <DangerButton
+                                            <i class="fa-solid fa-list-check"></i> Evaluar
+                                            </LinkEvaluarButton>
+                                            <!-- <DangerButton
                                                 ><i
                                                     class="fa-solid fa-trash"
                                                 ></i
-                                            ></DangerButton>
+                                            ></DangerButton> -->
                                         </td>
                                     </tr>
                                 </tbody>
@@ -260,6 +260,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import WarningButton from "@/Components/WarningButton.vue";
 import LinkWarningButton from "@/Components/LinkWarningButton.vue";
+import LinkEvaluarButton from "@/Components/LinkEvaluarButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import Modal from "@/Components/Modal.vue";
@@ -283,11 +284,16 @@ const props = defineProps({
         default: () => ({}),
     },
     personas: Object,
+    
 });
+
+const id_grupo = ref([]);
 onMounted(async() =>{
+    id_grupo.value = props.grupos.id
     intePerson.value = props.integrantes;
     gruposIntegra.value = props.grupos;
     //console.log('comenta', intePerson.value);
     
 })
+console.log('sdsa', id_grupo)
 </script>

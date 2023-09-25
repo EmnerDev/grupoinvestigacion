@@ -3,19 +3,22 @@
 
     <AuthenticatedLayout>
         <template #header>
-            Evaluacion para la Categorización del Grupo de Investigación
+            Evaluacion
         </template>
 
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 border-b border-gray-700">
+                <div class="p-5 mb-5 border-b-2 border-gray-200 bg-teal-500 px-5 py-3 text-left text-xl font-semibold uppercase tracking-wider text-white" style="text-align: center;align-items: center;">
+                    <h1>FICHA DE EVALUACION</h1>
+                </div>
                 <div>
                     <div>
-                        <InputLabel>Grupo: </InputLabel>
-                        <span>{{ intePerson }}</span>
+                     <InputLabel>Integrante: </InputLabel>
+                     <span>{{ integrantes.persona.name }} {{ integrantes.persona.first_name }} {{ integrantes.persona.last_name }}</span>
                     </div>
                     <div>
-                     <InputLabel>Integrante: </InputLabel>
-                     <span></span>
+                     <InputLabel>Condicion: </InputLabel>
+                     <span>{{ integrantes.condition }}</span>
                     </div>
                 </div>
                 <form @submit.prevent="submit">
@@ -50,11 +53,11 @@
                                                 </td>
                                                 <td class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-sm"
                                                 >
-                                                    <TextInput v-model="indi.cantidad" @input="calcularTotal(indi, j, i)"></TextInput>
+                                                    <TextInput v-model="indi.cantidad"  id="cantidad" @input="calcularTotal(indi, j, i)"></TextInput>
                                                 </td>
                                                 <td class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-sm"
                                                 >
-                                                    <InputLabel v-model="indi.puntaje" >{{ calcularTotalIndicador(indi) }}</InputLabel>
+                                                    <InputLabel v-model="indi.puntaje" id="puntaje" >{{ calcularTotalIndicador(indi) }}</InputLabel>
                                                 </td>
                                                 <td class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-sm"
                                                 v-if="i===0" :rowspan="cri.indicador.length"
@@ -118,16 +121,18 @@ import { onBeforeMount } from 'vue';
 
 
 const props = defineProps({
-    evaluaciones: Array,
+    evaluaciones: Object,
     criterios: Object,
     indicadores: Object,
-    integrantes: Object,
-    grupos: Object,
-
+    integrantes:Object,
+    grupos: {
+        type: Object,
+        default: () => ({}),
+    },
 });
 
 
-console.log('evaluaciones', props.evaluaciones);
+console.log('evaluaciones', props.grupos);
 // console.log('criterios', props.criterios);
 // console.log('indicadores', props.indicadores);
 const cantidades = ref([]);
@@ -135,6 +140,7 @@ const puntajeCriterio = ref(props.criterios);
 const totalGeneral = ref(0);
 const intePerson = ref([]);
 const gruposIntegra = ref([]);
+const evaluaPuntaje = ref(props.evaluaciones);
 
 const form = useForm({
     cantidad:'',
@@ -142,7 +148,7 @@ const form = useForm({
     id_criterio:'',
     id_indicador:'',
     id_integrante:'',
-    id_grupo:'',
+    id_grupo: props.grupos.id,
     ptj_por_indicador:''
 })
 
@@ -209,9 +215,41 @@ const calcularTotalGeneral = () => {
 
 onMounted(() =>{
     calcularTotalGeneral();
-    intePerson.value = props.integrantes;
+    // intePerson.value = props.integrantes;
     gruposIntegra.value = props.grupos;
+    evaluaPuntaje.value = props.evaluaciones;
 });
+
+console.log('grupos', gruposIntegra);
+
+const submit = () => {
+        // Para una solicitud POST
+        const datosEnviar = {
+            evaluaciones: puntajeCriterio.value,
+            
+        }
+        axios
+            .post(route("guardar.evaluacion"), datosEnviar)
+            .then((res) => {
+                // Manejar la respuesta exitosa aquí
+                console.log(res.data); 
+                // Puedes acceder a los datos de la respuesta
+                // evaluaPuntaje.value = res.data.data;
+                // gruposIntegra.value = res.data.data;
+                form.reset();
+                closeModal();              
+                ok("Registro Creado Correctamente");
+            })
+            .catch((error) => {
+                // Manejar el error aquí
+                console.error(error);                
+            });
+};
+const ok = (msj) => {
+    form.reset();
+    closeModal();
+    Swal.fire({ title: msj, icon: "success" });
+};
 // const calcularTotalCriterioPrueba = computed( () => { 
 //     return (j) =>{
 //         const criterio = props.criterios[j];

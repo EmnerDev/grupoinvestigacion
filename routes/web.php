@@ -63,8 +63,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/search-integrante/{dni}', [GrupoController::class, 'searchIntegrante']);
 
     Route::get('evaluacion', [CriterioController::class, 'index'])->name('evaluacion.index');
-    Route::get('crear/evaluacion/{id}', [EvaluacionController::class, 'create'])->name('evaluacion.create');
+    Route::get('evaluacion/integrante/{grupo_id}/{id}', [EvaluacionController::class, 'evaluarintegrante'])->name('evaluacion.integrante');
     Route::get('grupos/evaluar/{id}', [EvaluacionController::class, 'evaluarGrupo'])->name('evaluar.grupo');
+    Route::post('guardar/evaluacion', [EvaluacionController::class, 'store'])->name('guardar.evaluacion');
 
 });
 
