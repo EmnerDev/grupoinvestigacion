@@ -129,13 +129,14 @@
                                             {{ inte.condition }} 
                                             </p>
                                         </td>
-                                        <td
+                                        <td v-for=" grupo in grupos.evaluacion_criterio" :key="grupo.id"
                                             class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                         >
-                                            <p
+                                            
+                                            <p v-if="grupo.id_criterio === inte.id"
                                                 class="text-gray-900 whitespace-no-wrap"
                                             >
-                                                
+                                                {{ grupo.ptj_total_indicador}}
                                             </p>
                                         </td>
                                         <td
@@ -284,6 +285,7 @@ const props = defineProps({
         default: () => ({}),
     },
     personas: Object,
+    evaluaciones: Object
     
 });
 
@@ -295,5 +297,7 @@ onMounted(async() =>{
     //console.log('comenta', intePerson.value);
     
 })
-console.log('sdsa', id_grupo)
+console.log('sdsa', props.evaluaciones)
+console.log('grupo', props.grupos)
+console.log('sdsa', props.integrantes)
 </script>

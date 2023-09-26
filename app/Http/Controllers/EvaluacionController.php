@@ -46,7 +46,7 @@ class EvaluacionController extends Controller
     public function store(Request $request)
     {
        // Obtener los datos del formulario
-        return $request->all();
+        //return $request->all();
     foreach ($request['evaluaciones'] as $key => $value) {
 
         foreach ($value['indicador'] as $ky => $val) {
@@ -57,16 +57,16 @@ class EvaluacionController extends Controller
                 'cantidad' => $val['cantidad'],
                 'id_criterio' => $val['id_criterio'],
                 'id_indicador' => $val['id'],
-                'id_integrante' => 2,
-                'id_grupo' => 1,
+                'id_integrante' => $request['integrante']['id'],
+                'id_grupo' => $request['integrante']['id_grupo'],
             ]);
 
             $evaluacionCriterio = EvaluacionCriterio::create([
                 'ptj_total_indicador' => $value['puntaje'],
                 'id_evaluacion' => $evaluacion->id, // Usar el ID de la evaluación creada anteriormente
                 'id_criterio' => $value['id'],
-                'id_integrante' => 2,
-                'id_grupo' =>1,
+                'id_integrante' => $request['integrante']['id'],
+                'id_grupo' =>$request['integrante']['id_grupo'],
             ]);
 
             // Crear un nuevo registro en la tabla 'evaluacion_total'
@@ -78,15 +78,6 @@ class EvaluacionController extends Controller
         }
     }
 
-    // $datosEnviar = $request->all();
-
-    // // Crear un nuevo registro en la tabla 'evaluaciones'
-
-    // // Crear un nuevo registro en la tabla 'evaluacion_detalle'
-
-
-
-    // Puedes realizar cualquier otra lógica necesaria aquí
 
     // Devolver una respuesta adecuada, por ejemplo, un mensaje de éxito
     return response()->json(['message' => 'Registros creados correctamente']);
@@ -129,7 +120,8 @@ class EvaluacionController extends Controller
         $integrantes = Integrante::with('persona')->where('id_grupo',$id)->get();
 
         return Inertia::render('Evaluacion/Index',[
-            'grupos' => Grupo::find($id),
+            'grupos' => Grupo::with('evaluacionCriterio')->find($id),
+            'evaluaciones' => Evaluacion::with('evaluacionCriterio')->get(),
             'integrantes' => $integrantes,
         ]);
     }
