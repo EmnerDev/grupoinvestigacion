@@ -25,7 +25,7 @@
                     <div class="overflow-x-auto rounded-lg shadow mt-6">
                         <div>
                             <table class="w-full">
-                                    <thead>                                        
+                                    <thead>
                                         <tr>
                                             <th class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white">N°</th>
                                             <th class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white">Criterio</th>
@@ -148,7 +148,7 @@ const form = useForm({
     id_criterio:'',
     id_indicador:'',
     id_integrante:'',
-    id_grupo: props.grupos.id,
+    id_grupo: '',
     ptj_por_indicador:''
 })
 
@@ -163,20 +163,17 @@ const form = useForm({
 //     console.log('probando', cantidades.value);
 // }
 
-
 const calcularTotal = (indi, j , i) => {
+    console.log('todo', puntajeCriterio.value);
     const cantidad = parseFloat(indi.cantidad);
     if(isNaN(cantidad)){
-
         indi.puntaje = cantidad * parseFloat(indi.ptj_por_indicador);
         //indi.puntaje = parseFloat(indi.cantidad)* parseFloat(indi.ptj_por_indicador);
-
         const criterio = props.criterios[j];
         criterio.puntaje = calcularTotalCriterio(j);
-
         calcularTotalGeneral();
     }else{
-        indi.puntaje = 0;
+        // indi.puntaje = 0;
 
         const criterio = props.criterios[j];
         criterio.puntaje = calcularTotalCriterio(j);
@@ -186,7 +183,9 @@ const calcularTotal = (indi, j , i) => {
 };
 
 const calcularTotalIndicador = (indi) => {
-    return parseFloat(indi.cantidad)*parseFloat(indi.ptj_por_indicador);
+    let ptj = parseFloat(indi.cantidad)*parseFloat(indi.ptj_por_indicador);
+    indi.puntaje = ptj;
+    return ptj;
 };
 
 
@@ -209,8 +208,9 @@ const calcularTotalGeneral = () => {
     for(const criterio of puntajeCriterio.value){
         total +=  criterio.puntaje;
     }
+    //puntajeCriterio.value.totalGeneralEvaluado = total;
     return totalGeneral.value = total;
-    
+
 };
 
 onMounted(() =>{
@@ -226,31 +226,31 @@ const submit = () => {
         // Para una solicitud POST
         const datosEnviar = {
             evaluaciones: puntajeCriterio.value,
-            
+            totalGeneral: totalGeneral.value,
+            integrante: props.integrantes
         }
         axios
             .post(route("guardar.evaluacion"), datosEnviar)
             .then((res) => {
                 // Manejar la respuesta exitosa aquí
-                console.log(res.data); 
+                console.log(res.data);
                 // Puedes acceder a los datos de la respuesta
                 // evaluaPuntaje.value = res.data.data;
                 // gruposIntegra.value = res.data.data;
                 form.reset();
-                closeModal();              
+                closeModal();
                 ok("Registro Creado Correctamente");
             })
             .catch((error) => {
                 // Manejar el error aquí
-                console.error(error);                
+                console.error(error);
             });
 };
 const ok = (msj) => {
     form.reset();
-    closeModal();
     Swal.fire({ title: msj, icon: "success" });
 };
-// const calcularTotalCriterioPrueba = computed( () => { 
+// const calcularTotalCriterioPrueba = computed( () => {
 //     return (j) =>{
 //         const criterio = props.criterios[j];
 //     //console.log('prueba', criterio);
