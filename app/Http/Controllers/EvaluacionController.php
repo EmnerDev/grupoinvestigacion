@@ -45,12 +45,10 @@ class EvaluacionController extends Controller
      */
     public function store(Request $request)
     {
-       // Obtener los datos del formulario
         //return $request->all();
     foreach ($request['evaluaciones'] as $key => $value) {
 
         foreach ($value['indicador'] as $ky => $val) {
-            # code...
             //return $val;
             $evaluacion = Evaluacion::create([
                 'puntaje' => $val['puntaje'],
@@ -80,7 +78,7 @@ class EvaluacionController extends Controller
 
 
     // Devolver una respuesta adecuada, por ejemplo, un mensaje de éxito
-    return response()->json(['message' => 'Registros creados correctamente']);
+    return redirect()->route('evaluar.grupo',['id'=> $request['integrante']['id_grupo']])->with(['ok' => 'Registros creados correctamente']);
 
     }
 
@@ -121,8 +119,14 @@ class EvaluacionController extends Controller
 
         return Inertia::render('Evaluacion/Index',[
             'grupos' => Grupo::with('evaluacionCriterio')->find($id),
-            'evaluaciones' => Evaluacion::with('evaluacionCriterio')->get(),
+            'evaluacion_criterios' => EvaluacionCriterio::with('integrante.persona','grupo')->get(),
+            // 'evaluacion_criterios' => DB::table('evaluacion_criterios')
+            //                         ->where('id_grupo',$id)
+            //                         ->select('id_criterio', DB::raw('MAX(ptj_total_indicador) as puntaje_maximo'))
+            //                         ->groupBy('id_criterio')
+            //                         ->get(),
             'integrantes' => $integrantes,
+            'criterios' => Criterio::get(),
         ]);
     }
 

@@ -234,11 +234,7 @@ const submit = () => {
             .then((res) => {
                 // Manejar la respuesta exitosa aquí
                 console.log(res.data);
-                // Puedes acceder a los datos de la respuesta
-                // evaluaPuntaje.value = res.data.data;
-                // gruposIntegra.value = res.data.data;
                 form.reset();
-                closeModal();
                 ok("Registro Creado Correctamente");
             })
             .catch((error) => {

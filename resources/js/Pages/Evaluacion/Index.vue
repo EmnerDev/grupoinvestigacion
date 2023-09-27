@@ -129,106 +129,16 @@
                                             {{ inte.condition }} 
                                             </p>
                                         </td>
-                                        <td v-for=" grupo in grupos.evaluacion_criterio" :key="grupo.id"
+                                        <td v-for="evaluacion in evaluacion_criterios" :key="evaluacion.id" :value="evaluacion.id"
                                             class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                         >
                                             
-                                            <p v-if="grupo.id_criterio === inte.id"
-                                                class="text-gray-900 whitespace-no-wrap"
-                                            >
-                                                {{ grupo.ptj_total_indicador}}
-                                            </p>
-                                        </td>
-                                        <td
-                                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
-                                        >
                                             <p
                                                 class="text-gray-900 whitespace-no-wrap"
                                             >
-                                               
+                                                {{ getPuntajeMaximo(inte.id,evaluacion.id)}}
                                             </p>
-                                        </td>
-                                        <td
-                                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
-                                        >
-                                            <p
-                                                class="text-gray-900 whitespace-no-wrap"
-                                            >
-                                                
-                                            </p>
-                                        </td>
-                                        <td
-                                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
-                                        >
-                                            <p
-                                                class="text-gray-900 whitespace-no-wrap"
-                                            >
-                                                
-                                            </p>
-                                        </td>
-                                        <td
-                                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
-                                        >
-                                            <p
-                                                class="text-gray-900 whitespace-no-wrap"
-                                            >
-                                                
-                                            </p>
-                                        </td>
-                                        <td
-                                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
-                                        >
-                                            <p
-                                                class="text-gray-900 whitespace-no-wrap"
-                                            >
-                                                
-                                            </p>
-                                        </td>
-                                        <td
-                                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
-                                        >
-                                            <p
-                                                class="text-gray-900 whitespace-no-wrap"
-                                            >
-                                                
-                                            </p>
-                                        </td>
-                                        <td
-                                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
-                                        >
-                                            <p
-                                                class="text-gray-900 whitespace-no-wrap"
-                                            >
-                                                
-                                            </p>
-                                        </td>
-                                        <td
-                                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
-                                        >
-                                            <p
-                                                class="text-gray-900 whitespace-no-wrap"
-                                            >
-                                                
-                                            </p>
-                                        </td>
-                                        <td
-                                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
-                                        >
-                                            <p
-                                                class="text-gray-900 whitespace-no-wrap"
-                                            >
-                                                
-                                            </p>
-                                        </td>
-                                        <td
-                                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
-                                        >
-                                            <p
-                                                class="text-gray-900 whitespace-no-wrap"
-                                            >
-                                                
-                                            </p>
-                                        </td>
+                                        </td>                                        
                                         <td
                                             class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                         >
@@ -272,8 +182,11 @@ import "@fortawesome/fontawesome-free/css/all.css";
 import { nextTick, ref } from "vue";
 import axios from "axios";
 import { onMounted } from "vue";
+import { computed } from "vue";
 const intePerson = ref([]);
 const gruposIntegra = ref([]);
+const evaluacionIntegrante = ref([]);
+const criterioIntegra = ref()
 
 const props = defineProps({
     grupos: {
@@ -285,7 +198,8 @@ const props = defineProps({
         default: () => ({}),
     },
     personas: Object,
-    evaluaciones: Object
+    criterios: Object,
+    evaluacion_criterios:Object
     
 });
 
@@ -294,10 +208,55 @@ onMounted(async() =>{
     id_grupo.value = props.grupos.id
     intePerson.value = props.integrantes;
     gruposIntegra.value = props.grupos;
+    evaluacionIntegrante.value = props.evaluacion_criterios;
+    criterioIntegra.value = props.criterios;
     //console.log('comenta', intePerson.value);
     
 })
-console.log('sdsa', props.evaluaciones)
-console.log('grupo', props.grupos)
 console.log('sdsa', props.integrantes)
+// console.log('grupo', props.grupos)
+
+const puntajeMaximoPorIntegrante = computed(() => {
+    const puntajeCriterio = {};
+
+    for (const integrante of intePerson.value){
+        puntajeCriterio[integrante.id] = {};
+
+        for(const criterio of criterioIntegra.value){
+            const evaluacionFiltradas = evaluacionIntegrante.value.filter(
+                (evaluacion) => evaluacion.id_integrante ===integrante.id &&
+                                evaluacion.id_criterio === criterio.id
+                );
+
+        const puntajes = evaluacionFiltradas.map((evaluacion)=> evaluacion.ptj_total_indicador)
+
+        if(puntajes.length >0){
+
+            puntajeCriterio[integrante.id][criterio.id] = Math.max(...puntajes);
+        }else{
+            puntajeCriterio[integrante.id][criterio.id] = 0;
+        }
+        }
+    }
+    console.log('aui estas', puntajeCriterio);
+    return puntajeCriterio;
+});
+
+const getPuntajeMaximo = (integranteId, criterioId) => {
+    return puntajeMaximoPorIntegrante.value[integranteId][criterioId];
+}
+
+const getpuntaje = (integranteId, criterioId)=>{
+    const puntaje = evaluacionIntegrante.value.find((puntaje)=>
+    puntaje.id_integrante === integranteId && puntaje.id_criterio === criterioId
+    );
+    console.log('sdsa', puntaje)
+    return puntaje ? puntaje.ptj_total_indicador:'';
+}
+
+const filtarEvaluaciones = (integranteId) =>{
+    return evaluacionIntegrante.value.filter(evaluacion => evaluacion.id_integrante  === integranteId);
+}
+
+
 </script>
