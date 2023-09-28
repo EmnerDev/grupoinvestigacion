@@ -116,7 +116,7 @@
                                             <p
                                                 class="text-gray-900 whitespace-no-wrap"
                                             >
-                                                {{ inte.persona.name }} {{ inte.persona.first_name }} 
+                                                {{ inte.persona.name }} {{ inte.persona.first_name }}
                                                 {{ inte.persona.last_name }}
                                             </p>
                                         </td>
@@ -126,24 +126,24 @@
                                             <p
                                                 class="text-gray-900 whitespace-no-wrap"
                                             >
-                                            {{ inte.condition }} 
+                                            {{ inte.condition }}
                                             </p>
                                         </td>
-                                        <td v-for="evaluacion in evaluacion_criterios" :key="evaluacion.id" :value="evaluacion.id"
+                                        <td v-for="evaluacion in inte.evaluacion_criterio" :key="evaluacion.id"
                                             class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                         >
-                                            
+
                                             <p
                                                 class="text-gray-900 whitespace-no-wrap"
                                             >
-                                                {{ getPuntajeMaximo(inte.id,evaluacion.id)}}
+                                                {{ evaluacion.ptj_total_indicador }}
                                             </p>
-                                        </td>                                        
+                                        </td>
                                         <td
                                             class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                         >
                                             <LinkEvaluarButton :href="route('evaluacion.integrante', {grupo_id:inte.id_grupo, id:inte.id})"
-                                                class="mr-1"                                                
+                                                class="mr-1"
                                             >
                                             <i class="fa-solid fa-list-check"></i> Evaluar
                                             </LinkEvaluarButton>
@@ -200,7 +200,7 @@ const props = defineProps({
     personas: Object,
     criterios: Object,
     evaluacion_criterios:Object
-    
+
 });
 
 const id_grupo = ref([]);
@@ -211,7 +211,7 @@ onMounted(async() =>{
     evaluacionIntegrante.value = props.evaluacion_criterios;
     criterioIntegra.value = props.criterios;
     //console.log('comenta', intePerson.value);
-    
+
 })
 console.log('sdsa', props.integrantes)
 // console.log('grupo', props.grupos)

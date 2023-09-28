@@ -234,17 +234,32 @@ const submit = () => {
             .then((res) => {
                 // Manejar la respuesta exitosa aquí
                 console.log(res.data);
-                form.reset();
-                ok("Registro Creado Correctamente");
+                if(res.data.code == 200){
+                    form.reset();
+                    ok(res.data);
+                }
+
             })
             .catch((error) => {
                 // Manejar el error aquí
                 console.error(error);
             });
 };
-const ok = (msj) => {
+const ok = (obj) => {
     form.reset();
-    Swal.fire({ title: msj, icon: "success" });
+    //Swal.fire({ title: msj, icon: "success" });
+    Swal.fire({
+            title: obj.msj,
+            icon: 'success',
+            showCancelButton: false,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ok'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href='/grupos/evaluar/'+obj.id
+            }
+            })
 };
 // const calcularTotalCriterioPrueba = computed( () => {
 //     return (j) =>{

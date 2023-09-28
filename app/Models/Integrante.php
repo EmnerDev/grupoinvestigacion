@@ -21,7 +21,7 @@ class Integrante extends Model
     protected $enumCondition = [
         'inv. Titular' => 'inv. Titular',
         'Inv. Colaborador' => 'Inv. Colaborador',
-        'Inv. En formacion' => 'Inv. En formacion', 
+        'Inv. En formacion' => 'Inv. En formacion',
         'Inv. Posdoctorado' => 'Inv. Posdoctorado',
         'Coordinador' => 'Coordinador'
     ];
@@ -39,14 +39,14 @@ class Integrante extends Model
     }
 
     public function evaluacionCriterio(){
-        return $this->hasMany(EvaluacionCriterio::class, 'id_integrante');
+        return $this->hasMany(EvaluacionCriterio::class, 'id_integrante','id');
     }
 
     public static function enumConditionOption() {
         return [
             'inv. Titular' => 'inv. Titular',
             'Inv. Colaborador' => 'Inv. Colaborador',
-            'Inv. En formacion' => 'Inv. En formacion', 
+            'Inv. En formacion' => 'Inv. En formacion',
             'Inv. Posdoctorado' => 'Inv. Posdoctorado',
             'Coordinador' => 'Coordinador'
         ];
