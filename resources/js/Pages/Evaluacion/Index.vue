@@ -13,7 +13,7 @@
                             <div class="flex justify-center mb-6">
                                 <PrimaryButton @click="openModal(1)" class="">
                                     <i class="fa-solid fa-plus-circle"></i>
-                                    Agregar Evaluacion
+                                    Categorizar Grupo
                                 </PrimaryButton>
                             </div>
                             <table class="w-full table-auto">
@@ -92,6 +92,11 @@
                                         <th
                                             class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                                         >
+                                            Total
+                                        </th>
+                                        <th
+                                            class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
+                                        >
                                             Acciones
                                         </th>
                                     </tr>
@@ -136,7 +141,17 @@
                                             <p
                                                 class="text-gray-900 whitespace-no-wrap"
                                             >
-                                                {{ evaluacion.ptj_total_indicador }}
+                                                {{ Number(evaluacion.ptj_total_indicador) % 1 === 0 ? Number(evaluacion.ptj_total_indicador).toFixed(0) : Number(evaluacion.ptj_total_indicador).toFixed(1) }}
+                                            </p>
+                                        </td>
+                                        <td v-for="eva in inte.evaluacion_total" :key="eva.id"
+                                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                                        >
+
+                                            <p
+                                                class="text-gray-900 whitespace-no-wrap"
+                                            >
+                                            {{ Number(eva.ptj_total_integrante) % 1 === 0 ? Number(eva.ptj_total_integrante).toFixed(0) : Number(eva.ptj_total_integrante).toFixed(1) }}
                                             </p>
                                         </td>
                                         <td
@@ -156,10 +171,124 @@
                                     </tr>
                                 </tbody>
                             </table>
+
                         </div>
+                    </div>
+                    <div class="mt-6 text-center text-xl">
+                        <InputLabel>Puntaje Total Obtenido por grupo: </InputLabel>
+                        <span>{{ calcularPuntajeTotalGeneral() }}</span>
                     </div>
             </div>
         </div>
+        <Modal :show="modal" @close="closeModal()">
+            <h2 class="p-3 text-lg font-medium text-gray-900">{{ title }}</h2>
+            <div class="mt-6 text-center text-xl">
+            <InputLabel>Puntaje Total Obtenido por grupo: </InputLabel>
+            <span>{{ calcularPuntajeTotalGeneral() }}</span>
+            </div>
+            <div class="overflow-x-auto rounded-lg shadow mt-6">
+                <div class="mb-4">
+                    <table class="w-full table-auto">
+                    <caption class="text-slate-500 dark:text-slate-400 font-semibold pb-4 text-lg caption-top bg-teal-100">
+                        Categorizacion de los grupos de Investigacion, segun el puntaje de evaluacion
+                    </caption>
+                    <thead>
+                        <tr class="bg-teal-600 text-center">
+                            <th class="w-1/6 min-w-[160px] border-l border-transparent py-1 px-1 text-lg font-semibold text-white lg:py-3 lg:px-1">Categoria</th>
+                            <th class="w-1/6 min-w-[160px] py-1 px-1 text-lg font-semibold text-white lg:py-3 lg:px-1">Rango de puntaje requerido por cada evaluaciòn</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-dark border-b border-l border-[#E8E8E8] bg-[#F3F6FF] py-2 px-2 text-center text-base font-medium">Consolidado</td>
+                            <td class="text-dark border-b border-[#E8E8E8] bg-white py-2 px-2 text-center text-base font-medium"> 70 a más</td>
+                        </tr>
+                        <tr>
+                            <td class="text-dark border-b border-l border-[#E8E8E8] bg-[#F3F6FF] py-2 px-2 text-center text-base font-medium">Por Consolidar</td>
+                            <td class="text-dark border-b border-[#E8E8E8] bg-white py-2 px-2 text-center text-base font-medium">51-69</td>
+                        </tr>
+                        <tr>
+                            <td class="text-dark border-b border-l border-[#E8E8E8] bg-[#F3F6FF] py-2 px-2 text-center text-base font-medium">Emergente</td>
+                            <td class="text-dark border-b border-[#E8E8E8] bg-white py-2 px-2 text-center text-base font-medium">10-50</td>
+                        </tr>
+                        <tr>
+                            <td class="text-dark border-b border-l border-[#E8E8E8] bg-[#F3F6FF] py-2 px-2 text-center text-base font-medium">Sin Categoria</td>
+                            <td class="text-dark border-b border-[#E8E8E8] bg-white py-2 px-2 text-center text-base font-medium">Menores a 10, no alcanzaron puntaje</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+            <div class="mt-5 text-center">
+                <LinkEvaluarButton @click="togleInfo" style="cursor: pointer;">Ver Criterios minimos para Categorizar</LinkEvaluarButton>
+                <div v-if="mostrarInfo">
+                    <div class="overflow-x-auto">
+                        <table class="w-full p-6 text-xs text-left whitespace-nowrap">                            
+                            <thead>
+                                <tr class="dark:bg-gray-700 ">
+                                    <th class="p-3">Criterios para Categorización</th>
+                                </tr>
+                            </thead>
+                            <tbody class="border-b dark:bg-gray-900 dark:border-gray-700">
+                                <tr>
+                                    <th class="border-b border-l border-[#E8E8E8] bg-[#F3F6FF] py-2 px-2">A. Consolidado</th>
+                                </tr>
+                                <tr>                                    
+                                    <td class="border-b border-l border-[#E8E8E8] py-2 px-2">
+                                        <p>Tiene al menos una línea de investigacion consolidada.</p>
+                                    </td>
+                                </tr>
+                                <tr>                                    
+                                    <td class="border-b border-l border-[#E8E8E8] py-2 px-2">
+                                        <p>El Coordinador y sus miembros titulares son investigadores científicos registrados en el RENACYT.</p>
+                                    </td>
+                                </tr>
+                                <tr>                                    
+                                    <td class="border-b border-l border-[#E8E8E8] py-2 px-2">
+                                        <p>Tiene colaboradores externos de instituciones de prestigio internacional.</p>
+                                    </td>
+                                </tr>
+                                <tr>                                    
+                                    <td class="border-b border-l border-[#E8E8E8] py-2 px-2">
+                                        <p>Desarrolla proyectos de investigación financiados por fondos concursables Externos.</p>
+                                    </td>
+                                </tr>
+                                <tr>                                    
+                                    <td class="border-b border-l border-[#E8E8E8] py-2 px-2">
+                                        <p>Tiene una producción científica anual en revistas indizadas en web of Science, Scopus u otras similares en los últimos 5 años y estén registradas en Scimago Journal Ranking (SJR)</p>
+                                    </td>
+                                </tr>
+                                <tr>                                    
+                                    <td class="border-b border-l border-[#E8E8E8] py-2 px-2">
+                                        <p>Tiene derechos de propiedad intelectual y patentes.</p>
+                                    </td>
+                                </tr>
+                                <tr>                                    
+                                    <td class="border-b border-l border-[#E8E8E8] py-2 px-2">
+                                        <p>Demuestra acciones formativas relacionadas a la actividad científica del grupo (tesis de bachiller, título, maestría y doctorado)</p>
+                                    </td>
+                                </tr>
+                            </tbody>                            
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-center">
+                <div class="p-3 mt-6">
+                    <PrimaryButton>
+                        <i class="fa-solid fa save"></i>Guardar
+                    </PrimaryButton>
+                </div>
+                <div class="p-3 mt-6">
+                    <SecondaryButton
+                        class="ml-3"
+                        @click="closeModal"
+                    >
+                        Cancelar
+                    </SecondaryButton>
+                </div>
+            </div>
+        </Modal>
     </AuthenticatedLayout>
 </template>
 
@@ -188,6 +317,15 @@ const gruposIntegra = ref([]);
 const evaluacionIntegrante = ref([]);
 const criterioIntegra = ref()
 
+const mostrarInfo = ref(false);
+
+const nameInput=ref(null);
+const modal = ref(false);
+const title = ref("");
+const operation = ref(1);
+const id = ref("");
+
+
 const props = defineProps({
     grupos: {
         type: Object,
@@ -213,50 +351,42 @@ onMounted(async() =>{
     //console.log('comenta', intePerson.value);
 
 })
-console.log('sdsa', props.integrantes)
+console.log('integrantes', intePerson)
 // console.log('grupo', props.grupos)
 
-const puntajeMaximoPorIntegrante = computed(() => {
-    const puntajeCriterio = {};
+const calcularPuntajeTotalGeneral = () => {
 
-    for (const integrante of intePerson.value){
-        puntajeCriterio[integrante.id] = {};
+    let puntajeTotalgeneral = 0;
+    props.integrantes.forEach(integrante => {
+        integrante.evaluacion_total.forEach(ele =>{
+            puntajeTotalgeneral += parseFloat(ele.ptj_total_integrante);
 
-        for(const criterio of criterioIntegra.value){
-            const evaluacionFiltradas = evaluacionIntegrante.value.filter(
-                (evaluacion) => evaluacion.id_integrante ===integrante.id &&
-                                evaluacion.id_criterio === criterio.id
-                );
+        });
+    });
+    console.log('puntaje total', puntajeTotalgeneral);
+    return puntajeTotalgeneral;
+};
 
-        const puntajes = evaluacionFiltradas.map((evaluacion)=> evaluacion.ptj_total_indicador)
 
-        if(puntajes.length >0){
-
-            puntajeCriterio[integrante.id][criterio.id] = Math.max(...puntajes);
-        }else{
-            puntajeCriterio[integrante.id][criterio.id] = 0;
-        }
-        }
+const openModal = (
+    op
+) => {
+    modal.value = true;
+    nextTick(() => nameInput.value.focus());
+    operation.value = op;
+    id.value = gruposIntegra;
+    if (op == 1) {
+        title.value = "Categorizar Grupos";
+    } else {
+        title.value = "Editar Categorizar Grupos";
     }
-    console.log('aui estas', puntajeCriterio);
-    return puntajeCriterio;
-});
+};
 
-const getPuntajeMaximo = (integranteId, criterioId) => {
-    return puntajeMaximoPorIntegrante.value[integranteId][criterioId];
+const closeModal = () => {
+    modal.value = false;
+};
+
+const togleInfo = () => {
+    mostrarInfo.value = !mostrarInfo.value;
 }
-
-const getpuntaje = (integranteId, criterioId)=>{
-    const puntaje = evaluacionIntegrante.value.find((puntaje)=>
-    puntaje.id_integrante === integranteId && puntaje.id_criterio === criterioId
-    );
-    console.log('sdsa', puntaje)
-    return puntaje ? puntaje.ptj_total_indicador:'';
-}
-
-const filtarEvaluaciones = (integranteId) =>{
-    return evaluacionIntegrante.value.filter(evaluacion => evaluacion.id_integrante  === integranteId);
-}
-
-
 </script>

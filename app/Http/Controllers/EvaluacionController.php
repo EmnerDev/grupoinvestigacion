@@ -68,13 +68,14 @@ class EvaluacionController extends Controller
             'id_grupo' =>$request['integrante']['id_grupo'],
         ]);
 
-         // Crear un nuevo registro en la tabla 'evaluacion_total'
-         $evaluacionTotal = EvaluacionTotal::create([
-            'ptj_total' => $request['totalGeneral'],
-            'id_evaluacion_criterio' => $evaluacionCriterio->id, // Usar el ID del detalle de evaluación creado anteriormente
-            'id_grupo' => $request['integrante']['id_grupo'],
-        ]);
     }
+    // Crear un nuevo registro en la tabla 'evaluacion_total'
+    $evaluacionTotal = EvaluacionTotal::create([
+       'ptj_total_integrante' => $request['totalGeneral'],
+       'id_evaluacion_criterio' => $evaluacionCriterio->id, // Usar el ID del detalle de evaluación creado anteriormente
+       'id_grupo' => $request['integrante']['id_grupo'],
+       'id_integrante' => $request['integrante']['id'],
+   ]);
 
 
     // Devolver una respuesta adecuada, por ejemplo, un mensaje de éxito
@@ -115,7 +116,7 @@ class EvaluacionController extends Controller
     }
 
     public function evaluarGrupo($id){
-        $integrantes = Integrante::with('persona','evaluacionCriterio')->where('id_grupo',$id)->get();
+        $integrantes = Integrante::with('persona','evaluacionCriterio', 'evaluacionTotal')->where('id_grupo',$id)->get();
         // $evaluacion_criterios = DB::table('evaluacion_criterios')
         //                             ->select('id_criterio', DB::raw('MAX(ptj_total_indicador) as puntaje_maximo'))
         //                             ->groupBy('id_criterio')

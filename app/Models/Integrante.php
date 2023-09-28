@@ -42,6 +42,10 @@ class Integrante extends Model
         return $this->hasMany(EvaluacionCriterio::class, 'id_integrante','id');
     }
 
+    public function evaluacionTotal() {
+        return $this->hasMany(EvaluacionTotal::class, 'id_integrante');
+    }
+
     public static function enumConditionOption() {
         return [
             'inv. Titular' => 'inv. Titular',

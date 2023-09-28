@@ -55,7 +55,7 @@
                                 </div>
                                 <div class="flex justify-center mb-6">
                                     <a :href="route('grupos.index')" class="rounded-md bg-blue-700 px-4 py-2 text-center text-sm text-white hover:bg-blue-500">
-                                        <i class="fa-solid fa-right-from-bracket"></i>
+                                        <i class="fa-solid fa-right-from-bracket rotate-180"></i>
                                         Regresar
                                     </a>
                                 </div>
@@ -292,7 +292,7 @@
             </div>
         </div>
         <Modal :show="modal" @close="closeModal">
-            <h2 class="p-3 text-lg font.medium text-gray-900">{{ title }}</h2>
+            <h2 class="p-3 text-lg font-medium text-gray-900">{{ title }}</h2>
             <TextInput
                 type="hidden"
                 name="id_grupo"

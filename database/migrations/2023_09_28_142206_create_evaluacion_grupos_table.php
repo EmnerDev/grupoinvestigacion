@@ -11,16 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('evaluacion_totals', function (Blueprint $table) {
+        Schema::create('evaluacion_grupos', function (Blueprint $table) {
             $table->id();
-            $table->decimal('ptj_total_integrante',10,8)->nullable();
+            $table->decimal('ptj_total_grupo',10,8)->nullable();
 
-            $table->unsignedBigInteger('id_evaluacion_criterio');
+            $table->unsignedBigInteger('id_evaluacion_total');
             $table->unsignedBigInteger('id_grupo');
-            $table->unsignedBigInteger('id_integrante');
-            $table->foreign('id_integrante')->references('id')->on('integrantes')->onDelete('cascade'); 
-            $table->foreign('id_evaluacion_criterio')->references('id')->on('evaluacion_criterios')->onDelete('cascade');
+            $table->foreign('id_evaluacion_total')->references('id')->on('evaluacion_totals')->onDelete('cascade');
             $table->foreign('id_grupo')->references('id')->on('grupos')->onDelete('cascade');           
+
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('evaluacion_totals');
+        Schema::dropIfExists('evaluacion_grupos');
     }
 };

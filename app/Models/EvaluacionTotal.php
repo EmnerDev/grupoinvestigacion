@@ -10,9 +10,10 @@ class EvaluacionTotal extends Model
     use HasFactory;
 
     protected $fillable = [
-        'ptj_total',
+        'ptj_total_integrante',
         'id_evaluacion_criterio',
         'id_grupo',
+        'id_integrante'
     ];
 
     public function evaluacionCriterio(){
@@ -21,5 +22,9 @@ class EvaluacionTotal extends Model
 
     public function grupo(){
         return $this->belongsTo(Grupo::class, 'id_grupo');
+    }
+
+    public function integrante(){
+        return $this->belongsTo(Integrante::class, 'id_integrante');
     }
 }

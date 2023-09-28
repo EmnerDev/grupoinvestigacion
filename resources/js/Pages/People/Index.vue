@@ -243,7 +243,7 @@
             </div>
         </div>
         <Modal :show="modal" @close="closeModal">
-            <h2 class="p-3 text-lg font.medium text-gray-900">{{ title }}</h2>
+            <h2 class="p-3 text-lg font-medium text-gray-900">{{ title }}</h2>
             <div class="grid gap-6 mb-6 md:grid-cols-2">
                 <div class="p-3">
                     <InputLabel for="dni" value="Dni: " /><span style="color: #e53e3e;"> *</span>
