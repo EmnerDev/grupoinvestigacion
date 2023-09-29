@@ -175,18 +175,27 @@
                         </div>
                     </div>
                     <div class="mt-6 text-center text-xl">
-                        <InputLabel>Puntaje Total Obtenido por grupo: </InputLabel>
-                        <span>{{ calcularPuntajeTotalGeneral() }}</span>
+                        <InputLabel>Puntaje Total Obtenido por grupo: {{ calcularPuntajeTotalGeneral() }}</InputLabel>
+                        
                     </div>
             </div>
         </div>
         <Modal :show="modal" @close="closeModal()">
             <h2 class="p-3 text-lg font-medium text-gray-900">{{ title }}</h2>
+            <TextInput
+                type="hidden"
+                name="id_grupo"
+                v-model="form.id_grupo"
+            ></TextInput>
+            <TextInput
+                type="hidden"
+                name="id_evaluacion_total"
+                v-model="form.id_evaluacion_total"
+            ></TextInput>
             <div class="mt-6 text-center text-xl">
-            <InputLabel>Puntaje Total Obtenido por grupo: </InputLabel>
-            <span>{{ calcularPuntajeTotalGeneral() }}</span>
+            <InputLabel v-model="form.ptj_total_grupo" id="ptj_total_grupo">Puntaje Total Obtenido por grupo: {{ calcularPuntajeTotalGeneral() }}</InputLabel>
             </div>
-            <div class="overflow-x-auto rounded-lg shadow mt-6">
+            <div class="overflow-x-auto rounded-lg shadow mt-6 ml-5 mr-5">
                 <div class="mb-4">
                     <table class="w-full table-auto">
                     <caption class="text-slate-500 dark:text-slate-400 font-semibold pb-4 text-lg caption-top bg-teal-100">
@@ -194,88 +203,141 @@
                     </caption>
                     <thead>
                         <tr class="bg-teal-600 text-center">
-                            <th class="w-1/6 min-w-[160px] border-l border-transparent py-1 px-1 text-lg font-semibold text-white lg:py-3 lg:px-1">Categoria</th>
-                            <th class="w-1/6 min-w-[160px] py-1 px-1 text-lg font-semibold text-white lg:py-3 lg:px-1">Rango de puntaje requerido por cada evaluaciòn</th>
+                            <th class="w-1/8 min-w-[160px] border-l border-transparent py-1 px-1 text-lg font-semibold text-white lg:py-1 lg:px-1">Categoria</th>
+                            <th class="w-1/8 min-w-[160px] py-1 px-1 text-lg font-semibold text-white lg:py-1 lg:px-1">Rango de puntaje requerido por cada evaluación</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="text-dark border-b border-l border-[#E8E8E8] bg-[#F3F6FF] py-2 px-2 text-center text-base font-medium">Consolidado</td>
-                            <td class="text-dark border-b border-[#E8E8E8] bg-white py-2 px-2 text-center text-base font-medium"> 70 a más</td>
+                            <td class="text-dark border-b border-l border-[#E8E8E8] bg-[#F3F6FF] py-1 px-1 text-center text-sm font-medium">Consolidado</td>
+                            <td class="text-dark border-b border-[#E8E8E8] bg-white py-1 px-1 text-center text-sm font-medium"> 70 a más</td>
                         </tr>
                         <tr>
-                            <td class="text-dark border-b border-l border-[#E8E8E8] bg-[#F3F6FF] py-2 px-2 text-center text-base font-medium">Por Consolidar</td>
-                            <td class="text-dark border-b border-[#E8E8E8] bg-white py-2 px-2 text-center text-base font-medium">51-69</td>
+                            <td class="text-dark border-b border-l border-[#E8E8E8] bg-[#F3F6FF] py-1 px-1 text-center text-sm font-medium">Por Consolidar</td>
+                            <td class="text-dark border-b border-[#E8E8E8] bg-white py-1 px-1 text-center text-sm font-medium">51-69</td>
                         </tr>
                         <tr>
-                            <td class="text-dark border-b border-l border-[#E8E8E8] bg-[#F3F6FF] py-2 px-2 text-center text-base font-medium">Emergente</td>
-                            <td class="text-dark border-b border-[#E8E8E8] bg-white py-2 px-2 text-center text-base font-medium">10-50</td>
+                            <td class="text-dark border-b border-l border-[#E8E8E8] bg-[#F3F6FF] py-1 px-1 text-center text-sm font-medium">Emergente</td>
+                            <td class="text-dark border-b border-[#E8E8E8] bg-white py-1 px-1 text-center text-sm font-medium">10-50</td>
                         </tr>
                         <tr>
-                            <td class="text-dark border-b border-l border-[#E8E8E8] bg-[#F3F6FF] py-2 px-2 text-center text-base font-medium">Sin Categoria</td>
-                            <td class="text-dark border-b border-[#E8E8E8] bg-white py-2 px-2 text-center text-base font-medium">Menores a 10, no alcanzaron puntaje</td>
+                            <td class="text-dark border-b border-l border-[#E8E8E8] bg-[#F3F6FF] py-1 px-1 text-center text-sm font-medium">Sin Categoria</td>
+                            <td class="text-dark border-b border-[#E8E8E8] bg-white py-1 px-1 text-center text-sm font-medium">Menores a 10, no alcanzaron puntaje</td>
                         </tr>
                     </tbody>
                 </table>
                 </div>
             </div>
-            <div class="mt-5 text-center">
+            <div class="mt-5 text-center ml-5 mr-5">
                 <LinkEvaluarButton @click="togleInfo" style="cursor: pointer;">Ver Criterios minimos para Categorizar</LinkEvaluarButton>
                 <div v-if="mostrarInfo">
-                    <div class="overflow-x-auto">
+                    <div class="overflow-x-auto rounded-lg shadow mt-5 text-center">
                         <table class="w-full p-6 text-xs text-left whitespace-nowrap">                            
                             <thead>
-                                <tr class="dark:bg-gray-700 ">
+                                <tr class="border-b dark:bg-gray-700 dark:border-gray-700">
                                     <th class="p-3">Criterios para Categorización</th>
                                 </tr>
                             </thead>
                             <tbody class="border-b dark:bg-gray-900 dark:border-gray-700">
                                 <tr>
-                                    <th class="border-b border-l border-[#E8E8E8] bg-[#F3F6FF] py-2 px-2">A. Consolidado</th>
+                                    <th class="border-b border-l border-[#E8E8E8] bg-[#F3F6FF] py-1 px-1">A. Consolidado</th>
                                 </tr>
                                 <tr>                                    
-                                    <td class="border-b border-l border-[#E8E8E8] py-2 px-2">
+                                    <td class="border-b border-l border-[#E8E8E8] py-1 px-1 whitespace-normal">
                                         <p>Tiene al menos una línea de investigacion consolidada.</p>
                                     </td>
                                 </tr>
                                 <tr>                                    
-                                    <td class="border-b border-l border-[#E8E8E8] py-2 px-2">
+                                    <td class="border-b border-l border-[#E8E8E8] py-1 px-1 whitespace-normal">
                                         <p>El Coordinador y sus miembros titulares son investigadores científicos registrados en el RENACYT.</p>
                                     </td>
                                 </tr>
                                 <tr>                                    
-                                    <td class="border-b border-l border-[#E8E8E8] py-2 px-2">
+                                    <td class="border-b border-l border-[#E8E8E8] py-1 px-1 whitespace-normal">
                                         <p>Tiene colaboradores externos de instituciones de prestigio internacional.</p>
                                     </td>
                                 </tr>
                                 <tr>                                    
-                                    <td class="border-b border-l border-[#E8E8E8] py-2 px-2">
+                                    <td class="border-b border-l border-[#E8E8E8] py-1 px-1 whitespace-normal">
                                         <p>Desarrolla proyectos de investigación financiados por fondos concursables Externos.</p>
                                     </td>
                                 </tr>
                                 <tr>                                    
-                                    <td class="border-b border-l border-[#E8E8E8] py-2 px-2">
+                                    <td class="border-b border-l border-[#E8E8E8] py-1 px-1 Class whitespace-normal">
                                         <p>Tiene una producción científica anual en revistas indizadas en web of Science, Scopus u otras similares en los últimos 5 años y estén registradas en Scimago Journal Ranking (SJR)</p>
                                     </td>
                                 </tr>
                                 <tr>                                    
-                                    <td class="border-b border-l border-[#E8E8E8] py-2 px-2">
+                                    <td class="border-b border-l border-[#E8E8E8] py-1 px-1 whitespace-normal">
                                         <p>Tiene derechos de propiedad intelectual y patentes.</p>
                                     </td>
                                 </tr>
                                 <tr>                                    
-                                    <td class="border-b border-l border-[#E8E8E8] py-2 px-2">
+                                    <td class="border-b border-l border-[#E8E8E8] py-1 px-1 whitespace-normal">
                                         <p>Demuestra acciones formativas relacionadas a la actividad científica del grupo (tesis de bachiller, título, maestría y doctorado)</p>
                                     </td>
+                                </tr>
+                                <tr>
+                                    <th class="border-b border-l border-[#E8E8E8] bg-[#F3F6FF] py-1 px-1">B. Por Consolidar</th>
+                                </tr>
+                                <tr class="border-b border-l border-[#E8E8E8] py-1 px-1 whitespace-normal">
+                                    <td>Tiene al menos una línea de investigación por consolidar.</td>
+                                </tr>
+                                <tr class="border-b border-l border-[#E8E8E8] py-1 px-1 whitespace-normal">
+                                    <td>Tiene al menos un investigador titular registrado en el RENACYT.</td>
+                                </tr>
+                                <tr class="border-b border-l border-[#E8E8E8] py-1 px-1 whitespace-normal">
+                                    <td>Tiene colaboradores externos de instituciones de prestigio nacional.</td>
+                                </tr>
+                                <tr class="border-b border-l border-[#E8E8E8] py-1 px-1 whitespace-normal">
+                                    <td>Desarrolla al menos un proyecto de investigación financiado por fondos concursables Externos. </td>
+                                </tr>
+                                <tr class="border-b border-l border-[#E8E8E8] py-1 px-1 whitespace-normal">
+                                    <td>Tienen al menos una producción científica anual de artículos científicos en revistas indizados en Web of Science, Scopus u otras similares 6.0 en los últimos tres (3) años</td>
+                                </tr>
+                                <tr class="border-b border-l border-[#E8E8E8] py-1 px-1 whitespace-normal">
+                                    <td>Demuestra acciones formativas relacionadas a la actividad científica del grupo (tesis de bachiller, título y maestría).</td>
+                                </tr>
+                                <tr>
+                                    <th class="border-b border-l border-[#E8E8E8] bg-[#F3F6FF] py-1 px-1">B. Emergente</th>
+                                </tr>
+                                <tr class="border-b border-l border-[#E8E8E8] py-1 px-1 whitespace-normal">
+                                    <td>Todas sus investigaciones están dentro de las Líneas de investigación emergente.</td>
+                                </tr>
+                                <tr class="border-b border-l border-[#E8E8E8] py-1 px-1 whitespace-normal">
+                                    <td>Participación en proyectos financiados principalmente con fondos propios de la UNHEVAL.</td>
+                                </tr>
+                                <tr class="border-b border-l border-[#E8E8E8] py-1 px-1 whitespace-normal">
+                                    <td>Tienen al menos un artículo científico en revistas indizada en Scielo o similares en los últimos 2 años</td>
+                                </tr>
+                                <tr class="border-b border-l border-[#E8E8E8] py-1 px-1 whitespace-normal">
+                                    <td>Demuestra al menos una acción formativa relacionada a la actividad científica del grupo (tesis de bachiller o título).</td>
                                 </tr>
                             </tbody>                            
                         </table>
                     </div>
                 </div>
             </div>
+            <div class="p-3">
+                    <InputLabel for="categorias" value="Categoria del grupo: " />
+                    <select
+                        name="categorias"
+                        id="categorias"
+                        class="mt-1 block w-full"
+                        v-model="form.categorias"
+                    >
+                        <option
+                            v-for="(label, value) in categoria"
+                            :key="value"
+                            :value="value"
+                        >
+                            {{ label }}
+                        </option>
+                    </select>
+            </div>
             <div class="flex justify-center">
                 <div class="p-3 mt-6">
-                    <PrimaryButton>
+                    <PrimaryButton @click="submit">
                         <i class="fa-solid fa save"></i>Guardar
                     </PrimaryButton>
                 </div>
@@ -312,10 +374,13 @@ import { nextTick, ref } from "vue";
 import axios from "axios";
 import { onMounted } from "vue";
 import { computed } from "vue";
+
 const intePerson = ref([]);
 const gruposIntegra = ref([]);
-const evaluacionIntegrante = ref([]);
-const criterioIntegra = ref()
+const evaluacionGeneral = ref([]);
+const gruposevaluar = ref([]);
+const calcularTotal = ref(0);
+
 
 const mostrarInfo = ref(false);
 
@@ -336,22 +401,39 @@ const props = defineProps({
         default: () => ({}),
     },
     personas: Object,
-    criterios: Object,
-    evaluacion_criterios:Object
+    evaluacion_grupos: Object,
+    evaluacion_totals:Object,
+    categoria: {
+        'CONSOLIDADO': 'CONSOLIDADO',
+        'POR CONSOLIDAR': 'POR CONSOLIDAR',
+        'EMERGENTE': 'EMERGENTE',
+        'SIN EVALUAR': 'SIN EVALUAR',
+    },
 
+});
+const form = useForm({
+    ptj_total_grupo: '',
+    categorias: 'SIN EVALUAR',
+    id_evaluacion_total: gruposevaluar.id,
+    id_grupo: props.grupos.id,
 });
 
 const id_grupo = ref([]);
+
+
 onMounted(async() =>{
     id_grupo.value = props.grupos.id
     intePerson.value = props.integrantes;
     gruposIntegra.value = props.grupos;
-    evaluacionIntegrante.value = props.evaluacion_criterios;
-    criterioIntegra.value = props.criterios;
+    gruposevaluar.value = props.evaluacion_grupos;
+    evaluacionGeneral.value = props.evaluacion_totals;
     //console.log('comenta', intePerson.value);
-
+    
 })
-console.log('integrantes', intePerson)
+
+
+
+console.log('integrantes', evaluacionGeneral)
 // console.log('grupo', props.grupos)
 
 const calcularPuntajeTotalGeneral = () => {
@@ -364,7 +446,7 @@ const calcularPuntajeTotalGeneral = () => {
         });
     });
     console.log('puntaje total', puntajeTotalgeneral);
-    return puntajeTotalgeneral;
+    return calcularTotal.value = puntajeTotalgeneral;
 };
 
 
@@ -389,4 +471,32 @@ const closeModal = () => {
 const togleInfo = () => {
     mostrarInfo.value = !mostrarInfo.value;
 }
+
+const submit = () => {
+        // Para una solicitud POST
+        const datosEnviar = {
+            totales: form,
+            calcularTotal:calcularTotal.value,
+            gruposadd: gruposIntegra.value
+        }
+        axios
+            .post(route("guardar.total"), datosEnviar)
+            .then((res) => {
+                // Manejar la respuesta exitosa aquí
+                console.log(res.data);
+                // if(res.data.code == 200){
+                //     form.reset();
+                //     ok(res.data);
+                // }
+
+            })
+            .catch((error) => {
+                // Manejar el error aquí
+                console.error(error);
+            });
+};
+const ok = (obj) => {
+    form.reset();
+    Swal.fire({ title: obj.msj, icon: "success" });
+};
 </script>

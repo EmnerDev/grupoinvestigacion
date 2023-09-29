@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Criterio;
 use App\Models\Evaluacion;
 use App\Models\EvaluacionCriterio;
+use App\Models\EvaluacionGrupo;
 use App\Models\EvaluacionTotal;
 use App\Models\Grupo;
 use App\Models\Indicador;
@@ -83,6 +84,18 @@ class EvaluacionController extends Controller
 
     }
 
+    public function guardarEvaluacion(Request $request){
+        return $request['gruposadd']['evaluacion_total'];
+
+        $evaluacionGrupo = EvaluacionGrupo::create([
+            'ptj_total_grupo' => $request['calcularTotal'],
+            'categorias' => 2,
+            'id_evaluacion_total' => $request['totales'],
+            'id_grupo' => $request['totales']['id_grupo'],
+        ]);
+
+    //return $evaluacionGrupo;
+    }
     /**
      * Display the specified resource.
      */
@@ -117,20 +130,18 @@ class EvaluacionController extends Controller
 
     public function evaluarGrupo($id){
         $integrantes = Integrante::with('persona','evaluacionCriterio', 'evaluacionTotal')->where('id_grupo',$id)->get();
-        // $evaluacion_criterios = DB::table('evaluacion_criterios')
-        //                             ->select('id_criterio', DB::raw('MAX(ptj_total_indicador) as puntaje_maximo'))
-        //                             ->groupBy('id_criterio')
-        //                             ->get();
-        //return $integrantes;
+        //$evaluacionGrupo = EvaluacionGrupo::with('grupo')->get();
+        //$guardarTotal = Grupo::with('evaluacionGrupos')->get();
+        $evaluacionGeneral = EvaluacionTotal::get();
+
+        //return $grupos;
         return Inertia::render('Evaluacion/Index',[
-            'grupos' => Grupo::with('evaluacionCriterio')->find($id),
+            'grupos' => Grupo::with('evaluacionCriterio', 'evaluacionTotal')->find($id),
             'evaluacion_criterios' => EvaluacionCriterio::with('integrante.persona','grupo')->get(),
-            // 'evaluacion_criterios' => DB::table('evaluacion_criterios')
-            //                         ->select('id_criterio', DB::raw('MAX(ptj_total_indicador) as puntaje_maximo'))
-            //                         ->groupBy('id_criterio')
-            //                         ->get(),
             'integrantes' => $integrantes,
-            'criterios' => Criterio::get(),
+            //'evaluacion_grupos' => $evaluacionGrupo,
+            'evaluacion_totals' => $evaluacionGeneral,
+            'categoria' => EvaluacionGrupo::enumCategoriaOption()
         ]);
     }
 

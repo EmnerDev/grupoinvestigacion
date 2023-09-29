@@ -27,4 +27,7 @@ class EvaluacionTotal extends Model
     public function integrante(){
         return $this->belongsTo(Integrante::class, 'id_integrante');
     }
+    public function evaluacionGrupos(){
+        return $this->hasMany(EvaluacionGrupo::class,'id_evaluacion_total','id');
+    }
 }

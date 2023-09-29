@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('evaluacion_grupos', function (Blueprint $table) {
             $table->id();
             $table->decimal('ptj_total_grupo',10,8)->nullable();
+            $table->enum('categorias', ['CONSOLIDADO','POR CONSOLIDAR','EMERGENTE','SIN EVALUAR'])->default('SIN EVALUAR');
 
             $table->unsignedBigInteger('id_evaluacion_total');
             $table->unsignedBigInteger('id_grupo');

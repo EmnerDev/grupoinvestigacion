@@ -68,5 +68,9 @@ class Grupo extends Model
     public function evaluacionTotal(){
         return $this->hasMany(EvaluacionTotal::class, 'id_grupo');
     }
+
+    public function evaluacionGrupos(){
+        return $this->hasMany(EvaluacionGrupo::class,'id_grupo', 'id');
+    }
 }
 
