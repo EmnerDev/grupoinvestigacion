@@ -176,7 +176,7 @@
                     </div>
                     <div class="mt-6 text-center text-xl">
                         <InputLabel>Puntaje Total Obtenido por grupo: {{ calcularPuntajeTotalGeneral() }}</InputLabel>
-                        
+
                     </div>
             </div>
         </div>
@@ -232,7 +232,7 @@
                 <LinkEvaluarButton @click="togleInfo" style="cursor: pointer;">Ver Criterios minimos para Categorizar</LinkEvaluarButton>
                 <div v-if="mostrarInfo">
                     <div class="overflow-x-auto rounded-lg shadow mt-5 text-center">
-                        <table class="w-full p-6 text-xs text-left whitespace-nowrap">                            
+                        <table class="w-full p-6 text-xs text-left whitespace-nowrap">
                             <thead>
                                 <tr class="border-b dark:bg-gray-700 dark:border-gray-700">
                                     <th class="p-3">Criterios para Categorización</th>
@@ -242,37 +242,37 @@
                                 <tr>
                                     <th class="border-b border-l border-[#E8E8E8] bg-[#F3F6FF] py-1 px-1">A. Consolidado</th>
                                 </tr>
-                                <tr>                                    
+                                <tr>
                                     <td class="border-b border-l border-[#E8E8E8] py-1 px-1 whitespace-normal">
                                         <p>Tiene al menos una línea de investigacion consolidada.</p>
                                     </td>
                                 </tr>
-                                <tr>                                    
+                                <tr>
                                     <td class="border-b border-l border-[#E8E8E8] py-1 px-1 whitespace-normal">
                                         <p>El Coordinador y sus miembros titulares son investigadores científicos registrados en el RENACYT.</p>
                                     </td>
                                 </tr>
-                                <tr>                                    
+                                <tr>
                                     <td class="border-b border-l border-[#E8E8E8] py-1 px-1 whitespace-normal">
                                         <p>Tiene colaboradores externos de instituciones de prestigio internacional.</p>
                                     </td>
                                 </tr>
-                                <tr>                                    
+                                <tr>
                                     <td class="border-b border-l border-[#E8E8E8] py-1 px-1 whitespace-normal">
                                         <p>Desarrolla proyectos de investigación financiados por fondos concursables Externos.</p>
                                     </td>
                                 </tr>
-                                <tr>                                    
+                                <tr>
                                     <td class="border-b border-l border-[#E8E8E8] py-1 px-1 Class whitespace-normal">
                                         <p>Tiene una producción científica anual en revistas indizadas en web of Science, Scopus u otras similares en los últimos 5 años y estén registradas en Scimago Journal Ranking (SJR)</p>
                                     </td>
                                 </tr>
-                                <tr>                                    
+                                <tr>
                                     <td class="border-b border-l border-[#E8E8E8] py-1 px-1 whitespace-normal">
                                         <p>Tiene derechos de propiedad intelectual y patentes.</p>
                                     </td>
                                 </tr>
-                                <tr>                                    
+                                <tr>
                                     <td class="border-b border-l border-[#E8E8E8] py-1 px-1 whitespace-normal">
                                         <p>Demuestra acciones formativas relacionadas a la actividad científica del grupo (tesis de bachiller, título, maestría y doctorado)</p>
                                     </td>
@@ -313,7 +313,7 @@
                                 <tr class="border-b border-l border-[#E8E8E8] py-1 px-1 whitespace-normal">
                                     <td>Demuestra al menos una acción formativa relacionada a la actividad científica del grupo (tesis de bachiller o título).</td>
                                 </tr>
-                            </tbody>                            
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -414,7 +414,7 @@ const props = defineProps({
 const form = useForm({
     ptj_total_grupo: '',
     categorias: 'SIN EVALUAR',
-    id_evaluacion_total: gruposevaluar.id,
+    id_evaluacion_total: intePerson.value[0]?.evaluacion_total[0]?.id,
     id_grupo: props.grupos.id,
 });
 
@@ -428,7 +428,7 @@ onMounted(async() =>{
     gruposevaluar.value = props.evaluacion_grupos;
     evaluacionGeneral.value = props.evaluacion_totals;
     //console.log('comenta', intePerson.value);
-    
+
 })
 
 
@@ -453,6 +453,7 @@ const calcularPuntajeTotalGeneral = () => {
 const openModal = (
     op
 ) => {
+    form.id_evaluacion_total = intePerson.value[0]?.evaluacion_total[0]?.id;
     modal.value = true;
     nextTick(() => nameInput.value.focus());
     operation.value = op;
@@ -476,8 +477,7 @@ const submit = () => {
         // Para una solicitud POST
         const datosEnviar = {
             totales: form,
-            calcularTotal:calcularTotal.value,
-            gruposadd: gruposIntegra.value
+            calcularTotal:calcularTotal.value
         }
         axios
             .post(route("guardar.total"), datosEnviar)
