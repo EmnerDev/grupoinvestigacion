@@ -10,11 +10,19 @@
             <div class="p-6 border-b border-gray-200">
                 <div class="overflow-x-auto rounded-lg shadow mt-6">
                         <div class="mb-4">
-                            <div class="flex justify-center mb-6">
+                            <div class="flex justify-center gap-5">
+                                <div class="flex justify-center mb-6">
                                 <PrimaryButton @click="openModal(1)" class="">
                                     <i class="fa-solid fa-plus-circle"></i>
                                     Categorizar Grupo
                                 </PrimaryButton>
+                                </div>
+                                <div class="flex justify-center mb-6">
+                                        <a :href="route('grupos.index')" class="rounded-md bg-blue-700 px-4 py-2 text-center text-sm text-white hover:bg-blue-500">
+                                            <i class="fa-solid fa-right-from-bracket rotate-180"></i>
+                                            Regresar
+                                        </a>
+                                </div>
                             </div>
                             <table class="w-full table-auto">
                                 <thead>
@@ -178,6 +186,45 @@
                         <InputLabel>Puntaje Total Obtenido por grupo: {{ calcularPuntajeTotalGeneral() }}</InputLabel>
 
                     </div>
+                    <div class="overflow-x-auto rounded-lg shadow mt-6 ml-5 mr-5">
+                        <div class="mb-4">
+                            <table class="w-full table-auto border-separate">
+                                <caption class="text-slate-600 dark:text-slate-400 font-semibold pb-4 text-lg caption-top bg-blue-100">
+                                    La categoria Obtenida por el grupo segun la puntuacion y los criterios minimos.
+                                </caption>
+                                <thead>
+                                    <tr class="bg-blue-700 text-center">
+                                        <th class="w-1/8 min-w-[160px] border-l border-transparent py-1 px-1 text-lg font-semibold text-white lg:py-1 lg:px-1">Grupo</th>
+                                        <th class="w-1/8 min-w-[160px] py-1 px-1 text-lg font-semibold text-white lg:py-1 lg:px-1">Categoria</th>
+                                        <th class="w-1/8 min-w-[160px] py-1 px-1 text-lg font-semibold text-white lg:py-1 lg:px-1">Editar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="gru in gruposIntegra.evaluacion_grupos" :key="gru.id" >
+                                        <td class="text-dark border-b border-l border-[#E8E8E8] bg-[#F3F6FF] py-1 px-1 text-center text-sm font-medium">{{ gruposIntegra.name }}</td>
+                                        <td class="text-dark border-b border-[#E8E8E8] bg-white py-1 px-1 text-center text-sm font-medium"> {{ gru.categorias }}</td>
+                                        <td class="text-dark border-b border-[#E8E8E8] bg-white py-1 px-1 text-center text-sm font-medium">
+                                            <WarningButton
+                                                class="mr-1"
+                                                @click="
+                                                    openModal(
+                                                        2,
+                                                        gru.ptj_total_grupo,
+                                                        gru.categorias,
+                                                        gru.id_evaluacion_total,
+                                                        gru.id_grupo,
+                                                        gru.id
+                                                    )
+                                                "
+                                            >
+                                                <i class="fa-solid fa-edit"></i>
+                                            </WarningButton>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                </div>
             </div>
         </div>
         <Modal :show="modal" @close="closeModal()">
@@ -451,17 +498,27 @@ const calcularPuntajeTotalGeneral = () => {
 
 
 const openModal = (
-    op
+    op,
+    ptj_total_grupo,
+    categorias,
+    id_evaluacion_total,
+    id_grupo,
+    categ
 ) => {
     form.id_evaluacion_total = intePerson.value[0]?.evaluacion_total[0]?.id;
     modal.value = true;
     nextTick(() => nameInput.value.focus());
     operation.value = op;
-    id.value = gruposIntegra;
+    id.value = categ;
     if (op == 1) {
         title.value = "Categorizar Grupos";
     } else {
         title.value = "Editar Categorizar Grupos";
+        form.ptj_total_grupo = ptj_total_grupo;
+        form.categorias = categorias;
+        form.id_evaluacion_total = id_evaluacion_total;
+        form.id_grupo = id_grupo
+
     }
 };
 
@@ -484,10 +541,11 @@ const submit = () => {
             .then((res) => {
                 // Manejar la respuesta exitosa aquí
                 console.log(res.data);
-                // if(res.data.code == 200){
-                //     form.reset();
-                //     ok(res.data);
-                // }
+                if(res.data.code == 200){
+                    form.reset();
+                    closeModal();
+                    ok(res.data);
+                }
 
             })
             .catch((error) => {
@@ -497,6 +555,7 @@ const submit = () => {
 };
 const ok = (obj) => {
     form.reset();
+    closeModal()
     Swal.fire({ title: obj.msj, icon: "success" });
 };
 </script>

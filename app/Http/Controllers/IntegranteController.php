@@ -47,11 +47,8 @@ class IntegranteController extends Controller
         $integranteExistente = Integrante::where('id_persona', $persona->id)->first();
 
         if($integranteExistente){
-            //return redirect()->back()->with('integrante_existente', 'El integrante ya esta registrado en otro grupo');
+    
             return response()->json(['error' => 'El integrante ya esta registrado en otro grupo'], 422);
-            // return Inertia::render('Groups/Show', [
-            //     'integrante_existente' => 'El integrante ya esta registrado en otro grupo',
-            // ]);
         }
         $persona->name = $request->name;
         $persona->first_name = $request->first_name;

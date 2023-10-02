@@ -17,6 +17,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -31,7 +32,7 @@ class GrupoController extends Controller
         //$grupos = Grupo::with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea','integrante.persona')->get();
 
         return Inertia::render('Groups/Index',[
-            'grupos' =>  Grupo::query()->with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea','integrante.persona')->orderBy('created_at','DESC')
+            'grupos' =>  Grupo::query()->with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea','integrante.persona','evaluacionGrupos')->orderBy('created_at','DESC')
             ->when(\Illuminate\Support\Facades\Request::input('search'), function($query, $search) {
             $query->where(function ($subquery) use ($search){
                 $subquery->wherehas('integrante.persona', function($q) use ($search) {
@@ -84,38 +85,65 @@ class GrupoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(GrupoCreateRequest $request): RedirectResponse
+    public function store(GrupoCreateRequest $request)
     {
-        //return $request->all();
-        $grupo = new Grupo;
-        $grupo->name = $request->name;
-        $grupo->space_inves = $request->space_inves;
-        $grupo->pre_group_inv = $request->pre_group_inv;
-        $grupo->objective = $request->objective;
-        $grupo->obj_desa_soste_l_i = $request->obj_desa_soste_l_i;
-        $grupo->services = $request->services;
-        $grupo->laboratory = $request->laboratory;
-        $grupo->phisical_environment= $request->phisical_environment;
-        $grupo->labora_equip = $request->labora_equip;
-        $grupo->pagina = $request->pagina;
-        $grupo->office = $request->office;
-        $grupo->annexed = $request->annexed;
-        $grupo->phone = $request->phone;
-        $grupo->id_area = $request->id_area;
-        $grupo->id_linea = $request->id_linea;
-        $grupo->id_sublinea = $request->id_sublinea;
-        $grupo->id_facultad = $request->id_facultad;
-        $grupo->id_escuela = $request->id_escuela;
-        $grupo->save();
+        // return $request->all();
+        try {
+            //code...
+            // $dni = $request->dni;
+    
+            // $persona = Persona::where('dni', $dni)->first();
+            // if(!$persona) {
+            //     return response()->json(['error'=> 'La persona con el DNi proporcionado no existe'], 200);
+            // }
+    
+            $integranteExistente = Integrante::where('id_persona', $request->id_persona)->first();
+    
+            if($integranteExistente){
+                return response()->json(['error' => 'El coordinador ya esta registrado en otro grupo'],422);
+                
+            }
+    
+            $grupo = new Grupo;
+            $grupo->name = $request->name;
+            $grupo->space_inves = $request->space_inves;
+            $grupo->pre_group_inv = $request->pre_group_inv;
+            $grupo->objective = $request->objective;
+            $grupo->obj_desa_soste_l_i = $request->obj_desa_soste_l_i;
+            $grupo->services = $request->services;
+            $grupo->laboratory = $request->laboratory;
+            $grupo->phisical_environment= $request->phisical_environment;
+            $grupo->labora_equip = $request->labora_equip;
+            $grupo->pagina = $request->pagina;
+            $grupo->office = $request->office;
+            $grupo->annexed = $request->annexed;
+            $grupo->phone = $request->phone;
+            $grupo->id_area = $request->id_area;
+            $grupo->id_linea = $request->id_linea;
+            $grupo->id_sublinea = $request->id_sublinea;
+            $grupo->id_facultad = $request->id_facultad;
+            $grupo->id_escuela = $request->id_escuela;
+            $grupo->save();
+    
+            $integrante = Integrante::create([
+                    'id_grupo' => $grupo->id,
+                    'id_persona' => $request->id_persona
+    
+            ]);
+            $integrante->save();
+            DB::commit();
 
-        $integrante = Integrante::create([
-                'id_grupo' => $grupo->id,
-                'id_persona' => $request->id_persona
+            $validator = Validator::make($request->all(), $request->rules());
+            if($validator->fails()) {
+                return response()->json((['errors'=> $validator->errors()]), 422);
+            }
+            //return Redirect::route('ver.grupo',$grupo);
+            return response()->json(['msj' =>'Registro creado correctamente','code' =>200,'data'=>$grupo, 'id' => $grupo->id]);
+            //return redirect()->route('ver.grupo', $grupo)->with(['msj' =>'Registro creado correctamente','data' => $grupo]);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
 
-        ]);
-        $integrante->save();
-        DB::commit();
-        return Redirect::route('ver.grupo',$grupo);
     }
 
     /**

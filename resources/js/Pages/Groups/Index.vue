@@ -129,10 +129,10 @@
                                                 :rowspan="gru.integrante.length+1"
                                                 class=" border-b border-gray-200 bg-white px-5 text-sm"
                                             >
-                                                <p
+                                                <p v-for="cat in gru.evaluacion_grupos" :key="cat.id"
                                                     class="text-gray-900 whitespace-no-wrap"
                                                 >
-                                                    {{ gru.categorias }}
+                                                    {{ cat.categorias }}
                                                 </p>
                                             </td>  
                                             <td v-if="gru.integrante && gru.integrante.length"

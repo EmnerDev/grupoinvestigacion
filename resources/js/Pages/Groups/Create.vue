@@ -16,7 +16,7 @@
                         <div class="flex-initial ml-6">
                             <InputLabel for="name" value="Nombre del Grupo" /><span style="color: #e53e3e;"> *</span>
                             <TextInput id="name" name="name" type="text" class="mt-1" v-model="form.name"/>
-                            <InputError class="mt-2" :message="form.errors.name" />
+                            <InputError class="mt-2" :message="errors.name" />
                         </div>
                         <div class=" flex-initial ml-6">
                             <InputLabel for="name" value="Facultad" /><span style="color: #e53e3e;"> *</span>
@@ -24,7 +24,7 @@
                                 <option value="0">Seleccione su Facultad</option>
                                 <option v-for="fac in facultades" :key="fac.id" :value="fac.id">{{ fac.name }}</option>
                             </select>
-                            <InputError class="mt-2" :message="form.errors.id_facultad" />
+                            <InputError class="mt-2" :message="errors.id_facultad" />
                         </div>
                     </div>
                     <div class="grid gap-6 mb-6 md:grid-cols-2">
@@ -34,7 +34,7 @@
                                 <option value="0">Seleccione la Escuela</option>
                                 <option v-for="esc in escuelasfilter" :key="esc.id" :value="esc.id">{{ esc.name }}</option>
                             </select>
-                            <InputError class="mt-2" :message="form.errors.id_escuela" />
+                            <InputError class="mt-2" :message="errors.id_escuela" />
                         </div>
                         <div class="flex-initial ml-6">
                             <InputLabel for="name" value="Area de Investigación" /><span style="color: #e53e3e;"> *</span>
@@ -42,7 +42,7 @@
                                 <option value="0">Seleccione el Area</option>
                                 <option v-for="ar in areas" :key="ar.id" :value="ar.id">{{ ar.name }}</option>
                             </select>
-                            <InputError class="mt-2" :message="form.errors.id_area" />
+                            <InputError class="mt-2" :message="errors.id_area" />
                         </div>
                     </div>
                     <div class="grid gap-6 mb-6 md:grid-cols-2">
@@ -52,7 +52,7 @@
                                 <option value="0">Seleccione la Linea</option>
                                 <option v-for="li in lineasfiltered" :key="li.id" :value="li.id">{{ li.name }}</option>
                             </select>
-                            <InputError class="mt-2" :message="form.errors.id_linea" />
+                            <InputError class="mt-2" :message="errors.id_linea" />
                         </div>
                         <div class="flex-initial ml-6">
                             <InputLabel for="name" value="Sublinea" /><span style="color: #e53e3e;"> *</span>
@@ -60,7 +60,7 @@
                                 <option value="0">Seleccione la Sublinea</option>
                                 <option v-for="su in sublineasFiltered" :key="su.id" :value="su.id">{{ su.name }}</option>
                             </select>
-                            <InputError class="mt-2" :message="form.errors.id_sublinea" />
+                            <InputError class="mt-2" :message="errors.id_sublinea" />
                         </div>
                     </div>
                     <div class="grid gap-6 mb-6 md:grid-cols-1">
@@ -70,7 +70,7 @@
                                     <option value="0">Seleccione Responsable</option>
                                     <option v-for="per in personas" :key="per.id" :value="per.id">{{ per.name }} {{ per.first_name }} {{ per.last_name }} - {{ per.tipo.name }}</option>
                                 </select>
-                                <InputError class="mt-2" :message="form.errors.id_persona" />
+                                <InputError class="mt-2" :message="errors.id_persona" />
                         </div>
                     </div>
                     <div class="grid gap-6 mb-6 md:grid-cols-3">
@@ -82,29 +82,29 @@
                         <div class=" flex-initial ml-6">
                             <InputLabel for="name" value="Presentacion del grupo" /><span style="color: #e53e3e;"> *</span>
                             <textarea name="pre_group_inv" id="pre_group_inv" cols="20" rows="5" class="w-full" v-model="form.pre_group_inv"></textarea>
-                            <InputError class="mt-2" :message="form.errors.pre_group_inv" />
+                            <InputError class="mt-2" :message="errors.pre_group_inv" />
                         </div>
                         <div class=" flex-initial ml-6">
                             <InputLabel for="name" value="objetivos" /><span style="color: #e53e3e;"> *</span>
                             <textarea name="objective" id="objective" cols="20" rows="5" class="w-full" v-model="form.objective"></textarea>
-                            <InputError class="mt-2" :message="form.errors.objective" />
+                            <InputError class="mt-2" :message="errors.objective" />
                         </div>
                     </div>
                     <div class="grid gap-6 mb-6 md:grid-cols-3">
                         <div class="flex-initial ml-6">
                             <InputLabel for="name" value="Objetivo desarrollo sostenible" /><span style="color: #e53e3e;"> *</span>
                             <textarea name="obj_desa_soste_l_i" id="obj_desa_soste_l_i" cols="20" rows="5" class="w-full" v-model="form.obj_desa_soste_l_i"></textarea>
-                            <InputError class="mt-2" :message="form.errors.obj_desa_soste_l_i" />
+                            <InputError class="mt-2" :message="errors.obj_desa_soste_l_i" />
                         </div>
                         <div class=" flex-initial ml-6">
                             <InputLabel for="name" value="Servicios" /><span style="color: #e53e3e;"> *</span>
                             <textarea name="services" id="services" cols="20" rows="5" class="w-full" v-model="form.services"></textarea>
-                            <InputError class="mt-2" :message="form.errors.services" />
+                            <InputError class="mt-2" :message="errors.services" />
                         </div>
                         <div class=" flex-initial ml-6">
                             <InputLabel for="name" value="Laboratorio" /><span style="color: #e53e3e;"> *</span>
                             <textarea name="laboratory" id="laboratory" cols="20" rows="5" class="w-full" v-model="form.laboratory"></textarea>
-                            <InputError class="mt-2" :message="form.errors.laboratory" />
+                            <InputError class="mt-2" :message="errors.laboratory" />
                         </div>
                     </div>
                     <div class="grid gap-6 mb-6 md:grid-cols-1">
@@ -169,7 +169,7 @@ import { Head, useForm, router } from "@inertiajs/vue3";
 
 import Swal from "sweetalert2";
 import '@fortawesome/fontawesome-free/css/all.css';
-import { nextTick, ref } from "vue";
+import { nextTick, onMounted, ref } from "vue";
 import { watch, reactive } from "vue";
 import Paginator from "@/Components/Paginator.vue";
 
@@ -181,6 +181,10 @@ const selectedlineaId = ref(0);
 let escuelasfilter = [];
 let lineasfiltered = [];
 let sublineasFiltered = [];
+
+
+const gruposIntegra = ref([]);
+const errors = ref({});
 
 const props = defineProps({
     facultades: Array,
@@ -213,6 +217,13 @@ const form = useForm({
     id_escuela:0,
     id_persona:0
 });
+
+onMounted(async() =>{
+    //intePerson.value = props.integrantes;
+    gruposIntegra.value = props.grupos;
+    //console.log('comenta', intePerson.value);
+    
+})
 
 watch(() => form.id_facultad, (newId, oldId) => {
     if(newId !== oldId) {
@@ -258,12 +269,58 @@ const updateSublineas = () => {
 
 
 const submit = () => {
-        form.post(route("registrar.grupo"),{
-            onSuccess: () => {ok('Registro creado Correctamente')},
-        });    
+        // form.post(route("registrar.grupo"),{
+        //     onSuccess: () => {ok('Registro creado Correctamente')},
+        // });   
+        // Para una solicitud POST
+        axios
+            .post(route("registrar.grupo"), form)
+            .then((res) => {
+                // Manejar la respuesta exitosa aquí
+                console.log(res.data); 
+                // Puedes acceder a los datos de la respuesta                
+                gruposIntegra.value = res.data.data;
+                if(res.data.code == 200) {
+                    form.reset();              
+                    ok(res.data);
+
+                }
+            })
+            .catch((error) => {
+                // Manejar el error aquí
+                console.error(error);
+                if (error.response && error.response.status == 422) {
+                    //alert("El usuario ya esta registrado en otro grupo");
+                    errors.value = error.response.data.errors;
+                    
+                    if(error.response.data.error){
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'El Coordinador ya esta Registrado en otro Grupo',
+                        })
+                    }
+
+                }else{
+                    
+                       
+                }
+            }); 
 };
-const ok = (msj) => {
+const ok = (obj) => {
     form.reset();
-    Swal.fire({title:msj, icon:'success'});
+    //Swal.fire({title:obj.msj, icon:'success'});
+    Swal.fire({
+            title: obj.msj,
+            icon: 'success',
+            showCancelButton: false,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ok'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href='/grupos/ver/'+obj.id
+            }
+            })
 }
 </script>

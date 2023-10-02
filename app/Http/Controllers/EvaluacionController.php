@@ -86,11 +86,6 @@ class EvaluacionController extends Controller
 
     public function guardarEvaluacion(Request $request){
         //return $request->all();
-        // foreach ($request['gruposadd'] as $key => $value) {
-        //     foreach ($value['evaluacion_total'] as $ky => $val) {
-        //         return $val;
-        //     }
-        // }
 
         $evaluacionGrupo = EvaluacionGrupo::create([
             'ptj_total_grupo' => $request['calcularTotal'],
@@ -99,7 +94,9 @@ class EvaluacionController extends Controller
             'id_grupo' => $request['totales']['id_grupo'],
         ]);
 
-    return $evaluacionGrupo;
+    //return $evaluacionGrupo;
+    return response()->json(['msj' => 'Grupo categorizado correctamente', 'code' => 200]);
+
     }
     /**
      * Display the specified resource.
@@ -143,7 +140,7 @@ class EvaluacionController extends Controller
 
         //return $grupos;
         return Inertia::render('Evaluacion/Index',[
-            'grupos' => Grupo::with('evaluacionCriterio', 'evaluacionTotal')->find($id),
+            'grupos' => Grupo::with('evaluacionCriterio', 'evaluacionTotal','evaluacionGrupos')->find($id),
             'evaluacion_criterios' => EvaluacionCriterio::with('integrante.persona','grupo')->get(),
             'integrantes' => $integrantes,
             //'evaluacion_grupos' => $evaluacionGrupo,
