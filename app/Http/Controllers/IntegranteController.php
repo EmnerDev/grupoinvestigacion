@@ -35,6 +35,7 @@ class IntegranteController extends Controller
     public function store(Request $request)
     {
         //dd($request->all());
+
         $dni = $request->dni;
 
         $persona = Persona::where('dni', $dni)->first();
@@ -45,11 +46,14 @@ class IntegranteController extends Controller
             $persona->id_tipo = 4;
         }
         $integranteExistente = Integrante::where('id_persona', $persona->id)->first();
+        $maxGruposPermitidos = ($persona->tipo->name === 'Docente Nombrado') ? 1 : 2;
 
-        if($integranteExistente){
+        $cantidadGrupoPorPersona = $persona->integrante->count();
+
+        if($cantidadGrupoPorPersona >= $maxGruposPermitidos){
     
             return response()->json(['error' => 'El integrante ya esta registrado en otro grupo'], 422);
-        }
+        } 
         $persona->name = $request->name;
         $persona->first_name = $request->first_name;
         $persona->last_name = $request->last_name;

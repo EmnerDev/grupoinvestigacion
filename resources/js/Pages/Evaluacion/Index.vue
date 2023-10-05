@@ -156,20 +156,24 @@
                                             class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                         >
 
-                                            <p
+                                            <p 
                                                 class="text-gray-900 whitespace-no-wrap"
                                             >
                                             {{ Number(eva.ptj_total_integrante) % 1 === 0 ? Number(eva.ptj_total_integrante).toFixed(0) : Number(eva.ptj_total_integrante).toFixed(1) }}
                                             </p>
                                         </td>
-                                        <td
+                                        <td 
                                             class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                         >
+                                            
                                             <LinkEvaluarButton :href="route('evaluacion.integrante', {grupo_id:inte.id_grupo, id:inte.id})"
                                                 class="mr-1"
                                             >
                                             <i class="fa-solid fa-list-check"></i> Evaluar
                                             </LinkEvaluarButton>
+                                            <LinkWarningButton>
+                                                <i class="fa-solid fa fa-edit"></i>Editar
+                                            </LinkWarningButton>
                                             <!-- <DangerButton
                                                 ><i
                                                     class="fa-solid fa-trash"
@@ -488,7 +492,11 @@ const calcularPuntajeTotalGeneral = () => {
     let puntajeTotalgeneral = 0;
     props.integrantes.forEach(integrante => {
         integrante.evaluacion_total.forEach(ele =>{
-            puntajeTotalgeneral += parseFloat(ele.ptj_total_integrante);
+            const valor = parseFloat(ele.ptj_total_integrante);
+            if(!isNaN(valor)){
+
+                puntajeTotalgeneral += valor;
+            }
 
         });
     });

@@ -623,7 +623,7 @@ const submit = () => {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: 'El Integrante ya esta Registrado en otro Grupo',
+                        text: 'El Integrante ha alcanzado el numero máximo de grupos permitidos',
                     })
                 }
             });

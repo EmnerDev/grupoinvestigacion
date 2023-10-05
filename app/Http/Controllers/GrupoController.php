@@ -39,7 +39,7 @@ class GrupoController extends Controller
                     $q->whereRaw("CONCAT(name,' ',first_name,' ',last_name) like ?", ['%'.$search.'%']);
                 })->orwhere('name','like','%'.$search.'%');
             });
-            })->paginate(5),
+            })->paginate(10),
             //->withQueryString(),
             // 'integrantes' => $integrantes
             'filters' => \Illuminate\Support\Facades\Request::only(['search']),

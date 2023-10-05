@@ -183,7 +183,14 @@ const calcularTotal = (indi, j , i) => {
 };
 
 const calcularTotalIndicador = (indi) => {
+    console.log('indicador', indi)
+
     let ptj = parseFloat(indi.cantidad)*parseFloat(indi.ptj_por_indicador);
+    const maxIndicador = parseFloat(indi.ptj_max_indicador);
+
+    if(ptj > maxIndicador){
+       ptj = maxIndicador;
+    }
     indi.puntaje = ptj;
     return ptj;
 };
@@ -194,12 +201,17 @@ const calcularTotalCriterio = (j) => {
     const criterio = props.criterios[j];
     //console.log('prueba', criterio);
     let total = 0;
+    const maximo = parseFloat(criterio.ptj_max_criterio);
     for(const indi of criterio.indicador){
         //console.log('datos indi', indi);
         total += calcularTotalIndicador(indi);
-        console.log('suma', total)
+        if(total > maximo){
+            total = maximo;
+            break;
+        }
+        //console.log('suma', total)
     }
-    console.log('suma fuera del for', total)
+    //console.log('suma fuera del for', total)
     return total;
 };
 
@@ -213,11 +225,13 @@ const calcularTotalGeneral = () => {
 
 };
 
-onMounted(() =>{
+onMounted(async() =>{
     calcularTotalGeneral();
     // intePerson.value = props.integrantes;
+    puntajeCriterio.value = props.criterios;
     gruposIntegra.value = props.grupos;
     evaluaPuntaje.value = props.evaluaciones;
+
 });
 
 console.log('grupos', gruposIntegra);
@@ -238,7 +252,6 @@ const submit = () => {
                     form.reset();
                     ok(res.data);
                 }
-
             })
             .catch((error) => {
                 // Manejar el error aquí

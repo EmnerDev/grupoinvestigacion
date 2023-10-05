@@ -46,7 +46,7 @@ class EvaluacionController extends Controller
      */
     public function store(Request $request)
     {
-        //return $request->all();
+    //return $request->all();
     foreach ($request['evaluaciones'] as $key => $value) {
 
         foreach ($value['indicador'] as $ky => $val) {

@@ -26,7 +26,7 @@
                     </div>
                     <div class="grid gap-6 mb-6 md:grid-cols-2">
                         <div class="flex-initial  ml-6">
-                            <InputLabel for="name" value="Escuela" /><span style="color: #e53e3e;"> *</span>
+                            <InputLabel for="name" value="Escuela" /><span style="color: #e53e3e;"> * </span>
                             <select  name="id_escuela" id="id_escuela" class="mt-1 block w-full" v-model="form.id_escuela">
                                 <option value="0">Seleccione la Escuela</option>
                                 <option v-for="esc in escuelasfilter" :key="esc.id" :value="esc.id">{{ esc.name }}</option>
@@ -192,7 +192,7 @@ const props = defineProps({
     tipos: Object,
 });
 
-console.log('prueba', props.personas[0].id);
+console.log('prueba', props.grupos);
 const form = useForm({
     name: props.grupos.name,
     space_inves:props.grupos.space_inves,
@@ -207,11 +207,11 @@ const form = useForm({
     office:props.grupos.office,
     annexed:props.grupos.annexed,
     phone:props.grupos.phone,
+    id_facultad:props.grupos.id_facultad,
+    id_escuela:props.grupos.id_escuela,
     id_area:props.grupos.id_area,
     id_linea:props.grupos.id_linea,
     id_sublinea:props.grupos.id_sublinea,
-    id_facultad:props.grupos.id_facultad,
-    id_escuela:props.grupos.id_escuela,
     id_persona:'',
 });
 
