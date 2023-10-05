@@ -171,7 +171,7 @@
                                             >
                                             <i class="fa-solid fa-list-check"></i> Evaluar
                                             </LinkEvaluarButton>
-                                            <LinkWarningButton>
+                                            <LinkWarningButton :href="route('evaluacion.editar', {grupo_id:inte.id_grupo, id:inte.id})">
                                                 <i class="fa-solid fa fa-edit"></i>Editar
                                             </LinkWarningButton>
                                             <!-- <DangerButton

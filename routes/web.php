@@ -67,7 +67,7 @@ Route::middleware('auth')->group(function () {
     Route::get('grupos/evaluar/{id}', [EvaluacionController::class, 'evaluarGrupo'])->name('evaluar.grupo');
     Route::post('guardar/evaluacion', [EvaluacionController::class, 'store'])->name('guardar.evaluacion');
     Route::post('guardar/total', [EvaluacionController::class, 'guardarEvaluacion'])->name('guardar.total');
-    
+    Route::get('evaluacion/editar/{grupo_id}/{id}', [EvaluacionController::class, 'editarEvaluacion'])->name('evaluacion.editar');
 });
 
 require __DIR__.'/auth.php';

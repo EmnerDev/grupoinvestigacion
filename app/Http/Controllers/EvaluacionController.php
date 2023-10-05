@@ -111,7 +111,7 @@ class EvaluacionController extends Controller
      */
     public function edit(Evaluacion $evaluacion)
     {
-        //
+        
     }
 
     /**
@@ -156,6 +156,22 @@ class EvaluacionController extends Controller
         $integranteSeleccionado = $integrantes->where('id', $id)->first();
 
         return Inertia::render('Evaluacion/Create',[
+            'evaluaciones' => Evaluacion::with('criterio','indicador')->get(),
+            'criterios' => Criterio::with('indicador')->get(),
+            'indicadores' => $indicador,
+            'grupos' => Grupo::with('integrante')->get(),
+            'integrantes' => $integranteSeleccionado,
+            'id_grupo' => $id_grupo
+        ]);
+    }
+
+    public function editarEvaluacion($id_grupo,$id){
+        $indicador = Indicador::with('criterio')->get();
+
+        $integrantes = Integrante::with('persona')->where('id_grupo',$id_grupo)->get();
+        $integranteSeleccionado = $integrantes->where('id', $id)->first();
+
+        return Inertia::render('Evaluacion/Edit',[
             'evaluaciones' => Evaluacion::with('criterio','indicador')->get(),
             'criterios' => Criterio::with('indicador')->get(),
             'indicadores' => $indicador,
