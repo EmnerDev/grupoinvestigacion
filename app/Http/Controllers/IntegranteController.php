@@ -107,8 +107,10 @@ class IntegranteController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Integrante $integrantes)
+    public function destroy(Integrante $integrante)
     {
-        //
+        $integrante->delete();
+
+        return Redirect::route('ver.grupo',$integrante);
     }
 }

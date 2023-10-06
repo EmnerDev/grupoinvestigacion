@@ -205,9 +205,14 @@ class GrupoController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(Grupo $grupo)
-    {
+    {   
+        $grupo->integrante()->delete();
+        $grupo->evaluacion()->delete();
+        $grupo->evaluacionCriterio()->delete();
+        $grupo->evaluacionTotal()->delete();
+        $grupo->evaluacionGrupos()->delete();
         $grupo->delete();
-        return Redirect::route('ver.grupo');
+        return Redirect::route('grupos.index');
     }
 
     public function verGrupo($id){

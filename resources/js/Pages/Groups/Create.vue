@@ -146,6 +146,10 @@
                         <DangerButton class="px-10">
                             Cancelar
                         </DangerButton>
+                            <a :href="route('grupos.index')" class="rounded-md bg-blue-700 px-4 py-2 text-center text-sm text-white hover:bg-blue-500">
+                                <i class="fa-solid fa-right-from-bracket rotate-180"></i>
+                                    Regresar
+                            </a>
                     </div>                   
                 </form>
             </div>

@@ -57,10 +57,12 @@ Route::middleware('auth')->group(function () {
     Route::post('grupos/agregar', [GrupoController::class, 'store'])->name('registrar.grupo');
     Route::get('grupos/ver/{id}', [GrupoController::class, 'verGrupo'])->name('ver.grupo');
     Route::put('grupos/actualizar/{grupo}',[GrupoController::class, 'update'])->name('actualizar.grupo');
+    Route::delete('grupos/eliminar/{grupo}',[GrupoController::class, 'destroy'])->name('eliminar.grupo');
 
     Route::post('integrantes', [IntegranteController::class, 'store'])->name('grupo.registrar.integrante');
     Route::put('integrantes/{integrante}', [IntegranteController::class, 'update'])->name('grupo.actualizar.integrante');
     Route::get('/search-integrante/{dni}', [GrupoController::class, 'searchIntegrante']);
+    Route::delete('integrante/eliminar/{integrante}', [IntegranteController::class, 'destroy'])->name('grupo.eliminar.integrante');
 
     Route::get('evaluacion', [CriterioController::class, 'index'])->name('evaluacion.index');
     Route::get('evaluacion/integrante/{grupo_id}/{id}', [EvaluacionController::class, 'evaluarintegrante'])->name('evaluacion.integrante');

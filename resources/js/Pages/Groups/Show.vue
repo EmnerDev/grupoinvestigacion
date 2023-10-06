@@ -200,7 +200,7 @@
                                             >
                                                 <i class="fa-solid fa-edit"></i>
                                             </WarningButton>
-                                            <DangerButton
+                                            <DangerButton @click="deleteIntegrante(inte.id, inte.persona.name)"
                                                 ><i
                                                     class="fa-solid fa-trash"
                                                 ></i
@@ -301,6 +301,9 @@
             <!-- <div v-if="integrante_existente" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
                 {{ integrante_existente }}
             </div> -->
+            <div  class="p-6 border-b border-gray-200" style="background-color: #1027d4; text-align: center;">
+                    <label class="" style="color: #fff; font-weight: bold;">Digite DNI primero, para rellenar automaticamente los campos si el integrante ya se encuentra registrado en la base de datos</label>
+                </div>
             <div class="grid gap-6 mb-6 md:grid-cols-2">
                 <div class="p-3">
                     <InputLabel for="dni" value="Dni:"></InputLabel>
@@ -656,6 +659,24 @@ const ok = (msj) => {
     closeModal();
     Swal.fire({ title: msj, icon: "success" });
 };
+
+const deleteIntegrante = (id, name) => {
+    const alerta = Swal.mixin({
+        buttonsStyling:true
+    });
+    alerta.fire({
+        title:'Estas seguro de eliminar al integrante ' +name+' del grupo ?',
+        icon: 'question', showCancelButton:true,
+        confirmButtonText:'<i class="fa-solid fa-check"></i> Si, eliminar',
+        cancelButtonText:'<i class="fa-solid fa-ban"></i> Cancelar'
+    }).then((result) => {
+        if(result.isConfirmed) {
+            form.delete(route('grupo.eliminar.integrante', id),{
+                onSuccess: () => {ok('Registro Eliminado Correctamente')}
+            });
+        }
+    });
+}
 
 const goBack = () => {
     window.history.back();
