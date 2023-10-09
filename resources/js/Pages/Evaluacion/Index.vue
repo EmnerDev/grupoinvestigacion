@@ -12,7 +12,7 @@
                         <div class="mb-4">
                             <div class="flex justify-center gap-5">
                                 <div class="flex justify-center mb-6">
-                                <PrimaryButton @click="openModal(1)" class="">
+                                <PrimaryButton @click="openModal(1)" class="" :disabled="btnDeshabilitado">
                                     <i class="fa-solid fa-plus-circle"></i>
                                     Categorizar Grupo
                                 </PrimaryButton>
@@ -417,7 +417,7 @@ import LinkEvaluarButton from "@/Components/LinkEvaluarButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import Modal from "@/Components/Modal.vue";
-import { Head, useForm } from "@inertiajs/vue3";
+import { Head, useForm, router } from "@inertiajs/vue3";
 
 import Swal from "sweetalert2";
 import "@fortawesome/fontawesome-free/css/all.css";
@@ -440,7 +440,7 @@ const modal = ref(false);
 const title = ref("");
 const operation = ref(1);
 const id = ref("");
-
+const btnDeshabilitado = ref(false);
 
 const props = defineProps({
     grupos: {
@@ -548,13 +548,21 @@ const submit = () => {
             .post(route("guardar.total"), datosEnviar)
             .then((res) => {
                 // Manejar la respuesta exitosa aquí
-                console.log(res.data);
+                console.log('llegaa',res.data.datosEvaluacion);
                 if(res.data.code == 200){
-                    form.reset();
-                    closeModal();
+                    //gruposIntegra.value = res.data.datosEvaluacion;
+                    //gruposevaluar.value = res.data.data;
+                    //form.reset();
+                    setTimeout(()=>{
+                        closeModal();
+
+                        window.location.reload();
+                    }, 1000);
+                    // router.reload();
                     ok(res.data);
                 }
-
+                btnDeshabilitado.value = true;
+                
             })
             .catch((error) => {
                 // Manejar el error aquí
@@ -563,7 +571,8 @@ const submit = () => {
 };
 const ok = (obj) => {
     form.reset();
-    closeModal()
-    Swal.fire({ title: obj.msj, icon: "success" });
+    closeModal()   
+    Swal.fire({ position: 'top-end',title: obj.msj, icon: "success", showConfirmButton: false,
+  timer: 1500 });
 };
 </script>

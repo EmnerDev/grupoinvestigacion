@@ -95,7 +95,7 @@ class EvaluacionController extends Controller
         ]);
 
     //return $evaluacionGrupo;
-    return response()->json(['msj' => 'Grupo categorizado correctamente', 'code' => 200]);
+    return response()->json(['msj' => 'Grupo categorizado correctamente','datosEvaluacion' => $evaluacionGrupo, 'code' => 200]);
 
     }
     /**

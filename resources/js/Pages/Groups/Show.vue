@@ -646,7 +646,7 @@ const submit = () => {
             intePerson.value = updateRes.data.data;
             form.reset();
             closeModal();              
-            ok("Registro Creado Correctamente");
+            ok("Registro Actualizado Correctamente");
         })
         .catch((error) => {
             // Manejar el error aquí
@@ -672,7 +672,10 @@ const deleteIntegrante = (id, name) => {
     }).then((result) => {
         if(result.isConfirmed) {
             form.delete(route('grupo.eliminar.integrante', id),{
-                onSuccess: () => {ok('Registro Eliminado Correctamente')}
+                onSuccess: () => {
+                    ok('Registro Eliminado Correctamente');
+                    intePerson.value = intePerson.value.filter((integrante) => integrante.id !== id);
+            }
             });
         }
     });

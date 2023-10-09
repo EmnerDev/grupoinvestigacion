@@ -109,8 +109,9 @@ class IntegranteController extends Controller
      */
     public function destroy(Integrante $integrante)
     {
+        $grupoId = $integrante->id_grupo;
         $integrante->delete();
 
-        return Redirect::route('ver.grupo',$integrante);
+        return Redirect::route('ver.grupo',['id' => $grupoId]);
     }
 }
