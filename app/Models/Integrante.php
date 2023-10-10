@@ -35,7 +35,7 @@ class Integrante extends Model
     }
 
     public function evaluacion(){
-        return $this->hasMany(Evaluacion::class. 'id_integrante');
+        return $this->hasMany(Evaluacion::class, 'id_integrante', 'id');
     }
 
     public function evaluacionCriterio(){

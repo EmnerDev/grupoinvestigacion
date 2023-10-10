@@ -37,7 +37,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <template v-for="cri,j  in criterios" :key="cri.id">
+                                        <template v-for="cri,j  in criterios.value" :key="cri.id">
                                             <tr  v-for=" indi, i in cri.indicador" :key="indi.id">
                                                 <td class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-sm"
                                                 v-if="i===0" :rowspan="cri.indicador.length">
@@ -122,7 +122,7 @@ import { onBeforeMount } from 'vue';
 
 const props = defineProps({
     evaluaciones: Object,
-    criterios: Object,
+    //criterios: Object,
     indicadores: Object,
     integrantes:Object,
     grupos: {
@@ -133,10 +133,12 @@ const props = defineProps({
 
 
 
+
 // console.log('criterios', props.criterios);
 // console.log('indicadores', props.indicadores);
 const cantidades = ref([]);
-const puntajeCriterio = ref(props.criterios);
+const criterios = ref([]);
+const puntajeCriterio = ref(criterios.value);
 const totalGeneral = ref(0);
 const intePerson = ref([]);
 const gruposIntegra = ref([]);
@@ -227,8 +229,10 @@ const calcularTotalGeneral = () => {
 
 onMounted(async() =>{
     calcularTotalGeneral();
-    // intePerson.value = props.integrantes;
-    puntajeCriterio.value = props.criterios;
+    //intePerson.value = props.integrantes;
+    //puntajeCriterio.value = props.criterios;
+    criterios.value = props.integrantes.evaluacion;
+    console.log('aquiiii', criterios.value);
     gruposIntegra.value = props.grupos;
     evaluaPuntaje.value = props.evaluaciones;
 

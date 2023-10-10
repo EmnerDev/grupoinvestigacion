@@ -59,7 +59,7 @@
                                         Regresar
                                     </a>
                                 </div>
-                            </div>                            
+                            </div>
                             <table class="w-full table-auto">
                                 <thead>
                                     <tr>
@@ -476,6 +476,10 @@ import { nextTick, ref } from "vue";
 import axios from "axios";
 import { onMounted } from "vue";
 
+//uso del Toast
+import { Toast } from "@/Composables/Toast.js";
+const toast = Toast();
+
 const nameInput = ref(null);
 const modal = ref(false);
 const title = ref("");
@@ -508,10 +512,10 @@ onMounted(async() =>{
     intePerson.value = props.integrantes;
     gruposIntegra.value = props.grupos;
     //console.log('comenta', intePerson.value);
-    
+
 })
 
-const form = useForm({    
+const form = useForm({
     dni: "",
     name: "",
     first_name: "",
@@ -610,13 +614,14 @@ const submit = () => {
             .post(route("grupo.registrar.integrante"), form)
             .then((res) => {
                 // Manejar la respuesta exitosa aquí
-                console.log(res.data); 
+                console.log(res.data);
                 // Puedes acceder a los datos de la respuesta
                 intePerson.value = res.data.data;
                 gruposIntegra.value = res.data.data;
                 form.reset();
-                closeModal();              
-                ok("Registro Creado Correctamente");
+                closeModal();
+                //ok("Registro Creado Correctamente");
+                toast.toast('Exito', 'Registrado Correctamente','success');
             })
             .catch((error) => {
                 // Manejar el error aquí
@@ -641,11 +646,11 @@ const submit = () => {
         .put(route("grupo.actualizar.integrante", id.value), form)
         .then((updateRes) => {
             // Manejar la respuesta exitosa aquí
-            console.log(updateRes.data); 
+            console.log(updateRes.data);
             // Puedes acceder a los datos de la respuesta
             intePerson.value = updateRes.data.data;
             form.reset();
-            closeModal();              
+            closeModal();
             ok("Registro Actualizado Correctamente");
         })
         .catch((error) => {

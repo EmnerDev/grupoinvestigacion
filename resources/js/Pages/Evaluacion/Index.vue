@@ -12,7 +12,7 @@
                         <div class="mb-4">
                             <div class="flex justify-center gap-5">
                                 <div class="flex justify-center mb-6">
-                                <PrimaryButton @click="openModal(1)" class="" :disabled="btnDeshabilitado">
+                                <PrimaryButton @click="openModal(1)" class="" :disabled="gruposIntegra?.evaluacion_grupos?.length > 0 ? true : false">
                                     <i class="fa-solid fa-plus-circle"></i>
                                     Categorizar Grupo
                                 </PrimaryButton>
@@ -156,22 +156,23 @@
                                             class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                         >
 
-                                            <p 
+                                            <p
                                                 class="text-gray-900 whitespace-no-wrap"
                                             >
                                             {{ Number(eva.ptj_total_integrante) % 1 === 0 ? Number(eva.ptj_total_integrante).toFixed(0) : Number(eva.ptj_total_integrante).toFixed(1) }}
                                             </p>
                                         </td>
-                                        <td 
+                                        <td
                                             class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                         >
-                                            
+
                                             <LinkEvaluarButton :href="route('evaluacion.integrante', {grupo_id:inte.id_grupo, id:inte.id})"
                                                 class="mr-1"
+                                                v-if="(inte?.evaluacion_criterio?.length > 0) ? false : true"
                                             >
                                             <i class="fa-solid fa-list-check"></i> Evaluar
                                             </LinkEvaluarButton>
-                                            <LinkWarningButton :href="route('evaluacion.editar', {grupo_id:inte.id_grupo, id:inte.id})">
+                                            <LinkWarningButton v-else :href="route('evaluacion.editar', {grupo_id:inte.id_grupo, id:inte.id})">
                                                 <i class="fa-solid fa fa-edit"></i>Editar
                                             </LinkWarningButton>
                                             <!-- <DangerButton
@@ -425,6 +426,9 @@ import { nextTick, ref } from "vue";
 import axios from "axios";
 import { onMounted } from "vue";
 import { computed } from "vue";
+import { Toast } from "@/Composables/Toast.js";
+
+const toast = Toast();
 
 const intePerson = ref([]);
 const gruposIntegra = ref([]);
@@ -484,7 +488,7 @@ onMounted(async() =>{
 
 
 
-console.log('integrantes', evaluacionGeneral)
+console.log('integrantes', gruposIntegra.value)
 // console.log('grupo', props.grupos)
 
 const calcularPuntajeTotalGeneral = () => {
@@ -562,7 +566,7 @@ const submit = () => {
                     ok(res.data);
                 }
                 btnDeshabilitado.value = true;
-                
+
             })
             .catch((error) => {
                 // Manejar el error aquí
@@ -571,7 +575,7 @@ const submit = () => {
 };
 const ok = (obj) => {
     form.reset();
-    closeModal()   
+    closeModal()
     Swal.fire({ position: 'top-end',title: obj.msj, icon: "success", showConfirmButton: false,
   timer: 1500 });
 };
