@@ -37,15 +37,17 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <template v-for="cri,j  in criterios.value" :key="cri.id">
-                                            <tr  v-for=" indi, i in cri.indicador" :key="indi.id">
+                                        <template v-for="cri,j  in criterios" :key="cri.id">
+
+                                            <tr  v-for=" indi, i in cri.criterio.indicador" :key="indi.id">
+
                                                 <td class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-sm"
-                                                v-if="i===0" :rowspan="cri.indicador.length">
+                                                v-if="i===0" :rowspan="cri.criterio.indicador.length">
                                                     {{ j+1 }}
                                                 </td>
                                                 <td class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-sm"
-                                                v-if="i===0" :rowspan="cri.indicador.length">
-                                                    {{ cri.name }}
+                                                v-if="i===0" :rowspan="cri.criterio.indicador.length">
+                                                    {{ cri.criterio.name }}
                                                 </td>
                                                 <td class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-sm"
                                                 >
@@ -53,14 +55,14 @@
                                                 </td>
                                                 <td class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-sm"
                                                 >
-                                                    <TextInput v-model="indi.cantidad"  id="cantidad" @input="calcularTotal(indi, j, i)"></TextInput>
+                                                    <TextInput v-model="cri.cantidad"  id="cantidad" @input="calcularTotal(indi, j, i)"></TextInput>
                                                 </td>
                                                 <td class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-sm"
                                                 >
-                                                    <InputLabel v-model="indi.puntaje" id="puntaje" >{{ calcularTotalIndicador(indi) }}</InputLabel>
+                                                    <InputLabel v-model="cri.puntaje" id="puntaje" >{{ calcularTotalIndicador(cri,indi) }}</InputLabel>
                                                 </td>
                                                 <td class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-sm"
-                                                v-if="i===0" :rowspan="cri.indicador.length"
+                                                v-if="i===0" :rowspan="cri.criterio.indicador.length"
                                                     >
                                                     <InputLabel v-model="cri.puntaje">{{ calcularTotalCriterio(j) }}</InputLabel>
                                                 </td>
@@ -184,10 +186,10 @@ const calcularTotal = (indi, j , i) => {
     }
 };
 
-const calcularTotalIndicador = (indi) => {
-    console.log('indicador', indi)
+const calcularTotalIndicador = (cri,indi) => {
+    //console.log('indicador', indi)
 
-    let ptj = parseFloat(indi.cantidad)*parseFloat(indi.ptj_por_indicador);
+    let ptj = parseFloat(cri.cantidad)*parseFloat(indi.ptj_por_indicador);
     const maxIndicador = parseFloat(indi.ptj_max_indicador);
 
     if(ptj > maxIndicador){
@@ -200,13 +202,13 @@ const calcularTotalIndicador = (indi) => {
 
 const calcularTotalCriterio = (j) => {
     //console.log('llegando', j);
-    const criterio = props.criterios[j];
+    const criterio = criterios.value[j];
     //console.log('prueba', criterio);
     let total = 0;
-    const maximo = parseFloat(criterio.ptj_max_criterio);
-    for(const indi of criterio.indicador){
+    const maximo = parseFloat(criterio.criterio.ptj_max_criterio);
+    for(const indi of criterio.criterio.indicador){
         //console.log('datos indi', indi);
-        total += calcularTotalIndicador(indi);
+        total += calcularTotalIndicador(criterio,indi);
         if(total > maximo){
             total = maximo;
             break;
@@ -232,7 +234,7 @@ onMounted(async() =>{
     //intePerson.value = props.integrantes;
     //puntajeCriterio.value = props.criterios;
     criterios.value = props.integrantes.evaluacion;
-    console.log('aquiiii', criterios.value);
+    console.log('aquiiii', props.integrantes.evaluacion);
     gruposIntegra.value = props.grupos;
     evaluaPuntaje.value = props.evaluaciones;
 
