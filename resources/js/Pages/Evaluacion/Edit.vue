@@ -58,10 +58,10 @@
                                                 <td class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-sm"
                                                     v-if="i===0" :rowspan="cri.indicador.length"
                                                         >
-                                                        <InputLabel v-model="cri.puntaje">{{ calcularTotalCriterio(j) }}</InputLabel>
+                                                        <InputLabel v-model="cri.puntaje">{{ calularTotalPorCriterio(cri) }}</InputLabel>
                                                 </td>
                                             </tr>
-                                        </template>
+                                        </template> 
                                        
                                         
                                         <!-- <template v-for="cri,j  in criterios" :key="cri.id">
@@ -97,7 +97,7 @@
                                         </template> -->
                                 </tbody>
                             </table>
-                                <!-- <h1 class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-lg text-center font-bold	" >Puntaje Total: <InputLabel>{{ calcularTotalGeneral() }}</InputLabel></h1> -->
+                                <h1 class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-lg text-center font-bold	" >Puntaje Total: <InputLabel>{{ calcularTotalGeneral() }}</InputLabel></h1>
                                 <div class="flex justify-center">
                                     <div class="p-3 mt-6">
                                         <PrimaryButton class="pl-7">
@@ -244,7 +244,7 @@ const calcularTotal = (evaluacion,indi, j,i) => {
 };
 
 const calcularTotalIndicador = (evaluacion,indi) => {
-    console.log('indicador', evaluacion)
+    //console.log('indicador', evaluacion)
 
     let ptj = parseFloat(evaluacion.cantidad)*parseFloat(indi.ptj_por_indicador);
     const maxIndicador = parseFloat(indi.ptj_max_indicador);
@@ -265,7 +265,7 @@ const calcularTotalCriterio = (j) => {
     let total = 0;
     const maximo = parseFloat(criterio.ptj_max_criterio);
     for(const indi of criterio.indicador){
-        console.log('datos indi', indi);
+        //console.log('datos indi', indi);
         total += calcularTotalIndicador(criterio,indi);
         if(total > maximo){
             total = maximo;
@@ -275,6 +275,14 @@ const calcularTotalCriterio = (j) => {
     }
     //console.log('suma fuera del for', total)
     return total;
+};
+
+const calularTotalPorCriterio = (cri) => {
+    console.log('viendo', cri);
+    const maximoPunto = Number(cri.ptj_max_criterio);
+    const evaluacionPorcriterio = props.integrantes.evaluacion.filter(eva=>eva.id_criterio === cri.id);
+    let totalPuntaje = evaluacionPorcriterio.reduce((total,eva)=> total + eva.puntaje, 0); 
+    return totalPuntaje;
 };
 
 const calcularTotalGeneral = () => {
@@ -288,9 +296,9 @@ const calcularTotalGeneral = () => {
 };
 
 onMounted(async() =>{
-    //calcularTotalGeneral();
+    calcularTotalGeneral();
     intePerson.value = props.integrantes;
-    console.log('aquiiii', intePerson.value);
+   // console.log('aquiiii', intePerson.value);
 
     puntajeCriterio.value = props.criterios;
     //criterios.value = props.integrantes;
@@ -298,10 +306,9 @@ onMounted(async() =>{
     gruposIntegra.value = props.grupos;
     evaluaPuntaje.value = props.evaluaciones;
    // filtrarDuplicados();
-
 });
 
-console.log('grupos', gruposIntegra);
+//console.log('grupos', gruposIntegra);
 
 const submit = () => {
         // Para una solicitud POST

@@ -167,7 +167,7 @@ class EvaluacionController extends Controller
 
     public function editarEvaluacion($id_grupo,$id){
         //$a = Integrante::with('persona','evaluacion')->find($id);
-        $a = Integrante::with('persona','evaluacion.criterio.indicador')->find($id);
+        $a = Integrante::with('persona','evaluacion.criterio.indicador','evaluacionCriterio')->find($id);
         //return $a;
         $indicador = Indicador::with('criterio')->get();
 
