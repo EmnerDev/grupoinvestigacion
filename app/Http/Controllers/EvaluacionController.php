@@ -183,4 +183,8 @@ class EvaluacionController extends Controller
             'id_grupo' => $id_grupo
         ]);
     }
+
+    public function editUpdate(Request $request,$grupo_id,$id){
+        return $request->all();
+    }
 }

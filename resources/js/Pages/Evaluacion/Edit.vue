@@ -20,7 +20,7 @@
                      <InputLabel>Condicion: </InputLabel>
                      <span>{{ integrantes.condition }}</span>
                     </div>
-                    
+
                 </div>
                 <form @submit.prevent="submit">
                     <div class="overflow-x-auto rounded-lg shadow mt-6">
@@ -61,9 +61,9 @@
                                                         <InputLabel v-model="cri.puntaje">{{ calularTotalPorCriterio(cri) }}</InputLabel>
                                                 </td>
                                             </tr>
-                                        </template> 
-                                       
-                                        
+                                        </template>
+
+
                                         <!-- <template v-for="cri,j  in criterios" :key="cri.id">
 
                                             <tr  v-for=" indi, i in cri.criterio.indicador" :key="indi.id">
@@ -92,7 +92,7 @@
                                                 v-if="i===0" :rowspan="cri.criterio.indicador.length"
                                                     >
                                                     <InputLabel v-model="cri.puntaje">{{ calcularTotalCriterio(j) }}</InputLabel>
-                                                </td>                                                
+                                                </td>
                                             </tr>
                                         </template> -->
                                 </tbody>
@@ -165,6 +165,7 @@ const totalGeneral = ref(0);
 const intePerson = ref([]);
 const gruposIntegra = ref([]);
 const evaluaPuntaje = ref(props.evaluaciones);
+const id_grupo = ref([]);
 
 const form = useForm({
     cantidad:'',
@@ -196,7 +197,7 @@ const form = useForm({
 //         if(!seen[key]){
 //             uniqueEvaluacion.push(criterio)
 //             seen[key] = true;
-//         }        
+//         }
 //     }
 //     console.log('filtrar', uniqueEvaluacion);
 //     criterios.value = uniqueEvaluacion;
@@ -239,7 +240,7 @@ const calcularTotal = (evaluacion,indi, j,i) => {
         }
         const criterio = props.criterios[j];
         evaluacion.puntaje = calcularTotalCriterio(j);
-    
+
         calcularTotalGeneral();
 };
 
@@ -278,19 +279,26 @@ const calcularTotalCriterio = (j) => {
 };
 
 const calularTotalPorCriterio = (cri) => {
-    console.log('viendo', cri);
-    const maximoPunto = Number(cri.ptj_max_criterio);
+    //console.log('viendo', cri);
+    const maximoPunto = parseFloat(cri.ptj_max_criterio);
     const evaluacionPorcriterio = props.integrantes.evaluacion.filter(eva=>eva.id_criterio === cri.id);
-    let totalPuntaje = evaluacionPorcriterio.reduce((total,eva)=> total + eva.puntaje, 0); 
+    let totalPuntaje = evaluacionPorcriterio.reduce((total,eva)=> {
+        total += eva.puntaje
+        if (total > maximoPunto) {
+            total = maximoPunto;
+        }
+        return total;
+    }, 0);
     return totalPuntaje;
 };
 
 const calcularTotalGeneral = () => {
     let total = 0
-    for(const criterio of props.criterios){
+    for(const criterio of props.integrantes.evaluacion){
         total +=  parseFloat(criterio.puntaje);
     }
     //puntajeCriterio.value.totalGeneralEvaluado = total;
+    console.log('total',total);
     return totalGeneral.value = total;
 
 };
@@ -305,10 +313,11 @@ onMounted(async() =>{
     //console.log('aquiiii', criterios.value);
     gruposIntegra.value = props.grupos;
     evaluaPuntaje.value = props.evaluaciones;
+    id_grupo.value = props.grupos.id
    // filtrarDuplicados();
 });
 
-//console.log('grupos', gruposIntegra);
+console.log('grupos', props.integrantes.evaluacion.id_grupo);
 
 const submit = () => {
         // Para una solicitud POST
@@ -318,7 +327,7 @@ const submit = () => {
             integrante: props.integrantes
         }
         axios
-            .post(route("guardar.evaluacion"), datosEnviar)
+            .put(route("actualizar.evaluacion",{ grupo_id: props.grupos[0].id }), datosEnviar)
             .then((res) => {
                 // Manejar la respuesta exitosa aquí
                 console.log(res.data);
