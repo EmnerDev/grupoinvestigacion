@@ -22,7 +22,7 @@
                     </div>
 
                 </div>
-                <form @submit.prevent="submit">
+                <form @submit.prevent="update">
                     <div class="overflow-x-auto rounded-lg shadow mt-6">
                         <div>
                             <table class="w-full">
@@ -58,7 +58,7 @@
                                                 <td class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-sm"
                                                     v-if="i===0" :rowspan="cri.indicador.length"
                                                         >
-                                                        <InputLabel v-model="cri.puntaje">{{ calularTotalPorCriterio(cri) }}</InputLabel>
+                                                        <InputLabel v-model="cri.puntaje">{{ calularTotalPorCriterio(cri,j) }}</InputLabel>
                                                 </td>
                                             </tr>
                                         </template>
@@ -166,6 +166,7 @@ const intePerson = ref([]);
 const gruposIntegra = ref([]);
 const evaluaPuntaje = ref(props.evaluaciones);
 const id_grupo = ref([]);
+const id=ref([]);
 
 const form = useForm({
     cantidad:'',
@@ -224,7 +225,7 @@ const evaluacionExists = (integrante, cri, indi) => {
 
 const calcularTotal = (evaluacion,indi, j,i) => {
     //console.log('criterio', cri);
-   // console.log('indicador', evaluacion);
+   console.log('indicador', j);
     //return;
     const cantidad = parseFloat(evaluacion.cantidad);
     const ptjinidcador = parseFloat(indi.ptj_por_indicador);
@@ -239,7 +240,7 @@ const calcularTotal = (evaluacion,indi, j,i) => {
 
         }
         const criterio = props.criterios[j];
-        evaluacion.puntaje = calcularTotalCriterio(j);
+        criterio.puntaje = calularTotalPorCriterio(j);
 
         calcularTotalGeneral();
 };
@@ -278,8 +279,8 @@ const calcularTotalCriterio = (j) => {
     return total;
 };
 
-const calularTotalPorCriterio = (cri) => {
-    //console.log('viendo', cri);
+const calularTotalPorCriterio = (cri,j) => {
+    console.log('viendo', cri);
     const maximoPunto = parseFloat(cri.ptj_max_criterio);
     const evaluacionPorcriterio = props.integrantes.evaluacion.filter(eva=>eva.id_criterio === cri.id);
     let totalPuntaje = evaluacionPorcriterio.reduce((total,eva)=> {
@@ -289,6 +290,13 @@ const calularTotalPorCriterio = (cri) => {
         }
         return total;
     }, 0);
+    puntajeCriterio.value[j] = {
+        id:cri.id,
+        name:cri.name,
+        id_grupo:gruposIntegra.value[0]?.id,
+        id_integrante: evaluaPuntaje.value[0]?.id_integrante,
+        puntaje:totalPuntaje
+    };
     return totalPuntaje;
 };
 
@@ -308,26 +316,28 @@ onMounted(async() =>{
     intePerson.value = props.integrantes;
    // console.log('aquiiii', intePerson.value);
 
-    puntajeCriterio.value = props.criterios;
+    //puntajeCriterio.value = props.criterios;
     //criterios.value = props.integrantes;
     //console.log('aquiiii', criterios.value);
     gruposIntegra.value = props.grupos;
     evaluaPuntaje.value = props.evaluaciones;
     id_grupo.value = props.grupos.id
+    id.value = props.integrantes.id
    // filtrarDuplicados();
 });
 
 console.log('grupos', props.integrantes.evaluacion.id_grupo);
 
-const submit = () => {
+const update = () => {
         // Para una solicitud POST
         const datosEnviar = {
-            evaluaciones: puntajeCriterio.value,
+            evaluaciones: props.integrantes.evaluacion,
             totalGeneral: totalGeneral.value,
-            integrante: props.integrantes
+            integrante: props.integrantes,
+            criterio: puntajeCriterio.value
         }
         axios
-            .put(route("actualizar.evaluacion",{ grupo_id: props.grupos[0].id }), datosEnviar)
+            .put(route("actualizar.evaluacion",{ grupo_id: props.grupos[0].id, id: evaluaPuntaje.value[0].id_integrante }), datosEnviar)
             .then((res) => {
                 // Manejar la respuesta exitosa aquí
                 console.log(res.data);

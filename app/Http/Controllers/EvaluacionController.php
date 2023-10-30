@@ -186,5 +186,40 @@ class EvaluacionController extends Controller
 
     public function editUpdate(Request $request,$grupo_id,$id){
         return $request->all();
+        DB::beginTransaction();
+        try {
+            foreach ($request['evaluaciones'] as $key => $value) {
+                //return $value;
+                Evaluacion::where('id_indicador',$value['id'])->where('id_grupo', $value['id_grupo'])
+                            ->where('id_integrante',$value['id_integrante'])
+                            ->update([
+                                'cantidad'=>$value['cantidad'],
+                                'puntaje'=>$value['puntaje']
+                            ]);
+            }
+    
+            foreach ($request['criterio'] as $k => $val) {
+               EvaluacionCriterio::where('id_criterio', $val['id'])->where('id_grupo', $grupo_id)
+                                    ->where('id_integrante',$id)
+                                    ->update([                                    
+                                        'ptj_total_indicador'=>$val['puntaje']
+                                    ]);
+            }
+    
+            EvaluacionTotal::where('id_grupo', $grupo_id)
+            ->where('id_integrante',$id)
+            ->update([                                    
+                'ptj_total_integrante'=>$request['totalGeneral']
+            ]);
+    
+            DB::commit();
+    
+            return response()->json(['msj' => 'Registros actualizado correctamente', 'code' => 200,'id' => $request['integrante']['id_grupo']]);
+     
+        } catch (\Exception $th) {
+            return $th;
+        }
     }
+
+
 }
