@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('criterios', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->decimal('ptj_max_criterio',10,8)->nullable();
-            $table->decimal('ptj_min_criterio', 10,8)->nullable();
+            $table->decimal('ptj_max_criterio',15,8)->nullable();
+            $table->decimal('ptj_min_criterio', 15,8)->nullable();
             $table->timestamps();
         });
     }

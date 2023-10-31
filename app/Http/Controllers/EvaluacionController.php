@@ -167,8 +167,9 @@ class EvaluacionController extends Controller
 
     public function editarEvaluacion($id_grupo,$id){
         //$a = Integrante::with('persona','evaluacion')->find($id);
-        $a = Integrante::with('persona','evaluacion.criterio.indicador','evaluacionCriterio')->find($id);
+        $a = Integrante::with('persona','evaluacion.criterio.indicador')->find($id);
         //return $a;
+        $criterio_evalua = EvaluacionCriterio::find($id);
         $indicador = Indicador::with('criterio')->get();
 
         $integrantes = Integrante::with('persona')->where('id_grupo',$id_grupo)->get();
@@ -185,7 +186,8 @@ class EvaluacionController extends Controller
     }
 
     public function editUpdate(Request $request,$grupo_id,$id){
-        return $request->all();
+        //return $request->all();
+
         DB::beginTransaction();
         try {
             foreach ($request['evaluaciones'] as $key => $value) {
@@ -197,25 +199,25 @@ class EvaluacionController extends Controller
                                 'puntaje'=>$value['puntaje']
                             ]);
             }
-    
+
             foreach ($request['criterio'] as $k => $val) {
-               EvaluacionCriterio::where('id_criterio', $val['id'])->where('id_grupo', $grupo_id)
-                                    ->where('id_integrante',$id)
-                                    ->update([                                    
+               EvaluacionCriterio::where('id_criterio', $val['id'])->where('id_grupo', $request['evaluaciones'][0]['id_grupo'])
+                                    ->where('id_integrante',$request['evaluaciones'][0]['id_integrante'])
+                                    ->update([
                                         'ptj_total_indicador'=>$val['puntaje']
                                     ]);
             }
-    
-            EvaluacionTotal::where('id_grupo', $grupo_id)
-            ->where('id_integrante',$id)
-            ->update([                                    
+
+            EvaluacionTotal::where('id_grupo', $request['evaluaciones'][0]['id_grupo'])
+            ->where('id_integrante',$request['evaluaciones'][0]['id_integrante'])
+            ->update([
                 'ptj_total_integrante'=>$request['totalGeneral']
             ]);
-    
+
             DB::commit();
-    
+
             return response()->json(['msj' => 'Registros actualizado correctamente', 'code' => 200,'id' => $request['integrante']['id_grupo']]);
-     
+
         } catch (\Exception $th) {
             return $th;
         }

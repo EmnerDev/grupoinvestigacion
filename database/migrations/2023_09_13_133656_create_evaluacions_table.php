@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('evaluacions', function (Blueprint $table) {
             $table->id();
             $table->integer('cantidad')->nullable();
-            $table->decimal('puntaje',10,8)->nullable();
+            $table->decimal('puntaje',15,8)->nullable();
 
             $table->unsignedBigInteger('id_criterio');
             $table->unsignedBigInteger('id_indicador');
@@ -22,8 +22,8 @@ return new class extends Migration
             $table->unsignedBigInteger('id_grupo');
             $table->foreign('id_criterio')->references('id')->on('criterios')->onDelete('cascade');
             $table->foreign('id_indicador')->references('id')->on('indicadors')->onDelete('cascade');
-            $table->foreign('id_grupo')->references('id')->on('grupos')->onDelete('cascade');          
-            $table->foreign('id_integrante')->references('id')->on('integrantes')->onDelete('cascade'); 
+            $table->foreign('id_grupo')->references('id')->on('grupos')->onDelete('cascade');
+            $table->foreign('id_integrante')->references('id')->on('integrantes')->onDelete('cascade');
 
             $table->timestamps();
         });

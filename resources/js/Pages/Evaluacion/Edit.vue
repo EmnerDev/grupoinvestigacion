@@ -280,7 +280,7 @@ const calcularTotalCriterio = (j) => {
 };
 
 const calularTotalPorCriterio = (cri,j) => {
-    console.log('viendo', cri);
+    console.log('viendo', gruposIntegra.value);
     const maximoPunto = parseFloat(cri.ptj_max_criterio);
     const evaluacionPorcriterio = props.integrantes.evaluacion.filter(eva=>eva.id_criterio === cri.id);
     let totalPuntaje = evaluacionPorcriterio.reduce((total,eva)=> {
@@ -293,8 +293,6 @@ const calularTotalPorCriterio = (cri,j) => {
     puntajeCriterio.value[j] = {
         id:cri.id,
         name:cri.name,
-        id_grupo:gruposIntegra.value[0]?.id,
-        id_integrante: evaluaPuntaje.value[0]?.id_integrante,
         puntaje:totalPuntaje
     };
     return totalPuntaje;

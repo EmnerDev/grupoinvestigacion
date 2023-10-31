@@ -14,15 +14,15 @@ return new class extends Migration
         Schema::create('indicadors', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
-            $table->decimal('ptj_por_indicador',10,8)->nullable();
-            $table->decimal('ptj_max_indicador',10,8)->nullable();
+            $table->decimal('ptj_por_indicador',15,8)->nullable();
+            $table->decimal('ptj_max_indicador',15,8)->nullable();
 
             $table->unsignedBigInteger('id_criterio');
             $table->foreign('id_criterio')->references('id')->on('criterios')->onDelete('cascade');
             $table->timestamps();
         });
     }
- 
+
     /**
      * Reverse the migrations.
      */

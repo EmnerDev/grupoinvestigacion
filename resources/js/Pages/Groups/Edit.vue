@@ -144,7 +144,7 @@
                         <DangerButton class="px-10">
                             Cancelar
                         </DangerButton>
-                    </div>                   
+                    </div>
                 </form>
             </div>
         </div>
@@ -167,7 +167,7 @@ import { Head, useForm, usePage, router } from "@inertiajs/vue3";
 
 import Swal from "sweetalert2";
 import '@fortawesome/fontawesome-free/css/all.css';
-import { nextTick, ref } from "vue";
+import { nextTick, onUnmounted, ref } from "vue";
 import { watch, reactive } from "vue";
 import Paginator from "@/Components/Paginator.vue";
 import { onMounted } from 'vue';
@@ -190,6 +190,14 @@ const props = defineProps({
     sublineas: Object,
     personas: Object,
     tipos: Object,
+});
+
+onMounted(() =>{
+    //setTimeout(() => {
+        selectedFacultadId.value=form.id_facultad;
+    updateEscuelas();
+
+   // }, 3000);
 });
 
 console.log('prueba', props.grupos);
@@ -227,8 +235,9 @@ const updateEscuelas = () => {
     const selectedFacultad = props.facultades.find(fac => fac.id === selectedFacultadId.value);
     escuelasfilter = selectedFacultad ? props.escuelas.filter(es => es.id_facultad === selectedFacultad.id) : [];
     console.log('escuela', escuelasfilter);
-    console.log('facu', selectedFacultad);
+    //console.log('facu', selectedFacultad);
     form.id_escuela = 0;
+    //form.id_escuela = props.grupos.id_escuela;
 };
 
 watch(() => form.id_area, (newId, oldId) =>{
@@ -262,7 +271,7 @@ const updateSublineas = () => {
 const update = () => {
         form.put(route("actualizar.grupo",props.grupos.id),{
             onSuccess: () => {ok('Se actualizó Correctamente')},
-        });    
+        });
 };
 const ok = (msj) => {
     form.reset();
