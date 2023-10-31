@@ -281,7 +281,8 @@
                 </div>
             </div>
             <div class="mt-5 text-center ml-5 mr-5">
-                <LinkEvaluarButton @click="togleInfo" style="cursor: pointer;">Ver Criterios minimos para Categorizar</LinkEvaluarButton>
+                <LinkEvaluarButton v-if="mostrarInfo" @click="togleInfo" style="cursor: pointer;">Ocultar Criterios minimos para Categorizar</LinkEvaluarButton>
+                <LinkEvaluarButton v-else @click="togleInfo" style="cursor: pointer;">Ver Criterios minimos para Categorizar</LinkEvaluarButton>
                 <div v-if="mostrarInfo">
                     <div class="overflow-x-auto rounded-lg shadow mt-5 text-center">
                         <table class="w-full p-6 text-xs text-left whitespace-nowrap">
@@ -543,6 +544,7 @@ const togleInfo = () => {
 }
 
 const submit = () => {
+    if(operation.value === 1){
         // Para una solicitud POST
         const datosEnviar = {
             totales: form,
@@ -572,6 +574,37 @@ const submit = () => {
                 // Manejar el error aquí
                 console.error(error);
             });
+    }else{
+        // Para una solicitud PUT
+        const datosEnviar = {
+            totales: form,
+            calcularTotal:calcularTotal.value
+        }
+        axios
+            .put(route("actualizar.total",id.value), datosEnviar)
+            .then((res) => {
+                // Manejar la respuesta exitosa aquí
+                console.log('llegaa',res.data.datosEvaluacion);
+                if(res.data.code == 200){
+                    //gruposIntegra.value = res.data.datosEvaluacion;
+                    //gruposevaluar.value = res.data.data;
+                    //form.reset();
+                    setTimeout(()=>{
+                        closeModal();
+
+                        window.location.reload();
+                    }, 1000);
+                    // router.reload();
+                    ok(res.data);
+                }
+                btnDeshabilitado.value = true;
+
+            })
+            .catch((error) => {
+                // Manejar el error aquí
+                console.error(error);
+            });
+    }
 };
 const ok = (obj) => {
     form.reset();

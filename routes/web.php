@@ -71,6 +71,7 @@ Route::middleware('auth')->group(function () {
     Route::post('guardar/total', [EvaluacionController::class, 'guardarEvaluacion'])->name('guardar.total');
     Route::get('evaluacion/editar/{grupo_id}/{id}', [EvaluacionController::class, 'editarEvaluacion'])->name('evaluacion.editar');
     Route::put('evaluacion/actualizar/{grupo_id}/{id}', [EvaluacionController::class, 'editUpdate'])->name('actualizar.evaluacion');
+    Route::put('actualizar/{evaluacion_grupo}/', [EvaluacionController::class, 'totalUpdate'])->name('actualizar.total');
 
 });
 

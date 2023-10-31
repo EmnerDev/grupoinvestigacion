@@ -223,5 +223,18 @@ class EvaluacionController extends Controller
         }
     }
 
+    public function totalUpdate(Request $request, EvaluacionGrupo $evaluacion_grupo){
+
+        //return $request->all();
+        EvaluacionGrupo::where('id_grupo', $request['totales']['id_grupo'])
+            ->where('id_evaluacion_total',$request['totales']['id_evaluacion_total'])
+            ->update([
+                'ptj_total_grupo'=>$request['calcularTotal'],
+                'categorias' => $request['totales']['categorias']
+            ]);
+        //$evaluacion_grupo->update($request->all());
+
+        return response(['msj' => 'Registro actualizado correctamente', 'code' => 200, 'id' => $request['totales']['id_grupo']]);
+    }
 
 }
