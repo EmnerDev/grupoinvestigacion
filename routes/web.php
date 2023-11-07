@@ -7,6 +7,7 @@ use App\Http\Controllers\IntegranteController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -73,6 +74,8 @@ Route::middleware('auth')->group(function () {
     Route::put('evaluacion/actualizar/{grupo_id}/{id}', [EvaluacionController::class, 'editUpdate'])->name('actualizar.evaluacion');
     Route::put('actualizar/{evaluacion_grupo}/', [EvaluacionController::class, 'totalUpdate'])->name('actualizar.total');
 
+    Route::get('reporte',[ReportController::class,'index'])->name('ver.reporte');
+    Route::get('grupos/reporte',[ReportController::class,'pdfGrupo'])->name('grupos.reporte');
 });
 
 require __DIR__.'/auth.php';
