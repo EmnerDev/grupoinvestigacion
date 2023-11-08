@@ -18,7 +18,10 @@ class PruebaSeeder extends Seeder
     public function run(): void
     {
         DB::table('users')->insert([
+            'dni' => 'admin',
             'name' => 'admin',
+            'first_name' => 'admin',
+            'last_name' => 'admin',
             'email'=> 'admin@mail.com',
             'password' => bcrypt('admin123'),
         ]);
