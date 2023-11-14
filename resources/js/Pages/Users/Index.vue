@@ -2,18 +2,23 @@
     <Head title="Users" />
 
     <AuthenticatedLayout>
-        <template #header>
-            Usuarios
-        </template>
+        <template #header> Usuarios </template>
 
-        <div class="mb-4 inline-flex w-full overflow-hidden rounded-lg bg-white shadow-md">
+        <div
+            class="mb-4 inline-flex w-full overflow-hidden rounded-lg bg-white shadow-md"
+        >
             <div class="flex w-12 items-center justify-center bg-blue-500">
-                <svg class="h-6 w-6 fill-current text-white" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                <svg
+                    class="h-6 w-6 fill-current text-white"
+                    viewBox="0 0 40 40"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
                     <path
-                        d="M20 3.33331C10.8 3.33331 3.33337 10.8 3.33337 20C3.33337 29.2 10.8 36.6666 20 36.6666C29.2 36.6666 36.6667 29.2 36.6667 20C36.6667 10.8 29.2 3.33331 20 3.33331ZM21.6667 28.3333H18.3334V25H21.6667V28.3333ZM21.6667 21.6666H18.3334V11.6666H21.6667V21.6666Z"></path>
+                        d="M20 3.33331C10.8 3.33331 3.33337 10.8 3.33337 20C3.33337 29.2 10.8 36.6666 20 36.6666C29.2 36.6666 36.6667 29.2 36.6667 20C36.6667 10.8 29.2 3.33331 20 3.33331ZM21.6667 28.3333H18.3334V25H21.6667V28.3333ZM21.6667 21.6666H18.3334V11.6666H21.6667V21.6666Z"
+                    ></path>
                 </svg>
             </div>
-    
+
             <div class="-mx-3 px-4 py-2">
                 <div class="mx-3">
                     <span class="font-semibold text-blue-500">Info</span>
@@ -30,28 +35,81 @@
         <div class="inline-block min-w-full overflow-hidden rounded-lg shadow">
             <table class="w-full whitespace-no-wrap">
                 <thead>
-                    <tr class="border-b bg-gray-50 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
-                        <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
+                    <tr
+                        class="border-b bg-gray-50 text-left text-xs font-semibold uppercase tracking-wide text-gray-500"
+                    >
+                        <th
+                            class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
+                        >
                             Name
                         </th>
-                        <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
+                        <th
+                            class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
+                        >
                             Email
+                        </th>
+                        <th
+                            class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
+                        >
+                            Accion
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="user in users.data" :key="user.id" class="text-gray-700">
-                        <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                            <p class="text-gray-900 whitespace-no-wrap">{{ user.name }}</p>
+                    <tr
+                        v-for="user in users.data"
+                        :key="user.id"
+                        class="text-gray-700"
+                    >
+                        <td
+                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                        >
+                            <p class="text-gray-900 whitespace-no-wrap">
+                                {{ user.name }} {{ user.first_name }}
+                                {{ user.last_name }}
+                            </p>
                         </td>
-                        <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                            <p class="text-gray-900 whitespace-no-wrap">{{ user.email }}</p>
+                        <td
+                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                        >
+                            <p class="text-gray-900 whitespace-no-wrap">
+                                {{ user.email }}
+                            </p>
+                        </td>
+                        <td
+                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                        >
+                            <WarningButton
+                                class="mr-1"
+                                @click="
+                                    openModal(
+                                        2,
+                                        roles[0].name,
+                                        user.dni,
+                                        user.name,
+                                        user.first_name,
+                                        user.last_name,                                        
+                                        user.email,                                        
+                                        user.id
+                                    )
+                                "
+                            >
+                                <i class="fa-solid fa-edit"></i>
+                            </WarningButton>
+                            <DangerButton
+                                @click="
+                                    deleteIntegrante(inte.id, inte.persona.name)
+                                "
+                                ><i class="fa-solid fa-trash"></i
+                            ></DangerButton>
                         </td>
                     </tr>
                 </tbody>
             </table>
 
-            <div class="flex flex-col items-center border-t bg-white px-5 py-5 xs:flex-row xs:justify-between">
+            <div
+                class="flex flex-col items-center border-t bg-white px-5 py-5 xs:flex-row xs:justify-between"
+            >
                 <pagination :links="users.links" />
             </div>
         </div>
@@ -65,36 +123,49 @@
             <!-- <div v-if="integrante_existente" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
                 {{ integrante_existente }}
             </div> -->
-            <div  class="p-6 border-b border-gray-200" style="background-color: #1027d4; text-align: center;">
-                    <label class="" style="color: #fff; font-weight: bold;">Digite DNI primero, para rellenar automaticamente los campos si el integrante ya se encuentra registrado en la base de datos</label>
-                </div>
+            <div
+                class="p-6 border-b border-gray-200"
+                style="background-color: #1027d4; text-align: center"
+            >
+                <label class="" style="color: #fff; font-weight: bold"
+                    >Seleccione o digite el DNI del coordinador para rellenar
+                    automaticamente los campos. Antes de guardar asegurarse de
+                    asignar el rol al coordinador</label
+                >
+            </div>
             <div class="grid gap-6 mb-6 md:grid-cols-1">
                 <div class="p-3">
-                    <InputLabel for="condition" value="Coordinadores: " />
+                    <InputLabel for="coordinador" value="Coordinadores: " />
                     <select
-                        name="condition"
-                        id="condition"
+                        name="coordinador"
+                        id="coordinador"
                         class="mt-1 block w-full"
-                        v-model="form.condition"
+                        v-model="form.coordinador"
                     >
+                        <option value="0" disabled selected>
+                            Selecciona un coordinador
+                        </option>
                         <option
                             v-for="(integrante, value) in integrantes"
-                            :key="value"
-                            :value="value"
+                            :key="integrante.id"
+                            :value="integrante"
                         >
+                            {{ integrante.persona.dni }} -
                             {{ integrante.persona.name }}
+                            {{ integrante.persona.first_name }}
+                            {{ integrante.persona.last_name }}
                         </option>
                     </select>
-                </div>                
+                </div>
             </div>
             <div class="grid gap-6 mb-6 md:grid-cols-2">
-                                <div class="p-3">
+                <div class="p-3">
                     <InputLabel for="dni" value="Dni:"></InputLabel>
                     <TextInput
                         id="dni"
                         ref="nameImput"
-                        v-model="form.dni"
-                        @input="searchIntegranteVue"
+                        v-model="form.coordinador.persona.dni"
+                        @input="searchUserVue"
                         type="text"
                         class="mt-1 block w-3/4"
                         placeholder="Dni"
@@ -104,7 +175,7 @@
                     <InputLabel for="name" value="Nombres:"></InputLabel>
                     <TextInput
                         id="name"
-                        v-model="form.name"
+                        v-model="form.coordinador.persona.name"
                         type="text"
                         class="mt-1 block w-3/4"
                         placeholder="Nombre"
@@ -120,7 +191,7 @@
                     ></InputLabel>
                     <TextInput
                         id="first_name"
-                        v-model="form.first_name"
+                        v-model="form.coordinador.persona.first_name"
                         type="text"
                         class="mt-1 block w-3/4"
                         placeholder="Apellido Paterno"
@@ -133,7 +204,7 @@
                     ></InputLabel>
                     <TextInput
                         id="last_name"
-                        v-model="form.last_name"
+                        v-model="form.coordinador.persona.last_name"
                         type="text"
                         class="mt-1 block w-3/4"
                         placeholder="Apellido Materno"
@@ -142,27 +213,70 @@
             </div>
             <div class="grid gap-6 mb-6 md:grid-cols-2">
                 <div class="p-3">
-                    <InputLabel for="phone" value="Telefono:"></InputLabel>
-                    <TextInput
-                        id="phone"
-                        v-model="form.phone"
-                        type="text"
-                        class="mt-1 block w-3/4"
-                        placeholder="Telefono"
-                    ></TextInput>
+                    <InputLabel for="roles" value="Asignar Rol:"></InputLabel>
+                    <select
+                        name="roles"
+                        id="roles"
+                        class="mt-1 block w-full"
+                        v-model="form.roles"
+                    >
+                        <option value="0" disabled selected>
+                            Seleccione el Rol para el coordinador
+                        </option>
+                        <option
+                            v-for="(rol, value) in roles"
+                            :key="rol.id"
+                            :value="rol.id"
+                        >
+                            {{ rol.name }}
+                        </option>
+                    </select>
                 </div>
                 <div class="p-3">
                     <InputLabel for="email" value="Email:"></InputLabel>
                     <TextInput
                         id="email"
-                        v-model="form.email"
+                        v-model="form.coordinador.persona.email"
                         type="text"
                         class="mt-1 block w-3/4"
                         placeholder="Correo Electrónico"
                     >
                     </TextInput>
                 </div>
-            </div>            
+            </div>
+            <div class="grid gap-6 mb-6 md:grid-cols-2">
+                <div class="p-3">
+                    <InputLabel for="password" value="Contraseña" />
+                    <TextInput
+                        id="password"
+                        type="password"
+                        class="mt-1 block w-full"
+                        v-model="form.coordinador.persona.dni"
+                        required
+                        autocomplete="new-password"
+                    />
+                    <InputError class="mt-2" :message="form.errors.password" />
+                </div>
+
+                <div class="p-3">
+                    <InputLabel
+                        for="password_confirmation"
+                        value="Confirmar Contraseña"
+                    />
+                    <TextInput
+                        id="password_confirmation"
+                        type="password"
+                        class="mt-1 block w-full"
+                        v-model="form.coordinador.persona.dni"
+                        required
+                        autocomplete="new-password"
+                    />
+                    <InputError
+                        class="mt-2"
+                        :message="form.errors.password_confirmation"
+                    />
+                </div>
+            </div>
             <div class="flex justify-center">
                 <div class="p-3 mt-6">
                     <PrimaryButton :disabled="form.processing" @click="submit">
@@ -184,9 +298,9 @@
 </template>
 
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import LinkPrimaryButton from '@/Components/LinkPrimaryButton.vue'
-import PrimaryButton from '@/Components/PrimaryButton.vue'
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import LinkPrimaryButton from "@/Components/LinkPrimaryButton.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import DangerButton from "@/Components/DangerButton.vue";
@@ -194,17 +308,20 @@ import WarningButton from "@/Components/WarningButton.vue";
 import LinkWarningButton from "@/Components/LinkWarningButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
-import Pagination from '@/Components/Pagination.vue'
+import Pagination from "@/Components/Pagination.vue";
 
 import Modal from "@/Components/Modal.vue";
 import Swal from "sweetalert2";
 import "@fortawesome/fontawesome-free/css/all.css";
-import { nextTick, ref } from "vue";
+import { nextTick, ref, onMounted, watch } from "vue";
 import axios from "axios";
-import { onMounted } from "vue";
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, useForm } from "@inertiajs/vue3";
+
 //uso del Toast
 import { Toast } from "@/Composables/Toast.js";
+import $ from "jquery";
+import "select2";
+
 const toast = Toast();
 
 const nameInput = ref(null);
@@ -213,41 +330,40 @@ const title = ref("");
 const operation = ref(1);
 const id = ref("");
 
+const intePerson = ref([]);
+const rolIntegra = ref([]);
+const userInte = ref([]);
 
 const props = defineProps({
     users: Object,
-    integrantes:Object
-})
+    integrantes: Object,
+    roles: Object,
+});
 
 const form = useForm({
-    dni: "",
-    name: "",
-    first_name: "",
-    last_name: "",
-    phone: "",
-    email: "",
-    id_tipo: 4,
-    condition: "inv. Titular",
-    orcid: "",
-    cti_vitae: "",
-    google_scholar: "",
-    id_grupo: "",
-    id_persona: "",
+    roles: 0,
+    coordinador: {
+        persona: {
+            dni: "",
+            name: "",
+            first_name: "",
+            last_name: "",
+            email: "",
+            password: "",
+            password_confirmation: "",
+        },
+    },
 });
 const openModal = (
     op,
+    roles,
     dni,
     name,
     first_name,
     last_name,
-    phone,
     email,
-    condition,
-    orcid,
-    cti_vitae,
-    google_scholar,
-    id_grupo,
-    id_persona,
+    password,
+    password_confirmation,
     integran
 ) => {
     modal.value = true;
@@ -258,44 +374,55 @@ const openModal = (
         title.value = "Agregar Usuarios";
     } else {
         title.value = "Editar Usuarios";
-        form.dni = dni;
-        form.name = name;
-        form.first_name = first_name;
-        form.last_name = last_name;
-        form.id_tipo = 4;
-        form.phone = phone;
-        form.email = email;
-        form.condition = condition;
-        form.orcid = orcid;
-        form.cti_vitae = cti_vitae;
-        form.google_scholar = google_scholar;
-        form.id_grupo = id_grupo;
-        form.id_persona = id_persona;
+        form.roles = roles;
+        form.coordinador.persona.dni = dni;
+        form.coordinador.persona.name = name;
+        form.coordinador.persona.first_name = first_name;
+        form.coordinador.persona.last_name = last_name;
+        form.coordinador.persona.email = email;
+        form.coordinador.persona.password = password;
+        form.coordinador.persona.password_confirmation = password_confirmation;
     }
 };
-const searchIntegranteVue = () => {
+
+console.log("props.users", props.users);
+
+const searchUserVue = () => {
     axios
-        .get(`/search-integrante/${form.dni}`)
+        .get(`/search-user/${form.coordinador.persona.dni}`)
         .then((response) => {
             const persona = response.data;
             if (persona) {
-                form.name = persona.name;
-                form.first_name = persona.first_name;
-                form.last_name = persona.last_name;
-                form.phone = persona.phone;
-                form.email = persona.email;
+                form.coordinador.persona.name = persona.name;
+                form.coordinador.persona.first_name = persona.first_name;
+                form.coordinador.persona.last_name = persona.last_name;
+                //form.phone = persona.phone;
+                form.coordinador.persona.email = persona.email;
             } else {
-                form.name = "";
-                form.first_name = "";
-                form.last_name = "";
-                form.phone = "";
-                form.email = "";
+                form.coordinador.persona.name = "";
+                form.coordinador.persona.first_name = "";
+                form.coordinador.persona.last_name = "";
+                //form.phone = "";
+                form.coordinador.persona.email = "";
             }
         })
         .catch((error) => {
             console.error(error);
         });
 };
+
+// onMounted(() => {
+//     $('#coordinador').select2({
+//         placeholder: 'Buscar Coordinador',
+//         allowClear:true,
+//     });
+//     //escucha cambios en el modelo
+//     watch(form, (newValue, oldValue) => {
+//         $('#coordinador').val(newValue.coordinador).trigger('change');
+//     }, {deep:true});
+
+// });
+
 const closeModal = () => {
     modal.value = false;
     form.reset();
@@ -305,17 +432,18 @@ const submit = () => {
     if (operation.value === 1) {
         // Para una solicitud POST
         axios
-            .post(route("grupo.registrar.integrante"), form)
+            .post(route("user.store"), form)
             .then((res) => {
                 // Manejar la respuesta exitosa aquí
                 console.log(res.data);
                 // Puedes acceder a los datos de la respuesta
                 intePerson.value = res.data.data;
-                gruposIntegra.value = res.data.data;
+                rolIntegra.value = res.data.data;
+                userInte.value = res.data.data;
                 form.reset();
                 closeModal();
                 //ok("Registro Creado Correctamente");
-                toast.toast('Exito', 'Registrado Correctamente','success');
+                toast.toast("Exito", "Registrado Correctamente", "success");
             })
             .catch((error) => {
                 // Manejar el error aquí
@@ -323,40 +451,47 @@ const submit = () => {
                 if (error.response && error.response.status == 422) {
                     //alert("El usuario ya esta registrado en otro grupo");
                     Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'El Integrante ha alcanzado el numero máximo de grupos permitidos',
-                    })
+                        icon: "error",
+                        title: "Oops...",
+                        text: "El Integrante ha alcanzado el numero máximo de grupos permitidos",
+                    });
                 }
             });
     } else {
         // Para una solicitud PUT
-    //     form.put(route("grupo.actualizar.integrante", id.value), {
-    //     onSuccess: () => {
-    //         ok("Registro Actualizado Correctamente");
-    //     },
-    // });
-    axios
-        .put(route("grupo.actualizar.integrante", id.value), form)
-        .then((updateRes) => {
-            // Manejar la respuesta exitosa aquí
-            console.log(updateRes.data);
-            // Puedes acceder a los datos de la respuesta
-            intePerson.value = updateRes.data.data;
-            form.reset();
-            closeModal();
-            ok("Registro Actualizado Correctamente");
-        })
-        .catch((error) => {
-            // Manejar el error aquí
-            console.error(error);
-        });
+        //     form.put(route("grupo.actualizar.integrante", id.value), {
+        //     onSuccess: () => {
+        //         ok("Registro Actualizado Correctamente");
+        //     },
+        // });
+        axios
+            .put(route("grupo.actualizar.integrante", id.value), form)
+            .then((updateRes) => {
+                // Manejar la respuesta exitosa aquí
+                console.log(updateRes.data);
+                // Puedes acceder a los datos de la respuesta
+                intePerson.value = updateRes.data.data;
+                form.reset();
+                closeModal();
+                ok("Registro Actualizado Correctamente");
+            })
+            .catch((error) => {
+                // Manejar el error aquí
+                console.error(error);
+            });
     }
 };
+
+onMounted(async () => {
+    intePerson.value = props.integrantes;
+    rolIntegra.value = props.roles;
+    userInte.value = props.users;
+    console.log("comenta", userInte.value);
+});
+
 const ok = (msj) => {
     form.reset();
     closeModal();
     Swal.fire({ title: msj, icon: "success" });
 };
-
 </script>

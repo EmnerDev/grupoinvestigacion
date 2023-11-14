@@ -6,6 +6,7 @@ use App\Models\AreaInvestigacion;
 use App\Models\Escuela;
 use App\Models\Facultad;
 use App\Models\Tipo;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +18,7 @@ class PruebaSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('users')->insert([
+        $user = User::create([
             'dni' => 'admin',
             'name' => 'admin',
             'first_name' => 'admin',
@@ -25,6 +26,7 @@ class PruebaSeeder extends Seeder
             'email'=> 'admin@mail.com',
             'password' => bcrypt('admin123'),
         ]);
+        $user->assignRole('Administrador');
 
         
         $tipo = new Tipo();
