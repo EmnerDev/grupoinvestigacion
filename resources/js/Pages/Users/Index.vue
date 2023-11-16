@@ -26,11 +26,13 @@
                 </div>
             </div>
         </div>
-        <div class="flex justify-center mb-6">
+        <div v-can="'Administrador'">
+            <div class="flex justify-center mb-6">
             <PrimaryButton @click="openModal(1)" class="">
                 <i class="fa-solid fa-plus-circle"></i>
                 Agregar Usuario
             </PrimaryButton>
+            </div>
         </div>
         <div class="inline-block min-w-full overflow-hidden rounded-lg shadow">
             <table class="w-full whitespace-no-wrap">
@@ -51,14 +53,19 @@
                         <th
                             class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
                         >
+                            Rol
+                        </th>
+                        <th
+                            class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
+                        >
                             Accion
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr
-                        v-for="user in users.data"
-                        :key="user.id"
+                    <template v-for="user in users.data"
+                        :key="user.id">
+                    <tr v-for="r in user.roles" :key="r.id"
                         class="text-gray-700"
                     >
                         <td
@@ -68,7 +75,7 @@
                                 {{ user.name }} {{ user.first_name }}
                                 {{ user.last_name }}
                             </p>
-                        </td>
+                        </td>                        
                         <td
                             class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                         >
@@ -79,12 +86,19 @@
                         <td
                             class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                         >
+                            <p class="text-gray-900 whitespace-no-wrap">
+                                {{ r.name }}
+                            </p>
+                        </td>
+                        <td
+                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                        >
                             <WarningButton
                                 class="mr-1"
                                 @click="
                                     openModal(
                                         2,
-                                        roles[0].name,
+                                        r.id,
                                         user.dni,
                                         user.name,
                                         user.first_name,
@@ -104,6 +118,7 @@
                             ></DangerButton>
                         </td>
                     </tr>
+                </template>
                 </tbody>
             </table>
 
@@ -315,7 +330,7 @@ import Swal from "sweetalert2";
 import "@fortawesome/fontawesome-free/css/all.css";
 import { nextTick, ref, onMounted, watch } from "vue";
 import axios from "axios";
-import { Head, useForm } from "@inertiajs/vue3";
+import { Head, useForm, usePage } from "@inertiajs/vue3";
 
 //uso del Toast
 import { Toast } from "@/Composables/Toast.js";

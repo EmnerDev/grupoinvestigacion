@@ -17,7 +17,7 @@ class UserController extends Controller
         $roles = Role::all();
         $integrantes = Integrante::with('persona')->where('condition', 'Coordinador')->get();
         return Inertia::render('Users/Index', [
-            'users' => User::paginate(),
+            'users' => User::with('roles')->paginate(),
             'integrantes' => $integrantes,
             'roles' => $roles
         ]);

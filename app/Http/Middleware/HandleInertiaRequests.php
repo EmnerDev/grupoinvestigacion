@@ -35,7 +35,7 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             'auth' => [
-                'user' => $request->user(),
+                'user' =>$this->transformUser( $request->user()),
             ],
             'flash' => function () use ($request) {
                 return [
@@ -44,5 +44,20 @@ class HandleInertiaRequests extends Middleware
             },
             'showingMobileMenu' => false,
         ]);
+    }
+
+    protected function transformUser($user){
+        if($user){
+            return [
+                'id'=>$user->id,
+                'name'=>$user->name,
+                'first_name'=>$user->first_name,
+                'last_name'=>$user->last_name,
+                'email'=>$user->email,
+                'roles'=>$user->getRoleNames()->toArray(),
+                'permissions'=>$user->getAllPermissions()->pluck('name')->toArray(),
+            ];
+        }
+        return null;
     }
 }
