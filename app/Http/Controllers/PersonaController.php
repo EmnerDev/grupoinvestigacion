@@ -63,6 +63,7 @@ class PersonaController extends Controller
             'phone' => $request->phone,
             'email' => $request->email,
             'id_tipo' => $request->id_tipo,
+            'user_id' => 444,
         ]);
         $persona->save();
 

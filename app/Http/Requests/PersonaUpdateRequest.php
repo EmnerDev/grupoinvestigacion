@@ -28,7 +28,8 @@ class PersonaUpdateRequest extends FormRequest
             'last_name' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'integer','digits:9'],
             'email' => ['required', 'string', 'email'],
-            'id_tipo' => 'required|exists:tipos,id'
+            'id_tipo' => 'required|exists:tipos,id',
+            'user_id' => 'required|exists:users,id'
         ];
     }
 
@@ -44,6 +45,8 @@ class PersonaUpdateRequest extends FormRequest
             'last_name.required' => 'El campo Apellido Materno es obligatorio',
             'id_tipo.required' => 'El campo Tipo es obligatorio',
             'id_tipo.exists' => 'El Tipo Persona seleccionado no es valido',
+            'user_id.required' => 'El campo id_user es obligatorio',
+            'user_id.exists' => 'El id_user seleccionado no es valido',
             'phone.required' => 'El campo Telefono es obligatorio',
             'phone.digits' => 'El Telefono debe de tener 9 digitos',
             'email.required' => 'El campo Email es obligatorio',

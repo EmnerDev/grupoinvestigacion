@@ -26,14 +26,14 @@
                 </div>
             </div>
         </div>
-        <div v-can="'Administrador'">
-            <div class="flex justify-center mb-6">
+
+        <div class="flex justify-center mb-6">
             <PrimaryButton @click="openModal(1)" class="">
                 <i class="fa-solid fa-plus-circle"></i>
                 Agregar Usuario
             </PrimaryButton>
-            </div>
         </div>
+
         <div class="inline-block min-w-full overflow-hidden rounded-lg shadow">
             <table class="w-full whitespace-no-wrap">
                 <thead>
@@ -43,7 +43,7 @@
                         <th
                             class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
                         >
-                            Name
+                            Usuario
                         </th>
                         <th
                             class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
@@ -63,62 +63,65 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <template v-for="user in users.data"
-                        :key="user.id">
-                    <tr v-for="r in user.roles" :key="r.id"
-                        class="text-gray-700"
-                    >
-                        <td
-                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                    <template v-for="user in users.data" :key="user.id">
+                        <tr
+                            v-for="r in user.roles"
+                            :key="r.id"
+                            class="text-gray-700"
                         >
-                            <p class="text-gray-900 whitespace-no-wrap">
-                                {{ user.name }} {{ user.first_name }}
-                                {{ user.last_name }}
-                            </p>
-                        </td>                        
-                        <td
-                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
-                        >
-                            <p class="text-gray-900 whitespace-no-wrap">
-                                {{ user.email }}
-                            </p>
-                        </td>
-                        <td
-                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
-                        >
-                            <p class="text-gray-900 whitespace-no-wrap">
-                                {{ r.name }}
-                            </p>
-                        </td>
-                        <td
-                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
-                        >
-                            <WarningButton
-                                class="mr-1"
-                                @click="
-                                    openModal(
-                                        2,
-                                        r.id,
-                                        user.dni,
-                                        user.name,
-                                        user.first_name,
-                                        user.last_name,                                        
-                                        user.email,                                        
-                                        user.id
-                                    )
-                                "
+                            <td
+                                class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                             >
-                                <i class="fa-solid fa-edit"></i>
-                            </WarningButton>
-                            <DangerButton
-                                @click="
-                                    deleteIntegrante(inte.id, inte.persona.name)
-                                "
-                                ><i class="fa-solid fa-trash"></i
-                            ></DangerButton>
-                        </td>
-                    </tr>
-                </template>
+                                <p class="text-gray-900 whitespace-no-wrap">
+                                    {{ user.name }}
+                                </p>
+                            </td>
+                            <td
+                                class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                            >
+                                <p class="text-gray-900 whitespace-no-wrap">
+                                    {{ user.email }}
+                                </p>
+                            </td>
+                            <td
+                                class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                            >
+                                <p class="text-gray-900 whitespace-no-wrap">
+                                    {{ r.name }}
+                                </p>
+                            </td>
+                            <td
+                                class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                            >
+                                <WarningButton
+                                    class="mr-1"
+                                    @click="
+                                        openModal(
+                                            2,
+                                            r.id,
+                                            user.dni,
+                                            user.name,
+                                            user.first_name,
+                                            user.last_name,
+                                            user.email,
+                                            user.id
+                                        )
+                                    "
+                                >
+                                    <i class="fa-solid fa-edit"></i>
+                                </WarningButton>
+                                <DangerButton
+                                    @click="
+                                        deleteIntegrante(
+                                            inte.id,
+                                            inte.persona.name
+                                        )
+                                    "
+                                    ><i class="fa-solid fa-trash"></i
+                                ></DangerButton>
+                            </td>
+                        </tr>
+                    </template>
                 </tbody>
             </table>
 
@@ -149,7 +152,7 @@
                 >
             </div>
             <div class="grid gap-6 mb-6 md:grid-cols-1">
-                <div class="p-3">
+                <!-- <div class="p-3">
                     <InputLabel for="coordinador" value="Coordinadores: " />
                     <select
                         name="coordinador"
@@ -171,7 +174,7 @@
                             {{ integrante.persona.last_name }}
                         </option>
                     </select>
-                </div>
+                </div> -->
             </div>
             <div class="grid gap-6 mb-6 md:grid-cols-2">
                 <div class="p-3">
@@ -179,7 +182,7 @@
                     <TextInput
                         id="dni"
                         ref="nameImput"
-                        v-model="form.coordinador.persona.dni"
+                        v-model="form.dni"
                         @input="searchUserVue"
                         type="text"
                         class="mt-1 block w-3/4"
@@ -190,7 +193,7 @@
                     <InputLabel for="name" value="Nombres:"></InputLabel>
                     <TextInput
                         id="name"
-                        v-model="form.coordinador.persona.name"
+                        v-model="form.name"
                         type="text"
                         class="mt-1 block w-3/4"
                         placeholder="Nombre"
@@ -206,7 +209,7 @@
                     ></InputLabel>
                     <TextInput
                         id="first_name"
-                        v-model="form.coordinador.persona.first_name"
+                        v-model="form.first_name"
                         type="text"
                         class="mt-1 block w-3/4"
                         placeholder="Apellido Paterno"
@@ -219,7 +222,7 @@
                     ></InputLabel>
                     <TextInput
                         id="last_name"
-                        v-model="form.coordinador.persona.last_name"
+                        v-model="form.last_name"
                         type="text"
                         class="mt-1 block w-3/4"
                         placeholder="Apellido Materno"
@@ -251,7 +254,7 @@
                     <InputLabel for="email" value="Email:"></InputLabel>
                     <TextInput
                         id="email"
-                        v-model="form.coordinador.persona.email"
+                        v-model="form.email"
                         type="text"
                         class="mt-1 block w-3/4"
                         placeholder="Correo Electrónico"
@@ -266,7 +269,7 @@
                         id="password"
                         type="password"
                         class="mt-1 block w-full"
-                        v-model="form.coordinador.persona.dni"
+                        v-model="form.dni"
                         required
                         autocomplete="new-password"
                     />
@@ -282,7 +285,7 @@
                         id="password_confirmation"
                         type="password"
                         class="mt-1 block w-full"
-                        v-model="form.coordinador.persona.dni"
+                        v-model="form.dni"
                         required
                         autocomplete="new-password"
                     />
@@ -357,17 +360,13 @@ const props = defineProps({
 
 const form = useForm({
     roles: 0,
-    coordinador: {
-        persona: {
-            dni: "",
-            name: "",
-            first_name: "",
-            last_name: "",
-            email: "",
-            password: "",
-            password_confirmation: "",
-        },
-    },
+    dni: "",
+    name: "",
+    first_name: "",
+    last_name: "",
+    email: "",
+    password: "",
+    password_confirmation: "",
 });
 const openModal = (
     op,
@@ -390,13 +389,13 @@ const openModal = (
     } else {
         title.value = "Editar Usuarios";
         form.roles = roles;
-        form.coordinador.persona.dni = dni;
-        form.coordinador.persona.name = name;
-        form.coordinador.persona.first_name = first_name;
-        form.coordinador.persona.last_name = last_name;
-        form.coordinador.persona.email = email;
-        form.coordinador.persona.password = password;
-        form.coordinador.persona.password_confirmation = password_confirmation;
+        form.dni = dni;
+        form.name = name;
+        form.first_name = first_name;
+        form.last_name = last_name;
+        form.email = email;
+        form.password = password;
+        form.password_confirmation = password_confirmation;
     }
 };
 
@@ -404,21 +403,21 @@ console.log("props.users", props.users);
 
 const searchUserVue = () => {
     axios
-        .get(`/search-user/${form.coordinador.persona.dni}`)
+        .get(`/search-user/${form.dni}`)
         .then((response) => {
             const persona = response.data;
             if (persona) {
-                form.coordinador.persona.name = persona.name;
-                form.coordinador.persona.first_name = persona.first_name;
-                form.coordinador.persona.last_name = persona.last_name;
+                form.name = persona.name;
+                form.first_name = persona.first_name;
+                form.last_name = persona.last_name;
                 //form.phone = persona.phone;
-                form.coordinador.persona.email = persona.email;
+                form.email = persona.email;
             } else {
-                form.coordinador.persona.name = "";
-                form.coordinador.persona.first_name = "";
-                form.coordinador.persona.last_name = "";
+                form.name = "";
+                form.first_name = "";
+                form.last_name = "";
                 //form.phone = "";
-                form.coordinador.persona.email = "";
+                form.email = "";
             }
         })
         .catch((error) => {

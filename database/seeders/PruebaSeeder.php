@@ -18,16 +18,6 @@ class PruebaSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = User::create([
-            'dni' => 'admin',
-            'name' => 'admin',
-            'first_name' => 'admin',
-            'last_name' => 'admin',
-            'email'=> 'admin@mail.com',
-            'password' => bcrypt('admin123'),
-        ]);
-        $user->assignRole('Administrador');
-
         
         $tipo = new Tipo();
         $tipo->name = "Docente Nombrado";
@@ -43,6 +33,10 @@ class PruebaSeeder extends Seeder
 
         $tipo = new Tipo();
         $tipo->name = "Externo";
+        $tipo->save();
+
+        $tipo = new Tipo();
+        $tipo->name = "Sin Asignar";
         $tipo->save();
 
         $facultad = new Facultad();

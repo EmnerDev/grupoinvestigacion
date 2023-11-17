@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             RolSeeder::class,
             PruebaSeeder::class,
             LineaSeeder::class,
+            UserSeeder::class,
             PersonaSeeder::class,
             EvaluacionSeeder::class,
         ]);

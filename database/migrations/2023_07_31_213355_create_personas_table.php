@@ -13,15 +13,17 @@ return new class extends Migration
     {
         Schema::create('personas', function (Blueprint $table) {
             $table->id();
-            $table->integer('dni')->unique();
+            $table->string('dni',8)->unique();
             $table->string('name');
             $table->string('first_name');
             $table->string('last_name');
-            $table->integer('phone');
+            $table->string('phone',9)->nullable();
             $table->string('email');
 
             $table->unsignedBigInteger('id_tipo');
             $table->foreign('id_tipo')->references('id')->on('tipos')->onDelete('cascade');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->timestamps();
         });

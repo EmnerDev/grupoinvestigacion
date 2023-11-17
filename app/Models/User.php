@@ -18,11 +18,8 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [        
-        'dni',
+    protected $fillable = [    
         'name',
-        'first_name',
-        'last_name',
         'email',
         'password',
     ];
@@ -48,4 +45,8 @@ class User extends Authenticatable
     ];
 
     protected $with = ['roles','permissions'];
+
+    public function persona() {
+        return $this->hasMany(Persona::class);
+    }
 }

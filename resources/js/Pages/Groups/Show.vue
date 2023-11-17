@@ -523,6 +523,7 @@ const form = useForm({
     phone: "",
     email: "",
     id_tipo: 4,
+    user_id:444,
     condition: "inv. Titular",
     orcid: "",
     cti_vitae: "",
@@ -568,6 +569,7 @@ const openModal = (
         form.first_name = first_name;
         form.last_name = last_name;
         form.id_tipo = 4;
+        form.user_id = 444;
         form.phone = phone;
         form.email = email;
         form.condition = condition;

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Integrante;
 use App\Models\Persona;
+use App\Models\Tipo;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,11 +16,13 @@ class UserController extends Controller
     public function index()
     {
         $roles = Role::all();
+        $tipos = Tipo::all();
         $integrantes = Integrante::with('persona')->where('condition', 'Coordinador')->get();
         return Inertia::render('Users/Index', [
             'users' => User::with('roles')->paginate(),
             'integrantes' => $integrantes,
-            'roles' => $roles
+            'roles' => $roles,
+            'tipos' => $tipos
         ]);
     }
 
@@ -27,16 +30,24 @@ class UserController extends Controller
        //return $request['coordinador']['persona']['name'];
        //return $request->all;
        
-       $user = User::create([
-           'dni' => $request['coordinador']['persona']['dni'],
-           'name' => $request['coordinador']['persona']['name'],
-           'first_name' => $request['coordinador']['persona']['first_name'],
-           'last_name' => $request['coordinador']['persona']['last_name'],
-           'email' => $request['coordinador']['persona']['email'],
-           'password' => $request['coordinador']['persona']['dni']
-        ]);
+        $user = new User();
+        $user->name = $request->dni;
+        $user->email = $request->email;
+        $user->password = $request->dni;
         $user->assignRole($request->input('roles'));
         $user->save();
+
+        $persona = Persona::create([
+            'dni' => $request->dni,
+            'name' => $request->name,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name, 
+            'email' => $request->email,  
+            'id_tipo' =>1,  
+            'user_id' => $user->id,  
+        ]);
+        $persona->save();
+
         DB::commit();
         
         //return $user;
