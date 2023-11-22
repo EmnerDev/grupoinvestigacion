@@ -508,4 +508,12 @@ const ok = (msj) => {
     closeModal();
     Swal.fire({ title: msj, icon: "success" });
 };
+
+computed: {
+    isAdmin: () => {
+        const user = this.$page.props.auth.user;
+
+        return user && user.roles.includes('Administrador');
+    }
+}
 </script>

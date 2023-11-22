@@ -347,6 +347,8 @@ const props = defineProps({
         type: Object,
         default: () => ({}),
     },
+    users: Object,
+    roles: Object,
 });
 
 const form = useForm({
@@ -375,6 +377,8 @@ const openModal = (op,dni, name, first_name, last_name, tipo, phone, email, pers
         form.email = email;
     }
 }
+
+console.log('personas prueba', props.personas)
 
 const closeModal = () => {
     modal.value = false;

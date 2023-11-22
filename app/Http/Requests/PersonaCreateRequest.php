@@ -29,7 +29,7 @@ class PersonaCreateRequest extends FormRequest
             'phone' => ['required', 'integer','digits:9'],
             'email' => ['required', 'string', 'email'],
             'id_tipo' => 'required|exists:tipos,id',
-            'user_id' => 'required|exists:users,id'
+            'user_id' => 'nullable|exists:users,id'
         ];
     }
 

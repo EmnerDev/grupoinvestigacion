@@ -44,7 +44,7 @@ class IntegranteController extends Controller
                 $persona = new Persona();
                 $persona->dni = $dni;            
                 $persona->id_tipo = 4;
-                $persona->user_id = 444;
+                // $persona->user_id = $request->user_id ?? null;
             }
             $integranteExistente = Integrante::where('id_persona', $persona->id)->first();
             $maxGruposPermitidos = ($persona->tipo->name === 'Docente Nombrado') ? 1 : 2;
@@ -60,7 +60,6 @@ class IntegranteController extends Controller
             $persona->last_name = $request->last_name;
             $persona->phone = $request->phone;
             $persona->email = $request->email;
-            $persona->user_id = $request->user_id;
             $persona->save();
     
             $integrante = new Integrante();
