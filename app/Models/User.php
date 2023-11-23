@@ -47,6 +47,6 @@ class User extends Authenticatable
     protected $with = ['roles','permissions'];
 
     public function persona() {
-        return $this->hasMany(Persona::class, 'user_id');
+        return $this->hasOne(Persona::class, 'user_id');
     }
 }

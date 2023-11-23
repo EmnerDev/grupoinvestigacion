@@ -7,6 +7,7 @@ use App\Models\Persona;
 use App\Models\Tipo;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Role;
@@ -19,7 +20,7 @@ class UserController extends Controller
         $tipos = Tipo::all();
         $integrantes = Integrante::with('persona')->where('condition', 'Coordinador')->get();
         return Inertia::render('Users/Index', [
-            'users' => User::with('roles')->paginate(),
+            'users' => User::with('roles','persona')->paginate(),
             'integrantes' => $integrantes,
             'roles' => $roles,
             'tipos' => $tipos

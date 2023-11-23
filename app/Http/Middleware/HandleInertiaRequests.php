@@ -33,6 +33,8 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request)
     {
+        // $user = $request->user();
+        // $user->load('persona');
         return array_merge(parent::share($request), [
             'auth' => [
                 'user' =>$this->transformUser( $request->user()),
@@ -51,9 +53,8 @@ class HandleInertiaRequests extends Middleware
             return [
                 'id'=>$user->id,
                 'name'=>$user->name,
-                'first_name'=>$user->first_name,
-                'last_name'=>$user->last_name,
                 'email'=>$user->email,
+                'persona'=>$user->persona,
                 'roles'=>$user->getRoleNames()->toArray(),
                 'permissions'=>$user->getAllPermissions()->pluck('name')->toArray(),
             ];

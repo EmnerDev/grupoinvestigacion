@@ -64,63 +64,65 @@
                 </thead>
                 <tbody>
                     <template v-for="user in users.data" :key="user.id">
-                        <tr
-                            v-for="r in user.roles"
-                            :key="r.id"
-                            class="text-gray-700"
-                        >
-                            <td
-                                class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                        <!-- <template v-for=" person in user.persona" :key="person.id"> -->
+                            <tr
+                                v-for="r in user.roles"
+                                :key="r.id"
+                                class="text-gray-700"
                             >
-                                <p class="text-gray-900 whitespace-no-wrap">
-                                    {{ user.name }}
-                                </p>
-                            </td>
-                            <td
-                                class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
-                            >
-                                <p class="text-gray-900 whitespace-no-wrap">
-                                    {{ user.email }}
-                                </p>
-                            </td>
-                            <td
-                                class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
-                            >
-                                <p class="text-gray-900 whitespace-no-wrap">
-                                    {{ r.name }}
-                                </p>
-                            </td>
-                            <td
-                                class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
-                            >
-                                <WarningButton
-                                    class="mr-1"
-                                    @click="
-                                        openModal(
-                                            2,
-                                            r.id,
-                                            user.dni,
-                                            user.name,
-                                            user.first_name,
-                                            user.last_name,
-                                            user.email,
-                                            user.id
-                                        )
-                                    "
+                                <td
+                                    class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                 >
-                                    <i class="fa-solid fa-edit"></i>
-                                </WarningButton>
-                                <DangerButton
-                                    @click="
-                                        deleteIntegrante(
-                                            inte.id,
-                                            inte.persona.name
-                                        )
-                                    "
-                                    ><i class="fa-solid fa-trash"></i
-                                ></DangerButton>
-                            </td>
-                        </tr>
+                                    <p class="text-gray-900 whitespace-no-wrap">
+                                        {{ user.persona.name }} {{ user.persona.first_name }} {{ user.persona.last_name }}
+                                    </p>
+                                </td>
+                                <td
+                                    class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                                >
+                                    <p class="text-gray-900 whitespace-no-wrap">
+                                        {{ user.email }}
+                                    </p>
+                                </td>
+                                <td
+                                    class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                                >
+                                    <p class="text-gray-900 whitespace-no-wrap">
+                                        {{ r.name }}
+                                    </p>
+                                </td>
+                                <td
+                                    class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                                >
+                                    <WarningButton
+                                        class="mr-1"
+                                        @click="
+                                            openModal(
+                                                2,
+                                                r.id,
+                                                user.dni,
+                                                user.name,
+                                                user.first_name,
+                                                user.last_name,
+                                                user.email,
+                                                user.id
+                                            )
+                                        "
+                                    >
+                                        <i class="fa-solid fa-edit"></i>
+                                    </WarningButton>
+                                    <DangerButton
+                                        @click="
+                                            deleteIntegrante(
+                                                inte.id,
+                                                inte.persona.name
+                                            )
+                                        "
+                                        ><i class="fa-solid fa-trash"></i
+                                    ></DangerButton>
+                                </td>
+                            </tr>
+                        <!-- </template> -->
                     </template>
                 </tbody>
             </table>
@@ -146,9 +148,9 @@
                 style="background-color: #1027d4; text-align: center"
             >
                 <label class="" style="color: #fff; font-weight: bold"
-                    >Seleccione o digite el DNI del coordinador para rellenar
-                    automaticamente los campos. Antes de guardar asegurarse de
-                    asignar el rol al coordinador</label
+                    > digite el DNI del coordinador para rellenar
+                    automaticamente los campos si es que la persona ya se encuentra registrado en la  base de datos. Antes de guardar asegurarse de
+                    asignar el rol</label
                 >
             </div>
             <div class="grid gap-6 mb-6 md:grid-cols-1">

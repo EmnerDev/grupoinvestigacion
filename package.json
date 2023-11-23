@@ -18,6 +18,8 @@
         "vue": "^3.2.41"
     },
     "dependencies": {
+        "@casl/ability": "^6.5.0",
+        "@casl/vue": "^2.2.1",
         "@fortawesome/fontawesome-free": "^6.4.2",
         "@headlessui/vue": "^1.7.16",
         "@heroicons/vue": "^2.0.18",
@@ -26,7 +28,6 @@
         "mosha-vue-toastify": "^1.0.23",
         "select2": "^4.1.0-rc.0",
         "sweetalert2": "^11.7.20",
-        "uuid": "^9.0.1",
-        "vue-gates": "^2.1.2"
+        "uuid": "^9.0.1"
     }
 }
