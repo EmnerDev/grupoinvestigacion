@@ -128,7 +128,7 @@ class GrupoController extends Controller
             $grupo->id_escuela = $request->id_escuela;
             $grupo->save();
             
-            if($user->roles->pluck('Administrador')) {
+            if($user->roles->pluck('name')->contains('Administrador')) {
                 $integrante = Integrante::create([
                     'id_grupo' => $grupo->id,
                     'id_persona' => $request->id_persona

@@ -42,8 +42,8 @@ class RolSeeder extends Seeder
         Permission::create(['name' => 'grupos.update'])->syncRoles([$role_admin,$role_coord]);
         Permission::create(['name' => 'grupos.destroy'])->syncRoles([$role_admin]);
 
-        Permission::create(['name' => 'integrantes.store'])->syncRoles([$role_admin]);
-        Permission::create(['name' => 'integrantes.update'])->syncRoles([$role_admin]);
+        Permission::create(['name' => 'integrantes.store'])->syncRoles([$role_admin,$role_coord]);
+        Permission::create(['name' => 'integrantes.update'])->syncRoles([$role_admin,$role_coord]);
         Permission::create(['name' => 'integrantes.destroy'])->syncRoles([$role_admin]);
 
         ///evaluacion
