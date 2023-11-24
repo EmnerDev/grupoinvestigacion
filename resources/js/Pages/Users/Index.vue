@@ -27,7 +27,7 @@
             </div>
         </div>
 
-        <div class="flex justify-center mb-6">
+        <div v-role="'Administrador'" class="flex justify-center mb-6">
             <PrimaryButton @click="openModal(1)" class="">
                 <i class="fa-solid fa-plus-circle"></i>
                 Agregar Usuario

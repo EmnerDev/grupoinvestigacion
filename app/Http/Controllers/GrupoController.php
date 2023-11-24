@@ -16,6 +16,7 @@ use App\Models\Tipo;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
@@ -69,7 +70,7 @@ class GrupoController extends Controller
         $sublineas = SubLinea::all();
         $tipos = Tipo::all();
         $personas = Persona::with('tipo')->where('id_tipo', 1)->get();
-
+        $user =auth()->user();
         return Inertia::render('Groups/Create',[
             'grupos' => Grupo::paginate(),
             'facultades' => $facultades,
@@ -78,7 +79,8 @@ class GrupoController extends Controller
             'lineas' => $lineas,
             'sublineas' => $sublineas,
             'personas' => $personas,
-            'tipos' => $tipos
+            'tipos' => $tipos,
+            'users' => $user
         ]);
     }
 
@@ -87,7 +89,7 @@ class GrupoController extends Controller
      */
     public function store(GrupoCreateRequest $request)
     {
-        // return $request->all();
+         //return $request->all();
         try {
             //code...
             // $dni = $request->dni;
@@ -96,6 +98,7 @@ class GrupoController extends Controller
             // if(!$persona) {
             //     return response()->json(['error'=> 'La persona con el DNi proporcionado no existe'], 200);
             // }
+            $user = auth()->user();
     
             $integranteExistente = Integrante::where('id_persona', $request->id_persona)->first();
     
@@ -124,13 +127,24 @@ class GrupoController extends Controller
             $grupo->id_facultad = $request->id_facultad;
             $grupo->id_escuela = $request->id_escuela;
             $grupo->save();
-    
-            $integrante = Integrante::create([
+            
+            if($user->roles->pluck('Administrador')) {
+                $integrante = Integrante::create([
                     'id_grupo' => $grupo->id,
                     'id_persona' => $request->id_persona
     
             ]);
+            }else {
+                $integrante = Integrante::create([
+                    'id_grupo' => $grupo->id,
+                    'id_persona' => $request->id_person,
+    
+            ]);
+            }
+            
+            
             $integrante->save();
+
             DB::commit();
 
             $validator = Validator::make($request->all(), $request->rules());

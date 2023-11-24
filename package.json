@@ -28,6 +28,7 @@
         "mosha-vue-toastify": "^1.0.23",
         "select2": "^4.1.0-rc.0",
         "sweetalert2": "^11.7.20",
-        "uuid": "^9.0.1"
+        "uuid": "^9.0.1",
+        "vue-gates": "^2.1.2"
     }
 }

@@ -3,20 +3,16 @@ export default {
     install: (app) => {
         app.mixin({
             mounted(){
-                const pageProps = usePage().props.value;
-
-    if (pageProps && pageProps.auth) {
-      const { roles, permissions } = pageProps.auth;
-
-      if (roles && permissions) {
-        this.$gates.setRoles(roles);
-        this.$gates.setPermissions(permissions);
-
-        console.log('roles:', roles);
-        console.log('permissions:', permissions);
+                let authRoles = usePage().props.auth.user;
+                //console.log('authROles', authRoles.roles)
+                let authPermissions;
+                if(authRoles !== null){
+                    authRoles = usePage().props.auth.user.roles;
+                    authPermissions = usePage().props.auth.user.permissions;
+                    this.$gates.setRoles(authRoles);
+                    this.$gates.setPermissions(authPermissions);
+                }
             }
-        }
+        })
     }
-})
-    },
-};
+}

@@ -9,13 +9,13 @@ export default {
             const authRoles = authData.user.roles;
 
             ability.update((can, cannot) => {
-                authRoles.forEach((roles) => {
-                    if(roles === 'Administrador'){
-                        can('manage','all');
-                    }else if(roles === 'Investigador'){
+                
+                    if(authRoles[0] === 'Administrador'){
+                        can('permissions');
+                    }else if(authRoles[0] === 'Investigador'){
                         can('dashboard');
                     }
-                });
+
             });
             this.$gates = ability;
         }

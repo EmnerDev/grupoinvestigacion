@@ -200,7 +200,7 @@
                                             >
                                                 <i class="fa-solid fa-edit"></i>
                                             </WarningButton>
-                                            <DangerButton @click="deleteIntegrante(inte.id, inte.persona.name)"
+                                            <DangerButton v-role="'Administrador'" @click="deleteIntegrante(inte.id, inte.persona.name)"
                                                 ><i
                                                     class="fa-solid fa-trash"
                                                 ></i

@@ -147,14 +147,14 @@
                                             <td v-if="gru.integrante && gru.integrante.length"
                                              :rowspan="gru.integrante.length+1"                                            
                                             class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                                                <LinkPrimaryButton :href="route('evaluar.grupo',gru.id)" class="">
+                                                <LinkPrimaryButton v-role="'Administrador'" :href="route('evaluar.grupo',gru.id)" class="">
                                                     <i class="fa-solid fa-plus-circle"></i>
                                                 </LinkPrimaryButton>
                                                 <LinkButton class="mr-1" :href="route('ver.grupo',gru.id)"><i class="fa-solid fa-eye"></i></LinkButton>
                                                 <LinkWarningButton  class="mr-1" :href="route('grupos.editar',gru.id)">
                                                     <i class="fa-solid fa-edit" :title="editMode ? 'Editar':'Editar Grupo'"></i>
                                                 </LinkWarningButton>
-                                                <DangerButton type="button" @click="deleteGrupo(gru.id, gru.name)"><i class="fa-solid fa-trash"></i></DangerButton>
+                                                <DangerButton v-role="'Administrador'" type="button" @click="deleteGrupo(gru.id, gru.name)"><i class="fa-solid fa-trash"></i></DangerButton>
                                             </td>                                          
                                         </tr>
                                         <tr v-for="integ in gru.integrante" :key="integ.id">

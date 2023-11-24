@@ -64,13 +64,21 @@
                         </div>
                     </div>
                     <div class="grid gap-6 mb-6 md:grid-cols-1">
-                        <div class="flex-initial ml-6">
+                        <div v-role="'Administrador'" class="flex-initial ml-6">
                                 <InputLabel for="name" value="Responsable" /><span style="color: #e53e3e;"> *</span>
                                 <select name="id_persona" id="id_persona" class="mt-1 block w-full" v-model="form.id_persona">
                                     <option value="0">Seleccione Responsable</option>
                                     <option v-for="per in personas" :key="per.id" :value="per.id">{{ per.name }} {{ per.first_name }} {{ per.last_name }} - {{ per.tipo.name }}</option>
                                 </select>
                                 <InputError class="mt-2" :message="errors.id_persona" />
+                        </div>
+                        <div v-role="'Coordinador'" class="flex-initial ml-6">
+                                <InputLabel for="name" value="Responsable" /><span style="color: #e53e3e;"> *</span>                        
+                                <input type="hidden" name="id_person" v-model="form.id_persona" />
+                                <span  class="mt-1 block w-full">
+                                {{ $page.props.auth.user.persona.name }} {{ $page.props.auth.user.persona.first_name }} {{ $page.props.auth.user.persona.last_name }}
+                                </span>
+                                <InputError class="mt-2" />
                         </div>
                     </div>
                     <div class="grid gap-6 mb-6 md:grid-cols-3">
@@ -190,6 +198,7 @@ let sublineasFiltered = [];
 const gruposIntegra = ref([]);
 const errors = ref({});
 
+
 const props = defineProps({
     facultades: Array,
     escuelas: Array,
@@ -198,7 +207,11 @@ const props = defineProps({
     sublineas: Object,
     personas: Object,
     tipos: Object,
+    users: Object
 });
+
+// const {auth} = ToRefs(props);
+console.log('idpersona',props.users.persona.id)
 
 const form = useForm({
     name:"",
@@ -219,7 +232,8 @@ const form = useForm({
     id_sublinea:0,
     id_facultad:0,
     id_escuela:0,
-    id_persona:0
+    id_persona:0,
+    id_person:props.users.persona.id
 });
 
 onMounted(async() =>{
