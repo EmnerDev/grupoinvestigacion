@@ -100,11 +100,11 @@
                                             openModal(
                                                 2,
                                                 r.id,
-                                                user.dni,
                                                 user.name,
-                                                user.first_name,
-                                                user.last_name,
-                                                user.email,
+                                                user.persona.name,
+                                                user.persona.first_name,
+                                                user.persona.last_name,
+                                                user.persona.email,
                                                 user.id
                                             )
                                         "
@@ -148,8 +148,7 @@
                 style="background-color: #1027d4; text-align: center"
             >
                 <label class="" style="color: #fff; font-weight: bold"
-                    > digite el DNI del coordinador para rellenar
-                    automaticamente los campos si es que la persona ya se encuentra registrado en la  base de datos. Antes de guardar asegurarse de
+                    > Digite el DNI para rellenar automaticamente los campos si es que la persona ya se encuentra registrado en la  base de datos. Antes de guardar asegurarse de
                     asignar el rol</label
                 >
             </div>
@@ -241,7 +240,7 @@
                         v-model="form.roles"
                     >
                         <option value="0" disabled selected>
-                            Seleccione el Rol para el coordinador
+                            Seleccione el Rol 
                         </option>
                         <option
                             v-for="(rol, value) in roles"
@@ -469,7 +468,7 @@ const submit = () => {
                     Swal.fire({
                         icon: "error",
                         title: "Oops...",
-                        text: "El Integrante ha alcanzado el numero máximo de grupos permitidos",
+                        text: "El rol de coordinador solo se puede asignar a docentes nombrados. Por favor verifique los datos",
                     });
                 }
             });

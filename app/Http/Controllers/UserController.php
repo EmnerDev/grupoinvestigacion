@@ -6,6 +6,7 @@ use App\Models\Integrante;
 use App\Models\Persona;
 use App\Models\Tipo;
 use App\Models\User;
+use Faker\Provider\ar_EG\Person;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -28,25 +29,36 @@ class UserController extends Controller
     }
 
     public function store(Request $request,User $user) {
-       //return $request['coordinador']['persona']['name'];
        //return $request->all;
-       
+        $dni = $request->dni;
+
+        $persona = Persona::where('dni', $dni)->first();
+
+        if(!$persona) {
+            $persona = new Persona();
+                $persona->dni = $dni;                
+                $persona->phone = $request->phone;
+
+                $id_tipo = $request->input('roles') === 2 ? 1:5;
+                $persona->id_tipo = $id_tipo;
+        }
         $user = new User();
         $user->name = $request->dni;
         $user->email = $request->email;
         $user->password = $request->dni;
+
+        if($request->input('roles') === 2 && $persona->id_tipo !== 1){
+            return response()->json(['error' => 'Solo se puede asignar el rol de Coordinador a doncentes nombrados'], 422);
+
+        }
         $user->assignRole($request->input('roles'));
         $user->save();
 
-        $persona = Persona::create([
-            'dni' => $request->dni,
-            'name' => $request->name,
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name, 
-            'email' => $request->email,  
-            'id_tipo' =>1,  
-            'user_id' => $user->id,  
-        ]);
+        $persona->name = $request->name;
+        $persona->first_name = $request->first_name;
+        $persona->last_name = $request->last_name;
+        $persona->email = $request->email;
+        $persona->user_id = $user->id;
         $persona->save();
 
         DB::commit();

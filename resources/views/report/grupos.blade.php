@@ -67,10 +67,10 @@
                     <th>
                         Condicion
                     </th>
+                    <th>Puntaje</th>                                             
                     <th>
                         Categoria del grupo
                     </th>
-                    <th>Puntaje</th>                                             
                 </tr>
             </thead>
             <tbody>
@@ -92,8 +92,8 @@
                         <td>{{ $inte->persona->name }} {{ $inte->persona->first_name }} {{ $inte->persona->last_name }}</td>
                         <td>{{ $inte->condition }}</td>
                         @if($index === 0)
-                        <td rowspan="{{ $integranteCount }}">{{ $evalua->categorias }}</td>
                         <td rowspan="{{ $integranteCount }}">{{ number_format($evalua->ptj_total_grupo,2) }}</td>
+                        <td rowspan="{{ $integranteCount }}">{{ $evalua->categorias }}</td>
                         @endif
                     </tr>
                         @endforeach

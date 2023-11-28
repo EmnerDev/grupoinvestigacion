@@ -31,6 +31,23 @@ class GrupoController extends Controller
     {
         // $integrantes = Integrante::with('persona')->get();
         //$grupos = Grupo::with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea','integrante.persona')->get();
+        $user = auth()->user();
+
+    if($user->roles->pluck('name')->contains('Coordinador')) {
+        $coordinadorId = $user->persona->id;
+
+        $grupos = Grupo::query()
+        ->with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea','integrante.persona','evaluacionGrupos')
+        ->orderBy('created_at','DESC')
+        ->whereHas('integrante.persona', function ($query) use ($coordinadorId){
+            $query->where('id', $coordinadorId);
+        })
+        ->paginate();
+        //return $grupos;
+        return Inertia::render('Groups/Index', [
+            'grupos' => $grupos
+        ]);
+    }
 
         return Inertia::render('Groups/Index',[
             'grupos' =>  Grupo::query()->with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea','integrante.persona','evaluacionGrupos')->orderBy('created_at','DESC')

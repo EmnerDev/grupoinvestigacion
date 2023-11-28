@@ -181,7 +181,7 @@
                                         </template>
                                     </tbody>
                                 </table>
-                                <div
+                                <div v-rol="'Administrador'"
                                     class="flex flex-col items-center border-t bg-white px-5 py-5 xs:flex-row xs:justify-between"
                                 >
                                     <paginator class="mt-3" :paginator="grupos" />
