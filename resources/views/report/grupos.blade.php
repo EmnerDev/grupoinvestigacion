@@ -6,6 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Reporte de grupos</title>
     <style>
+        body{
+            margin: 0;
+            padding: 0;
+        }
         .tabla {
             /* border: 1px solid #000000; */
             border-collapse: collapse;
@@ -27,6 +31,15 @@
         }
         .cabecera {
             align-self: center;
+        }
+        footer{
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #f2f2f2;
+            padding: 10px;
+            font-size: 12px;
+            color: #555;
         }
     </style>
 </head>
@@ -67,10 +80,10 @@
                     <th>
                         Condicion
                     </th>
+                    <th>Puntaje</th>                                             
                     <th>
                         Categoria del grupo
                     </th>
-                    <th>Puntaje</th>                                             
                 </tr>
             </thead>
             <tbody>
@@ -92,8 +105,8 @@
                         <td>{{ $inte->persona->name }} {{ $inte->persona->first_name }} {{ $inte->persona->last_name }}</td>
                         <td>{{ $inte->condition }}</td>
                         @if($index === 0)
-                        <td rowspan="{{ $integranteCount }}">{{ $evalua->categorias }}</td>
                         <td rowspan="{{ $integranteCount }}">{{ number_format($evalua->ptj_total_grupo,2) }}</td>
+                        <td rowspan="{{ $integranteCount }}">{{ $evalua->categorias }}</td>
                         @endif
                     </tr>
                         @endforeach
@@ -102,6 +115,11 @@
             </tbody>
         </table>
 </body>
+<footer>
+    <div class="item-footer">
+            {{ now()->format('d/m/Y') }}
+    </div>
+</footer>
 </html>
 
 

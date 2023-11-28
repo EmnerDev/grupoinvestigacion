@@ -6,6 +6,7 @@ use App\Models\AreaInvestigacion;
 use App\Models\Escuela;
 use App\Models\Facultad;
 use App\Models\Tipo;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -17,12 +18,6 @@ class PruebaSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('users')->insert([
-            'name' => 'admin',
-            'email'=> 'admin@mail.com',
-            'password' => bcrypt('admin123'),
-        ]);
-
         
         $tipo = new Tipo();
         $tipo->name = "Docente Nombrado";
@@ -38,6 +33,10 @@ class PruebaSeeder extends Seeder
 
         $tipo = new Tipo();
         $tipo->name = "Externo";
+        $tipo->save();
+
+        $tipo = new Tipo();
+        $tipo->name = "Sin Asignar";
         $tipo->save();
 
         $facultad = new Facultad();

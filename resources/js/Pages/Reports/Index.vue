@@ -12,7 +12,7 @@
                         <div class="overflow-x-auto rounded-lg shadow mt-6">
                             <div class="mb-4">
                                 <div class="flex justify-between ">                                     
-                                    <div class="mb-2 flex ">
+                                    <div v-role="'Administrador'" class="mb-2 flex ">
                                         <input
                                                 type="text"
                                                 v-model="search"
@@ -20,7 +20,7 @@
                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-60 p-2.5 "
                                             />                                        
                                     </div>
-                                    <div class="flex mb-6">
+                                    <div v-role="'Administrador'" class="flex mb-6">
                                         <LinkEvaluarButton :href="route('grupos.reporte')" target="_blanck" class="">
                                             <i class="fa-solid fa-file-pdf" style="font-size: 20px;"></i>
                                             Descargar PDF
@@ -59,22 +59,54 @@
                                             <th
                                                 class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                                             >
-                                                Categoria del grupo
-                                            </th>                                            
-                                            <th
-                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
-                                            >
                                                 Integrantes
-                                            </th>
+                                            </th>                                            
                                             <th
                                                 class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                                             >
                                                 Condicion
-                                            </th>                                            
+                                            </th>
+                                            <th
+                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
+                                            >
+                                                Puntaje
+                                            </th>
+                                            <th
+                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
+                                            >
+                                                Categoria del grupo
+                                            </th>
+                                            <th
+                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
+                                            >
+                                                Acción
+                                            </th>                                               
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <template v-for="(gru, i) in grupos.data"
+                                        <template v-for="(grupo, key) in grupos.data" :key="key">
+                                        <template v-for="(evalua, evalIndex) in grupo.evaluacion_grupos">
+                                            <template v-for="(inte, index) in grupo.integrante" :key="index">
+                                            <tr>
+                                                <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">{{ key + 1 }}</td>
+                                                <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">{{ grupo.area_investigacion.name }}</td>
+                                                <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">{{ grupo.linea.name }}</td>
+                                                <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">{{ grupo.sublinea.name }}</td>
+                                                <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">{{ grupo.name }}</td>                                            
+                                                <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">{{ inte.persona.name }} {{ inte.persona.first_name }} {{ inte.persona.last_name }}</td>
+                                                <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">{{ inte.condition }}</td>
+                                                <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm" v-if="index === 0" :rowspan="grupo.integrante.length">
+                                                {{  Number(evalua.ptj_total_grupo) % 1 === 0 ? Number(evalua.ptj_total_grupo).toFixed(2) : Number(evalua.ptj_total_grupo).toFixed(2) }}
+                                                </td>
+                                                <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">{{ evalua.categorias }}</td>
+                                                <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">
+                                                <LinkButton :href="route('individual.reporte',grupo.id)" target="_blanck"><i class="fa-solid fa-file-pdf" style="font-size: 20px;"></i></LinkButton>
+                                                </td>
+                                            </tr>
+                                            </template>
+                                        </template>
+                                        </template>
+                                        <!-- <template v-for="(gru, i) in grupos.data"
                                             :key="gru.id" :value="gru.id">
                                         <tr                                           
                                             
@@ -161,7 +193,7 @@
                                                 </p>
                                             </td>                                                                                        
                                         </tr>
-                                        </template>
+                                        </template> -->
                                     </tbody>
                                 </table>
                                 <div

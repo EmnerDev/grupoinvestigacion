@@ -16,7 +16,8 @@ class Persona extends Model
         'last_name',
         'phone',
         'email',
-        'id_tipo'
+        'id_tipo',
+        'user_id'
     ];
 
     public function tipo(){
@@ -25,5 +26,9 @@ class Persona extends Model
 
     public function integrante() {
         return $this->hasMany(Integrante::class,'id_persona');
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

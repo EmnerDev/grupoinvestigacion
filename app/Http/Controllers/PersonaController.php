@@ -6,6 +6,7 @@ use App\Http\Requests\PersonaCreateRequest;
 use App\Http\Requests\PersonaUpdateRequest;
 use App\Models\Persona;
 use App\Models\Tipo;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,13 +23,14 @@ class PersonaController extends Controller
     public function index()
     {
         $tipos = Tipo::all();
+        $users = User::with('roles')->get();
         // $personas = Persona::with('tipo')->orderBy('created_at','DESC')->query()->when(Request::input('search'), function ($query, $search)
         // {
         //     $query->where('name', 'like', '%'.$search.'%')->orWhere('dni', 'like', '%'.$search.'%');
         // })->paginate(8)->withQueryString();
                 
         return Inertia::render('People/Index', [
-            'personas' => Persona::query()->with('tipo')->orderBy('created_at','DESC')
+            'personas' => Persona::query()->with('tipo','user')->orderBy('created_at','DESC')
             ->when(\Illuminate\Support\Facades\Request::input('search'),function($query, $search) {
                 $query->whereRaw("CONCAT(name,' ',first_name,' ',last_name) like ?", ['%'.$search.'%'])
                 ->OrWhere('dni','like','%'.$search.'%')
@@ -37,7 +39,8 @@ class PersonaController extends Controller
             })->paginate(6)
             ->withQueryString(),
             'filters' => \Illuminate\Support\Facades\Request::only(['search']),
-            'tipos' => $tipos
+            'tipos' => $tipos,
+            'users' => $users
         ]);
 
     }
@@ -55,6 +58,9 @@ class PersonaController extends Controller
      */
     public function store(PersonaCreateRequest $request): RedirectResponse
     {
+        //return $request->all();
+        //dd($request->all());
+
         $persona = Persona::create([
             'dni' => $request->dni,
             'name' => $request->name,
@@ -67,6 +73,7 @@ class PersonaController extends Controller
         $persona->save();
 
         return Redirect::route('personas.index')->with('ok', 'ok');
+       
     }
 
     /**

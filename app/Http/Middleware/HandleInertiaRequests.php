@@ -33,9 +33,11 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request)
     {
+        // $user = $request->user();
+        // $user->load('persona');
         return array_merge(parent::share($request), [
             'auth' => [
-                'user' => $request->user(),
+                'user' =>$this->transformUser( $request->user()),
             ],
             'flash' => function () use ($request) {
                 return [
@@ -44,5 +46,19 @@ class HandleInertiaRequests extends Middleware
             },
             'showingMobileMenu' => false,
         ]);
+    }
+
+    protected function transformUser($user){
+        if($user){
+            return [
+                'id'=>$user->id,
+                'name'=>$user->name,
+                'email'=>$user->email,
+                'persona'=>$user->persona,
+                'roles'=>$user->getRoleNames(),
+                'permissions'=>$user->getAllPermissions()->pluck('name'),
+            ];
+        }
+        return null;
     }
 }

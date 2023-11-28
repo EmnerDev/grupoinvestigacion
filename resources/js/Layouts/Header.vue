@@ -12,17 +12,17 @@
             <dropdown>
                 <template #trigger>
                     <button @click="dropdownOpen = ! dropdownOpen" class="relative block overflow-hidden">
-                        {{ $page.props.auth.user.name }}
+                        {{ $page.props.auth.user.persona.name }} {{ $page.props.auth.user.persona.first_name }} {{ $page.props.auth.user.persona.last_name }}
                     </button>
                 </template>
 
                 <template #content>
                     <dropdown-link :href="route('profile.edit')">
-                        Profile
+                        Perfil
                     </dropdown-link>
 
                     <dropdown-link class="w-full text-left" :href="route('logout')" method="post" as="button">
-                        Log out
+                        Cerrar Sesion
                     </dropdown-link>
                 </template>
             </dropdown>

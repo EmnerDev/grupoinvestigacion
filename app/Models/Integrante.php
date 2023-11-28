@@ -31,7 +31,7 @@ class Integrante extends Model
     }
 
     public function persona() {
-        return $this->belongsTo(Persona::class,'id_persona');
+        return $this->belongsTo(Persona::class,'id_persona', 'id');
     }
 
     public function evaluacion(){

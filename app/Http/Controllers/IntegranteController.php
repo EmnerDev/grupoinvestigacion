@@ -35,45 +35,49 @@ class IntegranteController extends Controller
     public function store(Request $request)
     {
         //dd($request->all());
+        try {
+            $dni = $request->dni;
 
-        $dni = $request->dni;
-
-        $persona = Persona::where('dni', $dni)->first();
-
-        if(!$persona) {
-            $persona = new Persona();
-            $persona->dni = $dni;            
-            $persona->id_tipo = 4;
-        }
-        $integranteExistente = Integrante::where('id_persona', $persona->id)->first();
-        $maxGruposPermitidos = ($persona->tipo->name === 'Docente Nombrado') ? 1 : 2;
-
-        $cantidadGrupoPorPersona = $persona->integrante->count();
-
-        if($cantidadGrupoPorPersona >= $maxGruposPermitidos){
+            $persona = Persona::where('dni', $dni)->first();
     
-            return response()->json(['error' => 'El integrante ya esta registrado en otro grupo'], 422);
-        } 
-        $persona->name = $request->name;
-        $persona->first_name = $request->first_name;
-        $persona->last_name = $request->last_name;
-        $persona->phone = $request->phone;
-        $persona->email = $request->email;
-        $persona->save();
-
-        $integrante = new Integrante();
-        $integrante->condition = $request->condition;
-        $integrante->orcid = $request->orcid;
-        $integrante->cti_vitae = $request->cti_vitae;
-        $integrante->google_scholar = $request->google_scholar;
-        $integrante->id_grupo = $request->input('id_grupo');
-        $integrante->id_persona = $persona->id;
-        $integrante->save();
-
-        //return redirect()->route('ver.grupo',$request->id_grupo);
-        $integrantes = Integrante::with('persona')->where('id_grupo',$request->id_grupo)->get();
-
-        return response()->json(['message' =>'Registro creado correctamente',$integrante,'data'=>$integrantes], 201);
+            if(!$persona) {
+                $persona = new Persona();
+                $persona->dni = $dni;            
+                $persona->id_tipo = 4;
+                // $persona->user_id = $request->user_id ?? null;
+            }
+            $integranteExistente = Integrante::where('id_persona', $persona->id)->first();
+            $maxGruposPermitidos = ($persona->tipo->name === 'Docente Nombrado') ? 1 : 2;
+    
+            $cantidadGrupoPorPersona = $persona->integrante->count();
+    
+            if($cantidadGrupoPorPersona >= $maxGruposPermitidos){
+        
+                return response()->json(['error' => 'El integrante ya esta registrado en otro grupo'], 422);
+            } 
+            $persona->name = $request->name;
+            $persona->first_name = $request->first_name;
+            $persona->last_name = $request->last_name;
+            $persona->phone = $request->phone;
+            $persona->email = $request->email;
+            $persona->save();
+    
+            $integrante = new Integrante();
+            $integrante->condition = $request->condition;
+            $integrante->orcid = $request->orcid;
+            $integrante->cti_vitae = $request->cti_vitae;
+            $integrante->google_scholar = $request->google_scholar;
+            $integrante->id_grupo = $request->input('id_grupo');
+            $integrante->id_persona = $persona->id;
+            $integrante->save();
+    
+            //return redirect()->route('ver.grupo',$request->id_grupo);
+            $integrantes = Integrante::with('persona')->where('id_grupo',$request->id_grupo)->get();
+    
+            return response()->json(['message' =>'Registro creado correctamente',$integrante,'data'=>$integrantes], 201);
+        } catch (\Throwable $th) {
+            return $th;
+        }
     }
 
     /**
