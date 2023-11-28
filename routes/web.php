@@ -79,6 +79,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('reporte',[ReportController::class,'index'])->middleware('permission:reportes.index')->name('ver.reporte');
     Route::get('grupos/reporte',[ReportController::class,'pdfGrupo'])->middleware('permission:reportes.pdfGrupo')->name('grupos.reporte');
+    Route::get('grupos/reporte/{id}',[ReportController::class,'verReporte'])->name('individual.reporte');
 });
 
 require __DIR__.'/auth.php';

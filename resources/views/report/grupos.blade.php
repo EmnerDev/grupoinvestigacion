@@ -6,6 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Reporte de grupos</title>
     <style>
+        body{
+            margin: 0;
+            padding: 0;
+        }
         .tabla {
             /* border: 1px solid #000000; */
             border-collapse: collapse;
@@ -27,6 +31,15 @@
         }
         .cabecera {
             align-self: center;
+        }
+        footer{
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #f2f2f2;
+            padding: 10px;
+            font-size: 12px;
+            color: #555;
         }
     </style>
 </head>
@@ -102,6 +115,11 @@
             </tbody>
         </table>
 </body>
+<footer>
+    <div class="item-footer">
+            {{ now()->format('d/m/Y') }}
+    </div>
+</footer>
 </html>
 
 
