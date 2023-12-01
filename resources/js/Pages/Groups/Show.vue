@@ -635,6 +635,13 @@ const submit = () => {
                         title: 'Oops...',
                         text: 'El Integrante ha alcanzado el numero máximo de grupos permitidos',
                     })
+                } if(error.response && error.response.status == 422) {
+                    //alert("El usuario ya esta registrado en otro grupo");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'No puede a ver mas de un coordinador en un grupó. Por favor verifique los datos ingresados',
+                    })
                 }
             });
     } else {

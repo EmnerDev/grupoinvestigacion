@@ -31,9 +31,10 @@
             <PrimaryButton @click="openModal(1)" class="">
                 <i class="fa-solid fa-plus-circle"></i>
                 Agregar Usuario
+                
             </PrimaryButton>
         </div>
-
+       
         <div class="inline-block min-w-full overflow-hidden rounded-lg shadow">
             <table class="w-full whitespace-no-wrap">
                 <thead>
@@ -105,7 +106,10 @@
                                                 user.persona.first_name,
                                                 user.persona.last_name,
                                                 user.persona.email,
-                                                user.id
+                                                user.password,
+                                                user.password_confirmation,
+                                                user.id,
+                                                user.persona.id
                                             )
                                         "
                                     >
@@ -113,9 +117,11 @@
                                     </WarningButton>
                                     <DangerButton
                                         @click="
-                                            deleteIntegrante(
-                                                inte.id,
-                                                inte.persona.name
+                                            deleteUser(
+                                                user.id,
+                                                user.persona.name,
+                                                user.persona.first_name,
+                                                user.persona.last_name
                                             )
                                         "
                                         ><i class="fa-solid fa-trash"></i
@@ -135,11 +141,11 @@
         </div>
         <Modal :show="modal" @close="closeModal">
             <h2 class="p-3 text-lg font-medium text-gray-900">{{ title }}</h2>
-            <TextInput
+            <!-- <TextInput
                 type="hidden"
                 name="id_grupo"
                 v-model="form.id_grupo"
-            ></TextInput>
+            ></TextInput> -->
             <!-- <div v-if="integrante_existente" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
                 {{ integrante_existente }}
             </div> -->
@@ -179,11 +185,11 @@
             </div>
             <div class="grid gap-6 mb-6 md:grid-cols-2">
                 <div class="p-3">
-                    <InputLabel for="dni" value="Dni:"></InputLabel>
+                    <InputLabel for="nameu" value="Dni:"></InputLabel>
                     <TextInput
-                        id="dni"
+                        id="nameu"
                         ref="nameImput"
-                        v-model="form.dni"
+                        v-model="form.nameu"
                         @input="searchUserVue"
                         type="text"
                         class="mt-1 block w-3/4"
@@ -270,7 +276,7 @@
                         id="password"
                         type="password"
                         class="mt-1 block w-full"
-                        v-model="form.dni"
+                        v-model="form.nameu"
                         required
                         autocomplete="new-password"
                     />
@@ -286,7 +292,7 @@
                         id="password_confirmation"
                         type="password"
                         class="mt-1 block w-full"
-                        v-model="form.dni"
+                        v-model="form.nameu"
                         required
                         autocomplete="new-password"
                     />
@@ -332,14 +338,14 @@ import Pagination from "@/Components/Pagination.vue";
 import Modal from "@/Components/Modal.vue";
 import Swal from "sweetalert2";
 import "@fortawesome/fontawesome-free/css/all.css";
-import { nextTick, ref, onMounted, watch } from "vue";
+import { nextTick, ref, onMounted, reactive } from "vue";
 import axios from "axios";
 import { Head, useForm, usePage } from "@inertiajs/vue3";
 
 //uso del Toast
 import { Toast } from "@/Composables/Toast.js";
-import $ from "jquery";
-import "select2";
+import { watch } from "vue";
+
 
 const toast = Toast();
 
@@ -347,21 +353,22 @@ const nameInput = ref(null);
 const modal = ref(false);
 const title = ref("");
 const operation = ref(1);
-const id = ref("");
+const id = ref(0);
 
 const intePerson = ref([]);
-const rolIntegra = ref([]);
 const userInte = ref([]);
+const rolIntegra= ref([]);
 
 const props = defineProps({
     users: Object,
-    integrantes: Object,
+    personas: Object,
     roles: Object,
 });
 
+
 const form = useForm({
     roles: 0,
-    dni: "",
+    nameu: "",
     name: "",
     first_name: "",
     last_name: "",
@@ -369,28 +376,33 @@ const form = useForm({
     password: "",
     password_confirmation: "",
 });
+
+
 const openModal = (
     op,
     roles,
-    dni,
+    nameu,
     name,
     first_name,
     last_name,
     email,
     password,
     password_confirmation,
-    integran
+    user,
+    person_id
 ) => {
     modal.value = true;
     nextTick(() => nameInput.value.focus());
     operation.value = op;
-    id.value = integran;
+    id.value = user;
     if (op == 1) {
         title.value = "Agregar Usuarios";
     } else {
         title.value = "Editar Usuarios";
+        form.id = user;
+        form.person_id = person_id;
         form.roles = roles;
-        form.dni = dni;
+        form.nameu = nameu;
         form.name = name;
         form.first_name = first_name;
         form.last_name = last_name;
@@ -400,11 +412,11 @@ const openModal = (
     }
 };
 
-console.log("props.users", props.users);
+
 
 const searchUserVue = () => {
     axios
-        .get(`/search-user/${form.dni}`)
+        .get(`/search-user/${form.nameu}`)
         .then((response) => {
             const persona = response.data;
             if (persona) {
@@ -426,83 +438,52 @@ const searchUserVue = () => {
         });
 };
 
-// onMounted(() => {
-//     $('#coordinador').select2({
-//         placeholder: 'Buscar Coordinador',
-//         allowClear:true,
-//     });
-//     //escucha cambios en el modelo
-//     watch(form, (newValue, oldValue) => {
-//         $('#coordinador').val(newValue.coordinador).trigger('change');
-//     }, {deep:true});
-
-// });
-
 const closeModal = () => {
     modal.value = false;
     form.reset();
 };
 
-const submit = () => {
-    if (operation.value === 1) {
-        // Para una solicitud POST
-        axios
-            .post(route("user.store"), form)
-            .then((res) => {
-                // Manejar la respuesta exitosa aquí
-                console.log(res.data);
-                // Puedes acceder a los datos de la respuesta
-                intePerson.value = res.data.data;
-                rolIntegra.value = res.data.data;
-                userInte.value = res.data.data;
-                form.reset();
-                closeModal();
-                //ok("Registro Creado Correctamente");
-                toast.toast("Exito", "Registrado Correctamente", "success");
-            })
-            .catch((error) => {
-                // Manejar el error aquí
-                console.error(error);
-                if (error.response && error.response.status == 422) {
-                    //alert("El usuario ya esta registrado en otro grupo");
-                    Swal.fire({
-                        icon: "error",
-                        title: "Oops...",
-                        text: "El rol de coordinador solo se puede asignar a docentes nombrados. Por favor verifique los datos",
-                    });
-                }
-            });
-    } else {
-        // Para una solicitud PUT
-        //     form.put(route("grupo.actualizar.integrante", id.value), {
-        //     onSuccess: () => {
-        //         ok("Registro Actualizado Correctamente");
-        //     },
-        // });
-        axios
-            .put(route("grupo.actualizar.integrante", id.value), form)
-            .then((updateRes) => {
-                // Manejar la respuesta exitosa aquí
-                console.log(updateRes.data);
-                // Puedes acceder a los datos de la respuesta
-                intePerson.value = updateRes.data.data;
-                form.reset();
-                closeModal();
-                ok("Registro Actualizado Correctamente");
-            })
-            .catch((error) => {
-                // Manejar el error aquí
-                console.error(error);
-            });
+onMounted(() => {
+    userInte.value = props.users;
+});
+
+console.log('probando',userInte)
+const submit = async () => {
+    try {
+        if (operation.value === 1) {
+            // Guardar (POST)
+            const response = await axios.post(route("user.store"), form);
+            handleSuccess(response, "Registrado Correctamente");
+        } else {
+            // Actualizar (PUT)
+            const response = await axios.put(route("actualizar.usuario", id.value), form);
+            handleSuccess(response, "Registrado Actualizado Correctamente");
+        }
+    } catch (error) {
+        handleError(error);
     }
 };
 
-onMounted(async () => {
-    intePerson.value = props.integrantes;
-    rolIntegra.value = props.roles;
-    userInte.value = props.users;
-    console.log("comenta", userInte.value);
-});
+const handleSuccess = (response, successMessage) => {
+    console.log(response.data);
+
+    const {data} = response.data;
+    userInte.value = data;
+    closeModal();
+    toast.toast("Exito", successMessage, "success");
+};
+
+const handleError = (error) => {
+    console.error(error);
+    if (error.response && error.response.status == 422) {
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "El rol de coordinador solo se puede asignar a docentes nombrados. Por favor, verifique los datos",
+        });
+    }
+    // Agregar manejo de otros errores según sea necesario
+};
 
 const ok = (msj) => {
     form.reset();
@@ -510,11 +491,22 @@ const ok = (msj) => {
     Swal.fire({ title: msj, icon: "success" });
 };
 
-computed: {
-    isAdmin: () => {
-        const user = this.$page.props.auth.user;
-
-        return user && user.roles.includes('Administrador');
-    }
+const deleteUser = (id, name, first_name, last_name) => {
+    const alerta = Swal.mixin({
+        buttonsStyling:true
+    });
+    alerta.fire({
+        title:'Estas seguro de eliminar a '+name+' '+first_name+' '+last_name+'?',
+        icon: 'question', showCancelButton:true,
+        confirmButtonText:'<i class="fa-solid fa-check"></i> Si, eliminar',
+        cancelButtonText:'<i class="fa-solid fa-ban"></i> Cancelar'
+    }).then((result) => {
+        if(result.isConfirmed) {
+            form.delete(route('eliminar.usuario', id),{
+                onSuccess: () => {toast.toast("Exito", "Usuario Eliminado Correctamente", "danger");}
+            });
+        }
+    });
 }
+
 </script>

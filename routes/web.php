@@ -42,6 +42,8 @@ Route::middleware('auth')->group(function () {
     Route::get('users', [UserController::class, 'index'])->middleware('permission:users.index')->name('users.index');
     Route::get('/search-user/{dni}', [UserController::class, 'searchUsuario']);
     Route::post('registrar/user', [UserController::class, 'store'])->middleware('permission:users.store')->name('user.store');
+    Route::put('actualizar/{user}', [UserController::class, 'update'])->name('actualizar.usuario');
+    Route::delete('eliminar/{user}', [UserController::class, 'destroy'])->name('eliminar.usuario');
 
 
     Route::get('/profile', [ProfileController::class, 'edit'])->middleware('permission:profile.edit')->name('profile.edit');
