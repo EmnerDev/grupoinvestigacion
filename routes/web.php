@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CriterioController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EvaluacionController;
 use App\Http\Controllers\GrupoController;
 use App\Http\Controllers\IntegranteController;
@@ -32,9 +33,8 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class,'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/grupos-creados', [DashboardController::class,'getGrupoCreado'])->middleware(['auth', 'verified'])->name('grupos-creados');
 
 Route::middleware('auth')->group(function () {
     Route::get('/about', fn () => Inertia::render('About'))->name('about');
