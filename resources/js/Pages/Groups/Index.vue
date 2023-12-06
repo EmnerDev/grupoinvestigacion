@@ -147,14 +147,14 @@
                                             <td v-if="gru.integrante && gru.integrante.length"
                                              :rowspan="gru.integrante.length+1"                                            
                                             class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                                                <LinkPrimaryButton v-role="'Administrador'" :href="route('evaluar.grupo',gru.id)" class="">
-                                                    <i class="fa-solid fa-plus-circle"></i>
-                                                </LinkPrimaryButton>
-                                                <LinkButton class="mr-1" :href="route('ver.grupo',gru.id)"><i class="fa-solid fa-eye"></i></LinkButton>
-                                                <LinkWarningButton  class="mr-1" :href="route('grupos.editar',gru.id)">
-                                                    <i class="fa-solid fa-edit" :title="editMode ? 'Editar':'Editar Grupo'"></i>
-                                                </LinkWarningButton>
-                                                <DangerButton v-role="'Administrador'" type="button" @click="deleteGrupo(gru.id, gru.name)"><i class="fa-solid fa-trash"></i></DangerButton>
+                                                <a v-role="'Administrador'" :href="route('evaluar.grupo',gru.id)" class="m-2 p-2 bg-blue-500 hover:bg-blue-700 text-white rounded flex items-center">Evaluar
+                                                    <i class="fa-solid fa-plus-circle ml-2"></i>
+                                                </a>
+                                                <a class="m-2 p-2 bg-green-500 hover:bg-green-700 text-white rounded flex items-center" :href="route('ver.grupo',gru.id)">Ver<i class="fa-solid fa-eye ml-2"></i></a>
+                                                <a  class="m-2 p-2 bg-yellow-500 hover:bg-yellow-700 text-white rounded flex items-center" :href="route('grupos.editar',gru.id)">Editar
+                                                    <i class="fa-solid fa-edit ml-2" :title="editMode ? 'Editar':'Editar Grupo'"></i>
+                                                </a>
+                                                <a class="m-2 p-2 bg-red-500 hover:bg-red-700 text-white rounded flex items-center" v-role="'Administrador'" type="button" @click="deleteGrupo(gru.id, gru.name)">Eliminar<i class="fa-solid fa-trash ml-2"></i></a>
                                             </td>                                          
                                         </tr>
                                         <tr v-for="integ in gru.integrante" :key="integ.id">

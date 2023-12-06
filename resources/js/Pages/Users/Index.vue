@@ -244,6 +244,7 @@
                         id="roles"
                         class="mt-1 block w-full"
                         v-model="form.roles"
+                        required
                     >
                         <option value="0" disabled selected>
                             Seleccione el Rol 

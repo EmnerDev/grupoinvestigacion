@@ -81,10 +81,12 @@ class PersonaController extends Controller
      */
     public function show(Persona $persona)
     {
-        $lista = Persona::get();
+        $lista = Persona::with('tipo')->where('id_tipo', 1)->paginate(10);
+        $contratado = Persona::with('tipo')->where('id_tipo', 2)->paginate(10);
         $tipos = Tipo::all();
         return Inertia::render('People/List', [
             'personas' => $lista,
+            'contratados' => $contratado,
             'tipos' => $tipos
         ]);
     }

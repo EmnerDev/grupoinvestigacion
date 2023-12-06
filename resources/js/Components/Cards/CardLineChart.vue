@@ -8,8 +8,8 @@
           <h6 class="uppercase text-blueGray-100 mb-1 text-xs font-semibold">
             Grupos de Investigación
           </h6>
-          <h2 class="text-white text-xl font-semibold">
-            Sales value
+          <h2 class="text-black text-xl font-semibold">
+            Total
           </h2>
         </div>
       </div>
@@ -23,6 +23,7 @@
   </div>
 </template>
 <script>
+import axios from "axios";
 import Chart from "chart.js/auto";
 export default {
 
@@ -36,6 +37,8 @@ export default {
       try {
         const response = await axios.get('grupos-creados');
         const groupData = response.data;
+
+        Chart.defaults.locale = 'es';
 
         const config = {
           type: "line",

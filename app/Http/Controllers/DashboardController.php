@@ -7,6 +7,7 @@ use App\Models\Persona;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -96,7 +97,9 @@ class DashboardController extends Controller
         ->groupBy(DB::raw('MONTH(created_at)'))
         ->get();
     
-        $labels = $groupData->map(fn ($data) => date('F', mktime(0, 0, 0, $data->month, 1)))->toArray();
+        $labels = $groupData->map(function ($data){
+            return Carbon::create()->month($data->month)->locale('es')->monthName;
+        })->toArray();
         $dataCurrentYear = $groupData->pluck('cantidad')->toArray();
     
         // Obtener datos del año anterior
