@@ -48,7 +48,7 @@
                             <InputLabel for="name" value="Integrantes: " />
                             <div class="flex justify-center gap-5">
                                 <div class="flex justify-center mb-6">
-                                    <PrimaryButton @click="openModal(1)" class="">
+                                    <PrimaryButton v-if="mostrarBoton" @click="openModal(1)" class="">
                                         <i class="fa-solid fa-plus-circle"></i>
                                         Agregar Integrantes
                                     </PrimaryButton>
@@ -178,7 +178,7 @@
                                             class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                         >
                                             <WarningButton
-                                                class="mr-1"
+                                                class="mr-1" v-role="'Administrador'"
                                                 @click="
                                                     openModal(
                                                         2,
@@ -472,7 +472,7 @@ import { Head, useForm } from "@inertiajs/vue3";
 
 import Swal from "sweetalert2";
 import "@fortawesome/fontawesome-free/css/all.css";
-import { nextTick, ref } from "vue";
+import { nextTick, ref, computed } from "vue";
 import axios from "axios";
 import { onMounted } from "vue";
 
@@ -488,6 +488,7 @@ const id = ref("");
 
 const intePerson = ref([]);
 const gruposIntegra = ref([]);
+const programacion = ref(props.programacions);
 
 const props = defineProps({
     grupos: {
@@ -500,12 +501,13 @@ const props = defineProps({
     },
     personas: Object,
     condition: {
-        "inv. Titular": "inv. Titular",
-        "Inv. Colaborador": "Inv. Colaborador",
-        "Inv. En formacion": "Inv. En formacion",
-        "Inv. Posdoctorado": "Inv. Posdoctorado",
+        "Investigador Titular": "Investigador Titular",
+        "Investigador Colaborador": "Investigador Colaborador",
+        "Investigador En formacion": "Investigador En formacion",
+        "Investigador Posdoctorado": "Investigador Posdoctorado",
         Coordinador: "Coordinador",
     },
+    programacions: Object,
 });
 
 onMounted(async() =>{
@@ -524,7 +526,7 @@ const form = useForm({
     email: "",
     id_tipo: 4,
     user_id:444,
-    condition: "inv. Titular",
+    condition: "Investigador Titular",
     orcid: "",
     cti_vitae: "",
     google_scholar: "",
@@ -698,4 +700,23 @@ const deleteIntegrante = (id, name) => {
 const goBack = () => {
     window.history.back();
 }
+
+const mostrarBoton = computed(() => {
+    const fechaActual = new Date();
+    //console.log('fechaActual', fechaActual)
+
+    for(const evento of programacion.value){
+        const fechaInicio = new Date(evento.start_date);
+       // console.log('fechaInicio', fechaInicio)
+        const fechaFin = new Date(evento.end_date);
+        const esActivo = evento.status === 1;
+        const esTipo = evento.programin_type === 'INSCRIPCION';
+
+        if(fechaActual >= fechaInicio && fechaActual <= fechaFin && esActivo && esTipo){
+            return true;
+        }
+    }
+    return false;
+});
+
 </script>

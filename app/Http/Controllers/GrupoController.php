@@ -11,6 +11,7 @@ use App\Models\Grupo;
 use App\Models\Integrante;
 use App\Models\Linea;
 use App\Models\Persona;
+use App\Models\Programacion;
 use App\Models\SubLinea;
 use App\Models\Tipo;
 use Illuminate\Http\RedirectResponse;
@@ -21,6 +22,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 use Inertia\Response;
+use Spatie\Permission\Models\Role;
 
 class GrupoController extends Controller
 {
@@ -45,7 +47,8 @@ class GrupoController extends Controller
         ->paginate();
         //return $grupos;
         return Inertia::render('Groups/Index', [
-            'grupos' => $grupos
+            'grupos' => $grupos,
+            'programacions' => Programacion::get()
         ]);
     }
 
@@ -61,6 +64,7 @@ class GrupoController extends Controller
             //->withQueryString(),
             // 'integrantes' => $integrantes
             'filters' => \Illuminate\Support\Facades\Request::only(['search']),
+            'programacions' => Programacion::get()
         ]);
 
         // $grupos = Grupo::query()->with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea','integrante.persona')->orderBy('created_at','DESC')
@@ -255,6 +259,8 @@ class GrupoController extends Controller
             'grupos' => Grupo::with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea')->find($id),
             'integrantes' => $integrantes,
             'condition' =>Integrante::enumConditionOption(),
+            'programacions' => Programacion::get(),
+            'roles' => Role::get()
             //'personas' => $personas
         ]);
     }

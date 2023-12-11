@@ -5,7 +5,31 @@
         <template #header>
            Lista de  Grupos de Investigación Registrados 
         </template>
+        <div
+            class="mb-4 inline-flex w-full overflow-hidden rounded-lg bg-white shadow-md"
+        >
+            <div class="flex w-12 items-center justify-center bg-blue-500">
+                <svg
+                    class="h-6 w-6 fill-current text-white"
+                    viewBox="0 0 40 40"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        d="M20 3.33331C10.8 3.33331 3.33337 10.8 3.33337 20C3.33337 29.2 10.8 36.6666 20 36.6666C29.2 36.6666 36.6667 29.2 36.6667 20C36.6667 10.8 29.2 3.33331 20 3.33331ZM21.6667 28.3333H18.3334V25H21.6667V28.3333ZM21.6667 21.6666H18.3334V11.6666H21.6667V21.6666Z"
+                    ></path>
+                </svg>
+            </div>
 
+            <div class="-mx-3 px-4 py-2">
+                <div class="mx-3">
+                    <span  class="font-semibold text-blue-500">{{ estadoInscripciones }}</span>
+                    <p   class="text-sm text-gray-600">{{ mensaje }}</p>
+                    <p class="text-sm text-gray-600" v-if="inscripcionesAbiertas">
+                    Fecha de inicio: {{ fechaInicio }} - Fecha de fin: {{ fechaFin }}
+                    </p>
+                </div>
+            </div>
+        </div>
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 border-b border-gray-200">
                 <form>
@@ -21,7 +45,7 @@
                                             />                                        
                                     </div>
                                     <div class="flex mb-6">
-                                        <LinkPrimaryButton :href="route('grupos.create')" class="">
+                                        <LinkPrimaryButton v-if="mostrarBoton" :href="route('grupos.create')" class="">
                                         <i class="fa-solid fa-plus-circle"></i>
                                             Crear Grupo
                                         </LinkPrimaryButton>
@@ -196,26 +220,23 @@
 
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import InputError from "@/Components/InputError.vue";
-import InputLabel from "@/Components/InputLabel.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
-import DangerButton from "@/Components/DangerButton.vue";
-import WarningButton from "@/Components/WarningButton.vue";
-import LinkWarningButton from "@/Components/LinkWarningButton.vue";
+
 import LinkPrimaryButton from "@/Components/LinkPrimaryButton.vue";
-import LinkButton from "@/Components/LinkButton.vue";
-import SecondaryButton from "@/Components/SecondaryButton.vue";
-import TextInput from "@/Components/TextInput.vue";
-import Pagination from "@/Components/Pagination.vue";
-import SelectInput from "@/Components/SelectInput.vue";
-import Modal from "@/Components/Modal.vue";
+
 import { Head, useForm, router } from "@inertiajs/vue3";
 
 import Swal from "sweetalert2";
 import "@fortawesome/fontawesome-free/css/all.css";
-import { nextTick, ref } from "vue";
+import { nextTick, ref, computed, onMounted  } from "vue";
 import { watch } from "vue";
 import Paginator from "@/Components/Paginator.vue";
+
+const programacion = ref(props.programacions);
+
+const estadoInscripciones = ref('');
+const mensaje = ref('');
+const fechaInicio = ref('');
+const fechaFin = ref('');
 
 const props = defineProps({
     grupos: {
@@ -229,9 +250,57 @@ const props = defineProps({
         default: () => ({}),
     },
     editMode: false,
+    programacions: Object
 });
 
+//console.log('programacion value', programacion.value);
+
 const form = useForm({});
+
+const mostrarBoton = computed(() => {
+    const fechaActual = new Date();
+    //console.log('fechaActual', fechaActual)
+
+    for(const evento of programacion.value){
+        const fechaInicio = new Date(evento.start_date);
+        //console.log('fechaInicio', fechaInicio)
+        const fechaFin = new Date(evento.end_date);
+        const esActivo = evento.status === 1;
+        const esTipo = evento.programin_type === 'INSCRIPCION';
+
+        if(fechaActual >= fechaInicio && fechaActual <= fechaFin && esActivo && esTipo){
+            return true;
+        }
+    }
+    return false;
+});
+
+
+const actualizarEstadoInscripciones = () => {
+  const fechaActual = new Date();
+  // Supongamos que programacion es un array de objetos con fechaInicio y fechaFin
+  const eventoActivo = programacion.value.find(
+    evento => fechaActual >= new Date(evento.start_date) && fechaActual <= new Date(evento.end_date) && evento.programin_type === 'INSCRIPCION'
+    &&  evento.status === 1
+  );
+
+  if (eventoActivo) {
+    estadoInscripciones.value = 'Inscripciones abiertas';
+    mensaje.value = 'Inscripciones de Grupos de Investigación';
+    fechaInicio.value = eventoActivo.start_date;
+    fechaFin.value = eventoActivo.end_date;
+  } else {
+    estadoInscripciones.value = 'Inscripciones cerradas';
+    mensaje.value = 'Las inscripciones se habilitaran de acuerdo a la fecha establecida';
+  }
+};
+
+const inscripcionesAbiertas = computed(() => estadoInscripciones.value === 'Inscripciones abiertas');
+
+onMounted(() => {
+  // Actualizar el estado al cargar el componente
+  actualizarEstadoInscripciones();
+});
 
 const submit = () => {
     form.post(route("registrar.grupo"), {

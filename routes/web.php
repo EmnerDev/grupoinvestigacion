@@ -8,6 +8,7 @@ use App\Http\Controllers\IntegranteController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProgramacionController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -78,6 +79,11 @@ Route::middleware('auth')->group(function () {
     Route::get('evaluacion/editar/{grupo_id}/{id}', [EvaluacionController::class, 'editarEvaluacion'])->middleware('permission:evaluacion.editarEvaluacion')->name('evaluacion.editar');
     Route::put('evaluacion/actualizar/{grupo_id}/{id}', [EvaluacionController::class, 'editUpdate'])->middleware('permission:evaluacion.editUpdate')->name('actualizar.evaluacion');
     Route::put('actualizar/{evaluacion_grupo}/', [EvaluacionController::class, 'totalUpdate'])->middleware('permission:evaluacion.totalUpdate')->name('actualizar.total');
+
+    Route::get('programacion',[ProgramacionController::class,'index'])->name('ver.programacion');
+    Route::post('guardar/programacion',[ProgramacionController::class,'store'])->name('guardar.programacion');
+    Route::put('actualizar/programacion/{programacion}',[ProgramacionController::class,'update'])->name('actualizar.programacion');
+    Route::delete('eliminar/programacion/{programacion}',[ProgramacionController::class,'destroy'])->name('eliminar.programacion');
 
     Route::get('reporte',[ReportController::class,'index'])->middleware('permission:reportes.index')->name('ver.reporte');
     Route::get('grupos/reporte',[ReportController::class,'pdfGrupo'])->middleware('permission:reportes.pdfGrupo')->name('grupos.reporte');

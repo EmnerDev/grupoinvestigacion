@@ -13,7 +13,7 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         $user_admin = \App\Models\User::factory()->create([
-            'name' => '12345678',
+            'name' => 'admin',
             'email' => 'admin@example.com',
             'password' => bcrypt('admin123'),
         ])->syncRoles(['Administrador']);
