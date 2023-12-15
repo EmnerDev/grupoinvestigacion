@@ -6,6 +6,7 @@ use App\Http\Controllers\EvaluacionController;
 use App\Http\Controllers\GrupoController;
 use App\Http\Controllers\IntegranteController;
 use App\Http\Controllers\PersonaController;
+use App\Http\Controllers\PivotGrupoLineaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramacionController;
@@ -40,11 +41,11 @@ Route::get('/grupos-creados', [DashboardController::class,'getGrupoCreado'])->mi
 Route::middleware('auth')->group(function () {
     Route::get('/about', fn () => Inertia::render('About'))->name('about');
 
-    Route::get('users', [UserController::class, 'index'])->middleware('permission:users.index')->name('users.index');
+    Route::get('/users', [UserController::class, 'index'])->middleware('permission:users.index')->name('users.index');
     Route::get('/search-user/{dni}', [UserController::class, 'searchUsuario']);
     Route::post('registrar/user', [UserController::class, 'store'])->middleware('permission:users.store')->name('user.store');
-    Route::put('actualizar/{user}', [UserController::class, 'update'])->name('actualizar.usuario');
-    Route::delete('eliminar/{user}', [UserController::class, 'destroy'])->name('eliminar.usuario');
+    Route::put('actualizar/{user}', [UserController::class, 'update'])->middleware('permission:actualizar.usuario')->name('actualizar.usuario');
+    Route::delete('eliminar/{user}', [UserController::class, 'destroy'])->middleware('permission:eliminar.usuario')->name('eliminar.usuario');
 
 
     Route::get('/profile', [ProfileController::class, 'edit'])->middleware('permission:profile.edit')->name('profile.edit');
@@ -65,6 +66,10 @@ Route::middleware('auth')->group(function () {
     Route::get('grupos/ver/{id}', [GrupoController::class, 'verGrupo'])->middleware('permission:grupos.verGrupo')->name('ver.grupo');
     Route::put('grupos/actualizar/{grupo}',[GrupoController::class, 'update'])->middleware('permission:grupos.update')->name('actualizar.grupo');
     Route::delete('grupos/eliminar/{grupo}',[GrupoController::class, 'destroy'])->middleware('permission:grupos.destroy')->name('eliminar.grupo');
+
+    Route::post('agregar/pivot', [PivotGrupoLineaController::class, 'store'])->middleware('permission:registrar.pivot')->name('registrar.pivot');
+    Route::put('actualizar/pivot/{pivotGrupoLinea}', [PivotGrupoLineaController::class, 'update'])->middleware('permission:actualizar.pivot')->name('actualizar.pivot');
+    Route::delete('eliminar/pivot/{pivotGrupoLinea}', [PivotGrupoLineaController::class, 'destroy'])->middleware('permission:eliminar.pivot')->name('eliminar.pivot');
 
     Route::post('integrantes', [IntegranteController::class, 'store'])->middleware('permission:integrantes.store')->name('grupo.registrar.integrante');
     Route::put('integrantes/{integrante}', [IntegranteController::class, 'update'])->middleware('permission:integrantes.update')->name('grupo.actualizar.integrante');

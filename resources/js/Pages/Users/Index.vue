@@ -22,7 +22,7 @@
             <div class="-mx-3 px-4 py-2">
                 <div class="mx-3">
                     <span class="font-semibold text-blue-500">Info</span>
-                    <p class="text-sm text-gray-600">Sample table page</p>
+                    <p class="text-sm text-gray-600">Asignar rol</p>
                 </div>
             </div>
         </div>
@@ -75,7 +75,7 @@
                                     class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                 >
                                     <p class="text-gray-900 whitespace-no-wrap">
-                                        {{ user.persona.name }} {{ user.persona.first_name }} {{ user.persona.last_name }}
+                                        {{ user.persona?.name }} {{ user.persona?.first_name }} {{ user.persona?.last_name }}
                                     </p>
                                 </td>
                                 <td
@@ -158,128 +158,116 @@
                     asignar el rol</label
                 >
             </div>
-            <div class="grid gap-6 mb-6 md:grid-cols-1">
-                <!-- <div class="p-3">
-                    <InputLabel for="coordinador" value="Coordinadores: " />
-                    <select
-                        name="coordinador"
-                        id="coordinador"
-                        class="mt-1 block w-full"
-                        v-model="form.coordinador"
-                    >
-                        <option value="0" disabled selected>
-                            Selecciona un coordinador
-                        </option>
-                        <option
-                            v-for="(integrante, value) in integrantes"
-                            :key="integrante.id"
-                            :value="integrante"
-                        >
-                            {{ integrante.persona.dni }} -
-                            {{ integrante.persona.name }}
-                            {{ integrante.persona.first_name }}
-                            {{ integrante.persona.last_name }}
-                        </option>
-                    </select>
-                </div> -->
-            </div>
-            <div class="grid gap-6 mb-6 md:grid-cols-2">
+            <!-- <div class="grid gap-6 mb-6 md:grid-cols-1">
+              
+            </div> -->
+            <v-form @submit.prevent="submit">
+            <div class="grid mt-3 gap-6 md:grid-cols-2">
                 <div class="p-3">
                     <InputLabel for="nameu" value="Dni:"></InputLabel>
-                    <TextInput
+                    <v-text-field
                         id="nameu"
                         ref="nameImput"
                         v-model="form.nameu"
                         @input="searchUserVue"
                         type="text"
-                        class="mt-1 block w-3/4"
+                        class="mt-3"
                         placeholder="Dni"
-                    ></TextInput>
+                        variant="outlined"
+                        :rules="dniRules"
+                        required
+                    ></v-text-field>
                 </div>
                 <div class="p-3">
                     <InputLabel for="name" value="Nombres:"></InputLabel>
-                    <TextInput
+                    <v-text-field
                         id="name"
                         v-model="form.name"
                         type="text"
-                        class="mt-1 block w-3/4"
+                        class="mt-3"
                         placeholder="Nombre"
+                        :rules="nameRules"
                         ref="nameImput"
-                    ></TextInput>
+                        variant="outlined"
+                    ></v-text-field>
                 </div>
             </div>
-            <div class="grid gap-6 mb-6 md:grid-cols-2">
+            <div class="grid gap-6 md:grid-cols-2">
                 <div class="p-3">
                     <InputLabel
                         for="first_name"
                         value="Apellido Paterno:"
                     ></InputLabel>
-                    <TextInput
+                    <v-text-field
                         id="first_name"
                         v-model="form.first_name"
                         type="text"
-                        class="mt-1 block w-3/4"
+                        class="mt-3"
+                        :rules="apellidoPaternoRules"
                         placeholder="Apellido Paterno"
-                    ></TextInput>
+                        variant="outlined"
+                    ></v-text-field>
                 </div>
                 <div class="p-3">
                     <InputLabel
                         for="last_name"
                         value="Apellido Materno:"
                     ></InputLabel>
-                    <TextInput
+                    <v-text-field
                         id="last_name"
                         v-model="form.last_name"
                         type="text"
-                        class="mt-1 block w-3/4"
+                        class="mt-3"
+                        :rules="ApellidoMaternoRules"
                         placeholder="Apellido Materno"
-                    ></TextInput>
+                        variant="outlined"
+                    ></v-text-field>
                 </div>
             </div>
-            <div class="grid gap-6 mb-6 md:grid-cols-2">
+            <div class="grid gap-6 md:grid-cols-2">
                 <div class="p-3">
                     <InputLabel for="roles" value="Asignar Rol:"></InputLabel>
-                    <select
+                    <v-select
                         name="roles"
                         id="roles"
-                        class="mt-1 block w-full"
+                        class="mt-3"
+                        :items ="roles"
                         v-model="form.roles"
+                        item-value="id"
+                        item-title = "name"
+                        placeholder="Seleccione Responsable"
+                        variant="outlined"
+                        :rules="rolesRules"
                         required
                     >
-                        <option value="0" disabled selected>
-                            Seleccione el Rol 
-                        </option>
-                        <option
-                            v-for="(rol, value) in roles"
-                            :key="rol.id"
-                            :value="rol.id"
-                        >
-                            {{ rol.name }}
-                        </option>
-                    </select>
+                    </v-select>
                 </div>
                 <div class="p-3">
                     <InputLabel for="email" value="Email:"></InputLabel>
-                    <TextInput
+                    <v-text-field
                         id="email"
                         v-model="form.email"
                         type="text"
-                        class="mt-1 block w-3/4"
+                        class="mt-3"
+                        :rules="emailRules"
                         placeholder="Correo Electrónico"
+                        variant="outlined"
                     >
-                    </TextInput>
+                    </v-text-field>
                 </div>
             </div>
-            <div class="grid gap-6 mb-6 md:grid-cols-2">
+            <div class="grid gap-6 md:grid-cols-2">
                 <div class="p-3">
                     <InputLabel for="password" value="Contraseña" />
-                    <TextInput
+                    <v-text-field
                         id="password"
                         type="password"
-                        class="mt-1 block w-full"
+                        class="mt-3"
                         v-model="form.nameu"
+                        :rules="passwordRules"
                         required
                         autocomplete="new-password"
+                        variant="outlined"
                     />
                     <InputError class="mt-2" :message="form.errors.password" />
                 </div>
@@ -289,13 +277,15 @@
                         for="password_confirmation"
                         value="Confirmar Contraseña"
                     />
-                    <TextInput
+                    <v-text-field
                         id="password_confirmation"
                         type="password"
-                        class="mt-1 block w-full"
+                        class="mt-3"
                         v-model="form.nameu"
+                        :rules="passwordRepitRules"
                         required
                         autocomplete="new-password"
+                        variant="outlined"
                     />
                     <InputError
                         class="mt-2"
@@ -305,7 +295,7 @@
             </div>
             <div class="flex justify-center">
                 <div class="p-3 mt-6">
-                    <PrimaryButton :disabled="form.processing" @click="submit">
+                    <PrimaryButton :disabled="form.processing">
                         <i class="fa-solid fa save"></i>Guardar
                     </PrimaryButton>
                 </div>
@@ -319,6 +309,7 @@
                     </SecondaryButton>
                 </div>
             </div>
+        </v-form>
         </Modal>
     </AuthenticatedLayout>
 </template>
@@ -366,9 +357,43 @@ const props = defineProps({
     roles: Object,
 });
 
+const dniRules = [
+  value => !!value || 'El DNI es requerido.',
+  value => /^[0-9]{8}$/.test(value) || 'El DNI tiene que ser de 8 digitos.',
+];
+
+const nameRules =[
+value => !!value || 'El campo nombre es requerido.',
+];
+
+const apellidoPaternoRules =[
+value => !!value || 'El campo apellido paterno es requerido.',
+];
+
+const ApellidoMaternoRules =[
+value => !!value || 'El campo apellido materno es requerido.',
+];
+
+const rolesRules =[
+value => !!value || 'Por favor seleccione una opcion.',
+value => /^\d+$/.test(value) || 'Por favor seleccione una opcion.',
+];
+
+const emailRules =[
+value => !!value || 'Este campo es requerido.',
+value => /.+@.+\..+/.test(value) || 'E-mail debe ser valido',
+];
+
+const passwordRules =[
+value => !!value || 'Este campo es requerido.',
+];
+
+const passwordRepitRules =[
+value => !!value || 'Este campo es requerido.',
+];
 
 const form = useForm({
-    roles: 0,
+    roles: 'Seleccione un Rol',
     nameu: "",
     name: "",
     first_name: "",
@@ -449,6 +474,7 @@ onMounted(() => {
 });
 
 console.log('probando',userInte)
+
 const submit = async () => {
     try {
         if (operation.value === 1) {
@@ -460,16 +486,28 @@ const submit = async () => {
             const response = await axios.put(route("actualizar.usuario", id.value), form);
             handleSuccess(response, "Registrado Actualizado Correctamente");
         }
+
+        await refreshTable();
+
     } catch (error) {
         handleError(error);
     }
 };
 
+const refreshTable = async () => {
+    // Llama a la función para recargar los datos de la tabla
+    try {
+        const tableData = await axios.get('/users');
+        userInte.value = tableData.data;  // Actualiza los datos en users.data
+    } catch (error) {
+        console.error('Error al recargar datos de la tabla:', error);
+    }
+};
+
 const handleSuccess = (response, successMessage) => {
     console.log(response.data);
-
-    const {data} = response.data;
-    userInte.value = data;
+    userInte.value = response.data.data;
+    form.reset();
     closeModal();
     toast.toast("Exito", successMessage, "success");
 };

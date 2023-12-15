@@ -97,9 +97,27 @@
                     <tr>
                         @if($index === 0)
                         <td rowspan="{{ $integranteCount }}">{{ $key+1 }}</td>
-                        <td rowspan="{{ $integranteCount }}">{{ $grupo->area_investigacion->name }}</td>
-                        <td rowspan="{{ $integranteCount }}">{{ $grupo->linea->name }}</td>
-                        <td rowspan="{{ $integranteCount }}">{{ $grupo->sublinea->name }}</td>
+                        <td rowspan="{{ $integranteCount }}">
+                        @foreach($grupo->pivotGrupoLinea as $pivot)
+                        <p>
+                            - {{ $pivot->area_investigacion->name }}
+                        </p>
+                         @endforeach    
+                        </td>
+                        <td rowspan="{{ $integranteCount }}">
+                        @foreach($grupo->pivotGrupoLinea as $pivot)
+                            <p>
+                                - {{ $pivot->linea->name }}
+                            </p>
+                        @endforeach 
+                        </td>
+                        <td rowspan="{{ $integranteCount }}">
+                        @foreach($grupo->pivotGrupoLinea as $pivot)
+                            <p>
+                                - {{ $pivot->sublinea->name }}
+                            </p>
+                        @endforeach 
+                        </td>
                         <td rowspan="{{ $integranteCount }}">{{ $grupo->name }}</td>
                         @endif    
                         <td>{{ $inte->persona->name }} {{ $inte->persona->first_name }} {{ $inte->persona->last_name }}</td>

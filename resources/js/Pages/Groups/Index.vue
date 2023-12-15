@@ -124,8 +124,8 @@
                                             >
                                                 <p
                                                     class="text-gray-900 whitespace-no-wrap"
-                                                >
-                                                    {{ gru.area_investigacion.name }}
+                                                    v-for="pivot in gru.pivot_grupo_linea" :key="pivot.id">                                                   
+                                                   - {{ pivot.area_investigacion.name }}                                                    
                                                 </p>
                                             </td>
                                             <td v-if="gru.integrante && gru.integrante.length"
@@ -134,8 +134,8 @@
                                             >
                                                 <p
                                                     class="text-gray-900 whitespace-no-wrap"
-                                                >
-                                                    {{ gru.linea.name }}
+                                                    v-for="pivot in gru.pivot_grupo_linea">
+                                                - {{ pivot.linea.name }}
                                                 </p>
                                             </td>
                                             <td v-if="gru.integrante && gru.integrante.length"
@@ -144,8 +144,8 @@
                                             >
                                                 <p
                                                     class="text-gray-900 whitespace-no-wrap"
-                                                >
-                                                    {{ gru.sublinea.name }}
+                                                    v-for="pivot in gru.pivot_grupo_linea">
+                                                    - {{ pivot.sublinea.name }}
                                                 </p>
                                             </td>
                                             <td v-if="gru.integrante && gru.integrante.length"
@@ -165,7 +165,7 @@
                                                 <p v-for="cat in gru.evaluacion_grupos" :key="cat.id"
                                                     class="text-gray-900 whitespace-no-wrap"
                                                 >
-                                                    {{ cat.categorias }}
+                                                    {{ cat?.categorias }}
                                                 </p>
                                             </td>  
                                             <td v-if="gru.integrante && gru.integrante.length"
@@ -250,7 +250,8 @@ const props = defineProps({
         default: () => ({}),
     },
     editMode: false,
-    programacions: Object
+    programacions: Object,
+    pivotLineas:Object
 });
 
 //console.log('programacion value', programacion.value);

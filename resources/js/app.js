@@ -9,6 +9,17 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 
 import VueGates from 'vue-gates';
 import Permissions from './Plugins/Permissions';
+
+import 'vuetify/styles'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
+
+const vuetify = createVuetify({
+  components,
+  directives,
+})
+
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
@@ -22,6 +33,7 @@ createInertiaApp({
             .use(VueGates)
             .use(Permissions)
             .mixin({ methods: { route } })
+            .use(vuetify)
             .mount(el);
     },
     progress: {

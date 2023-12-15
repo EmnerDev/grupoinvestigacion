@@ -65,7 +65,7 @@ class UserController extends Controller
         DB::commit();
         
         //return $user;
-        return response()->json(['message' =>'Usuario creado correctamente',$user,'data'=>$user], 201);
+        return response()->json(['message' =>'Usuario creado correctamente','data'=>$user], 201);
 
     }
 

@@ -22,8 +22,8 @@ class RolSeeder extends Seeder
 
         Permission::create(['name' => 'users.index'])->syncRoles([$role_admin]);
         Permission::create(['name' => 'users.store'])->syncRoles([$role_admin]);
-        Permission::create(['name' => 'users.update'])->syncRoles([$role_admin]);
-        Permission::create(['name' => 'users.delete'])->syncRoles([$role_admin]);
+        Permission::create(['name' => 'actualizar.usuario'])->syncRoles([$role_admin]);
+        Permission::create(['name' => 'eliminar.usuario'])->syncRoles([$role_admin]);
 
         Permission::create(['name' => 'profile.edit'])->syncRoles([$role_admin,$role_coord]);
         Permission::create(['name' => 'profile.update'])->syncRoles([$role_admin,$role_coord]);
@@ -47,6 +47,10 @@ class RolSeeder extends Seeder
         Permission::create(['name' => 'integrantes.store'])->syncRoles([$role_admin,$role_coord]);
         Permission::create(['name' => 'integrantes.update'])->syncRoles([$role_admin,$role_coord]);
         Permission::create(['name' => 'integrantes.destroy'])->syncRoles([$role_admin]);
+
+        Permission::create(['name' => 'registrar.pivot'])->syncRoles([$role_admin,$role_coord]);
+        Permission::create(['name' => 'actualizar.pivot'])->syncRoles([$role_admin,$role_coord]);
+        Permission::create(['name' => 'eliminar.pivot'])->syncRoles([$role_admin]);
 
         ///evaluacion
         Permission::create(['name' => 'evaluacion.index'])->syncRoles([$role_admin,$role_coord]);

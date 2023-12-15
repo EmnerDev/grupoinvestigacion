@@ -11,6 +11,7 @@ use App\Models\Grupo;
 use App\Models\Integrante;
 use App\Models\Linea;
 use App\Models\Persona;
+use App\Models\PivotGrupoLinea;
 use App\Models\SubLinea;
 use App\Models\Tipo;
 use Illuminate\Http\RedirectResponse;
@@ -35,20 +36,20 @@ class ReportController extends Controller
             $coordinadorId = $user->persona->id;
     
             $grupos = Grupo::query()
-            ->with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea','integrante.persona','evaluacionGrupos')
+            ->with('facultad','escuela','integrante.persona','evaluacionGrupos','pivotGrupoLinea','pivotGrupoLinea.area_investigacion', 'pivotGrupoLinea.linea', 'pivotGrupoLinea.sublinea')
             ->orderBy('created_at','DESC')
             ->whereHas('integrante.persona', function ($query) use ($coordinadorId){
                 $query->where('id', $coordinadorId);
             })
             ->paginate();
-            //return $grupos;
+            //return $grupos;            
             return Inertia::render('Reports/Index', [
-                'grupos' => $grupos
+                'grupos' => $grupos,
             ]);
         }
 
         return Inertia::render('Reports/Index',[
-            'grupos' =>  Grupo::query()->with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea','integrante.persona','evaluacionGrupos')->orderBy('created_at','DESC')
+            'grupos' =>  Grupo::query()->with('facultad','escuela','integrante.persona','evaluacionGrupos','pivotGrupoLinea','pivotGrupoLinea.area_investigacion', 'pivotGrupoLinea.linea', 'pivotGrupoLinea.sublinea')->orderBy('created_at','DESC')
             ->when(\Illuminate\Support\Facades\Request::input('search'), function($query, $search) {
             $query->where(function ($subquery) use ($search){
                 $subquery->wherehas('integrante.persona', function($q) use ($search) {
@@ -76,9 +77,10 @@ class ReportController extends Controller
 
         $grupos = Grupo::find($id);
         $integrantes = Integrante::where('id_grupo',$id)->get();
+        $pivotGrupo = PivotGrupoLinea::where('id_grupo',$id)->get();
         //dd($grupos);
 
-            $pdf = Pdf::loadView('report.ver', compact('grupos','integrantes'));
+            $pdf = Pdf::loadView('report.ver', compact('grupos','integrantes','pivotGrupo'));
             $pdf->setPaper('a4');
      
             return $pdf->stream('reporte.pdf');

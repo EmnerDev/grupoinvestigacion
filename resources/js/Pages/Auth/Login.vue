@@ -13,13 +13,13 @@
         <form @submit.prevent="submit">
             <div>
                 <InputLabel for="name" value="Usuario" />
-                <TextInput id="name" type="text" class="mt-1 block w-full" v-model="form.name" required autofocus autocomplete="username" />
+                <v-text-field id="name" type="text" class="mt-1 block w-full"  variant="outlined" v-model="form.name" required autofocus autocomplete="username" />
                 <InputError class="mt-2" :message="form.errors.name" />
             </div>
 
             <div class="mt-3">
                 <InputLabel for="password" value="Contraseña" />
-                <TextInput id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="current-password" />
+                <v-text-field id="password" type="password" class="mt-1 block w-full" variant="outlined"  v-model="form.password" required autocomplete="current-password" />
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>
 

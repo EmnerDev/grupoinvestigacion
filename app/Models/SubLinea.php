@@ -24,4 +24,8 @@ class SubLinea extends Model
     public function grupo(){
         return $this->hasMany(Grupo::class,'id_sublinea');
     }
+
+    public function pivotGrupoLinea() {
+        return $this->hasMany(PivotGrupoLinea::class,'id_grupo');
+    }
 }

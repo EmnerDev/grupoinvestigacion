@@ -7,10 +7,12 @@ use App\Http\Requests\GrupoUpdateRequest;
 use App\Models\AreaInvestigacion;
 use App\Models\Escuela;
 use App\Models\Facultad;
+use App\Models\File;
 use App\Models\Grupo;
 use App\Models\Integrante;
 use App\Models\Linea;
 use App\Models\Persona;
+use App\Models\PivotGrupoLinea;
 use App\Models\Programacion;
 use App\Models\SubLinea;
 use App\Models\Tipo;
@@ -39,21 +41,24 @@ class GrupoController extends Controller
         $coordinadorId = $user->persona->id;
 
         $grupos = Grupo::query()
-        ->with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea','integrante.persona','evaluacionGrupos')
+        ->with('facultad','escuela','integrante.persona','evaluacionGrupos','pivotGrupoLinea','pivotGrupoLinea','pivotGrupoLinea.area_investigacion', 'pivotGrupoLinea.linea', 'pivotGrupoLinea.sublinea')
         ->orderBy('created_at','DESC')
         ->whereHas('integrante.persona', function ($query) use ($coordinadorId){
             $query->where('id', $coordinadorId);
         })
         ->paginate();
         //return $grupos;
+        $pivotLinea = PivotGrupoLinea::with( 'area_investigacion', 'linea', 'sublinea')->get();
+
         return Inertia::render('Groups/Index', [
             'grupos' => $grupos,
-            'programacions' => Programacion::get()
+            'programacions' => Programacion::get(),
+            'pivotLineas' => $pivotLinea
         ]);
     }
 
         return Inertia::render('Groups/Index',[
-            'grupos' =>  Grupo::query()->with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea','integrante.persona','evaluacionGrupos')->orderBy('created_at','DESC')
+            'grupos' =>  Grupo::query()->with('facultad','escuela','integrante.persona','evaluacionGrupos','pivotGrupoLinea','pivotGrupoLinea.area_investigacion', 'pivotGrupoLinea.linea', 'pivotGrupoLinea.sublinea')->orderBy('created_at','ASC')
             ->when(\Illuminate\Support\Facades\Request::input('search'), function($query, $search) {
             $query->where(function ($subquery) use ($search){
                 $subquery->wherehas('integrante.persona', function($q) use ($search) {
@@ -64,7 +69,8 @@ class GrupoController extends Controller
             //->withQueryString(),
             // 'integrantes' => $integrantes
             'filters' => \Illuminate\Support\Facades\Request::only(['search']),
-            'programacions' => Programacion::get()
+            'programacions' => Programacion::get(),
+            'pivotLineas' => PivotGrupoLinea::with( 'area_investigacion', 'linea', 'sublinea')->get()
         ]);
 
         // $grupos = Grupo::query()->with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea','integrante.persona')->orderBy('created_at','DESC')
@@ -111,14 +117,7 @@ class GrupoController extends Controller
     public function store(GrupoCreateRequest $request)
     {
          //return $request->all();
-        try {
-            //code...
-            // $dni = $request->dni;
-    
-            // $persona = Persona::where('dni', $dni)->first();
-            // if(!$persona) {
-            //     return response()->json(['error'=> 'La persona con el DNi proporcionado no existe'], 200);
-            // }
+        try {            
             $user = auth()->user();
     
             $integranteExistente = Integrante::where('id_persona', $request->id_persona)->first();
@@ -142,9 +141,9 @@ class GrupoController extends Controller
             $grupo->office = $request->office;
             $grupo->annexed = $request->annexed;
             $grupo->phone = $request->phone;
-            $grupo->id_area = $request->id_area;
-            $grupo->id_linea = $request->id_linea;
-            $grupo->id_sublinea = $request->id_sublinea;
+            // $grupo->id_area = $request->id_area;
+            // $grupo->id_linea = $request->id_linea;
+            // $grupo->id_sublinea = $request->id_sublinea;
             $grupo->id_facultad = $request->id_facultad;
             $grupo->id_escuela = $request->id_escuela;
             $grupo->save();
@@ -161,11 +160,34 @@ class GrupoController extends Controller
                     'id_persona' => $request->id_person,
     
             ]);
-            }
-            
+            }           
             
             $integrante->save();
 
+            $pivot = PivotGrupoLinea::create([
+                'id_grupo' => $grupo->id,
+                'id_area'=>$request->id_area,
+                'id_linea'=>$request->id_linea,
+                'id_sublinea'=>$request->id_sublinea,
+                // 'id_facultad'=>$request->id_facultad,
+                // 'id_escuela'=>$request->id_escuela,
+            ]);
+            $pivot->save();
+
+            if ($request->has('file')) {
+                $nombre_archivo = $request->file('file')->getClientOriginalName();
+
+                $ruta = $request->file('file')->store('public/plan_trabajo/'.''.date('d-m-Y'));
+    
+            $files = File::create([
+                'id_grupo' => $grupo->id,
+                'plan_trabajo' =>$ruta,
+                'anexo' =>'',
+
+            ]);
+
+            $files->save();
+          }
             DB::commit();
 
             $validator = Validator::make($request->all(), $request->rules());
@@ -252,15 +274,23 @@ class GrupoController extends Controller
 
     public function verGrupo($id){
         $integrantes = Integrante::with('persona')->where('id_grupo',$id)->get();
+        $pivotLinea = PivotGrupoLinea::with( 'area_investigacion', 'linea', 'sublinea')->where('id_grupo',$id)->get();
+        $areas = AreaInvestigacion::all();
+        $lineas = Linea::all();
+        $sublineas = SubLinea::all();
         //$personas = Persona::get();
         //$persoObje = collect($personas)->all();
         //dd($persoObje);
         return Inertia::render('Groups/Show',[
-            'grupos' => Grupo::with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea')->find($id),
+            'grupos' => Grupo::with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea', 'pivotGrupoLinea')->find($id),
             'integrantes' => $integrantes,
             'condition' =>Integrante::enumConditionOption(),
             'programacions' => Programacion::get(),
-            'roles' => Role::get()
+            'pivotLineas' => $pivotLinea,
+            'roles' => Role::get(),
+            'areas' => $areas,
+            'lineas' => $lineas,
+            'sublineas' => $sublineas,
             //'personas' => $personas
         ]);
     }
