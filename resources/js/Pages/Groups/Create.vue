@@ -40,7 +40,7 @@
                             <InputLabel for="name" value="Escuela" /><span style="color: #e53e3e;"> *</span>
                             <v-select
                                 v-model="form.id_escuela"
-                                name="id_escuela" 
+                                name="id_escuela"
                                 id="id_escuela"
                                 :items="escuelasfilter"
                                 item-value="id"
@@ -60,14 +60,14 @@
                             <InputLabel for="name" value="Area de Investigación" /><span style="color: #e53e3e;"> *</span>
                             <v-select
                                 v-model="form.id_area"
-                                name="id_area" 
+                                name="id_area"
                                 id="id_area"
                                 :items="areas"
                                 item-value="id"
                                 item-title = "name"
                                 variant="solo"
-                                placeholder="Seleccione el Área"  
-                                @input="updatelineas"                         
+                                placeholder="Seleccione el Área"
+                                @input="updatelineas"
                             ></v-select>
                             <!-- <select name="id_area" id="id_area" class="mt-1 block w-full" v-model="form.id_area"  @change="updatelineas">
                                 <option value="0" disabled>Seleccione el Area</option>
@@ -79,14 +79,14 @@
                             <InputLabel for="name" value="Linea" /><span style="color: #e53e3e;"> *</span>
                             <v-select
                                 v-model="form.id_linea"
-                                name="id_linea" 
+                                name="id_linea"
                                 id="id_linea"
                                 :items="lineafiltered"
                                 item-value="id"
                                 item-title = "name"
                                 variant="solo"
-                                placeholder="Seleccione la Linea"      
-                                @input="updateSublineas"                     
+                                placeholder="Seleccione la Linea"
+                                @input="updateSublineas"
                             ></v-select>
                             <!-- <select  name="id_linea" id="id_linea" class="mt-1 block w-full" v-model="form.id_linea"   @change="updateSublineas">
                                 <option value="0" disabled>Seleccione la Linea</option>
@@ -98,13 +98,13 @@
                             <InputLabel for="name" value="Sublinea" /><span style="color: #e53e3e;"> *</span>
                             <v-select
                                 v-model="form.id_sublinea"
-                                name="id_sublinea" 
+                                name="id_sublinea"
                                 id="id_sublinea"
                                 :items="sublineasFiltered"
                                 item-value="id"
                                 item-title = "name"
                                 variant="solo"
-                                placeholder="Seleccione la SubLinea"                           
+                                placeholder="Seleccione la SubLinea"
                             ></v-select>
                             <!-- <select name="id_sublinea" id="id_sublinea" class="mt-1 block w-full" v-model="form.id_sublinea">
                                 <option value="0" disabled>Seleccione la Sublinea</option>
@@ -113,13 +113,13 @@
                             <InputError class="mt-2" :message="errors.id_sublinea" />
                         </div>
                     </div>
-                    
+
                     <div class="grid mt-5 gap-6 mb-6 md:grid-cols-1">
                         <div v-role="'Administrador'">
                                 <InputLabel for="name" value="Responsable" /><span style="color: #e53e3e;"> *</span>
                                 <v-autocomplete
                                 v-model="form.id_persona"
-                                name="id_persona" 
+                                name="id_persona"
                                 id="id_persona"
                                 :items="fullNameOptions"
                                 item-value="id"
@@ -134,7 +134,7 @@
                                 <InputError class="mt-2" :message="errors.id_persona" />
                         </div>
                         <div v-role="'Coordinador'" class="flex-initial ml-6">
-                                <InputLabel for="name" value="Responsable" /><span style="color: #e53e3e;"> *</span>                        
+                                <InputLabel for="name" value="Responsable" /><span style="color: #e53e3e;"> *</span>
                                 <input type="hidden" name="id_person" v-model="form.id_persona" />
                                 <span  class="mt-1 block w-full">
                                 {{ $page.props.auth.user.persona.name }} {{ $page.props.auth.user.persona.first_name }} {{ $page.props.auth.user.persona.last_name }}
@@ -142,7 +142,7 @@
                                 <InputError class="mt-2" />
                         </div>
                     </div>
-                    <div class="grid gap-6 mb-6 md:grid-cols-3">                        
+                    <div class="grid gap-6 mb-6 md:grid-cols-3">
                         <div>
                             <InputLabel for="name" value="Presentacion del grupo" /><span style="color: #e53e3e;"> *</span>
                             <v-textarea name="pre_group_inv" id="pre_group_inv" cols="20" rows="5" class="w-full" v-model="form.pre_group_inv" placeholder="Que describa el propósito del GI y la relevancia de su constitución en cuanto a la generación de nuevos conocimientos y como es que contribuye la(s) línea(s) de investigacion en las que trabaja."></v-textarea>
@@ -166,7 +166,7 @@
                             <InputError class="mt-2" :message="errors.services" />
                         </div>
                     </div>
-                    <div class="grid gap-6 mb-6 md:grid-cols-3">                        
+                    <div class="grid gap-6 mb-6 md:grid-cols-3">
                         <div>
                             <InputLabel for="name" value="Laboratorio" /><span style="color: #e53e3e;"> *</span>
                             <v-textarea name="laboratory" id="laboratory" cols="20" rows="5" class="w-full" v-model="form.laboratory" placeholder="Indicar el nombre y código de laboratorio(s) en los cuales el GI desarrolla sus actividades, responsables de los mismos. Incluir documento Sustentatorio de asignación de ambiente (en caso corresponda). (máximo 200 palabras)" ></v-textarea>
@@ -182,7 +182,7 @@
                             <v-textarea name="labora_equip" id="labora_equip" cols="20" rows="5" class="w-full" v-model="form.labora_equip" placeholder="Enumerar el equipamiento de laboratorio/gabinete (máximo 100 pablaras)"></v-textarea>
                         </div>
                     </div>
-                    <div class="grid gap-6 mb-6 md:grid-cols-3">                        
+                    <div class="grid gap-6 mb-6 md:grid-cols-3">
                         <div >
                             <InputLabel for="plan_trabajo" value="Plan de Trabajo" /><span style="color: #e53e3e;"> *</span>
                             <label class="block mt-3">
@@ -193,19 +193,20 @@
                                 file:bg-blue-50 file:text-blue-700
                                 hover:file:bg-blue-100
                                 "
-                                @change="handleFileChange('plan_trabajo')"/>
+                                @change="archive.handleImageSelected" :key="archive.key" />
                             </label>
                         </div>
                         <div >
                             <InputLabel for="anexo" value="Anexo" /><span style="color: #e53e3e;"> *</span>
-                            <label class="block mt-3">                                
-                                <input name="anexo" id="anexo" type="file" class="block w-full text-sm text-slate-500
+                            <label class="block mt-3">
+                                <input name="anexo" id="anexo" type="file"
+                                class="block w-full text-sm text-slate-500
                                 file:mr-4 file:py-2 file:px-4
                                 file:rounded-full file:border-0
                                 file:text-sm file:font-semibold
                                 file:bg-blue-50 file:text-blue-700
-                                hover:file:bg-blue-100
-                                " @change="handleFileChange('anexo')"/>
+                                hover:file:bg-blue-100"
+                                @change="archiveAnexo.handleImageSelected" :key="archiveAnexo.key" />
                             </label>
                         </div>
                     </div>
@@ -249,7 +250,7 @@
                                 <i class="fa-solid fa-right-from-bracket rotate-180"></i>
                                     Regresar
                             </a>
-                    </div>                   
+                    </div>
                 </v-form>
             </div>
         </div>
@@ -275,6 +276,13 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import { nextTick, onMounted, ref, computed, watch, onBeforeUnmount, reactive } from "vue";
 import Paginator from "@/Components/Paginator.vue";
 
+import { useImageUpload } from "@/Composables/useImageUpload"
+
+const archive = ref(useImageUpload());
+archive.value.allowedExtensions = ['pdf','doc','docx'];
+
+const archiveAnexo = ref(useImageUpload());
+archiveAnexo.value.allowedExtensions = ['pdf','doc','docx'];
 // import Multiselect from 'vue-multiselect';
 // import 'vue-multiselect/dist/vue-multiselect.css';
 
@@ -339,20 +347,20 @@ const form = useForm({
 // watch(() => form.id_facultad, (newVal, oldVal) =>{
 //     if (typeof newVal === 'object' && newVal !== null) {
 //             form.id_facultad = newVal.id;
-//         }   
+//         }
 // });
 // watch(() => 'form.id_facultad', function (newVal, oldVal) {
 //         if (typeof newVal === 'object' && newVal !== null) {
 //             this.form.id_facultad = newVal.id;
-//         }    
+//         }
 // });
 
 onMounted(() =>{
     //intePerson.value = props.integrantes;
     gruposIntegra.value = props.grupos;
-   
+
     //escuelasfilter.value = props.escuelas;
-    //console.log('comenta', intePerson.value);    
+    //console.log('comenta', intePerson.value);
 })
 
 
@@ -375,14 +383,14 @@ const updateEscuelas = () => {
 
 watch(() => form.id_area, (newId, oldId) =>{
     if(newId !== oldId) {
-        selectedAreaId.value = newId;       
+        selectedAreaId.value = newId;
         updatelineas();
     }
 });
 
 watch(() => form.id_linea, (newId, oldId) => {
     if(newId !== oldId){
-        selectedlineaId.value = newId;        
+        selectedlineaId.value = newId;
         updateSublineas();
     }
 });
@@ -401,19 +409,22 @@ const updateSublineas = () => {
 };
 
 const submit = () => {
-        // form.post(route("registrar.grupo"),{
-        //     onSuccess: () => {ok('Registro creado Correctamente')},
-        // });   
         // Para una solicitud POST
+        form.plan_trabajo = archive.value.imageFile;
+        form.anexo = archiveAnexo.value.imageFile;
+        const formData = new FormData();
+        for (let key in form) {
+            formData.append(key, form[key]);
+        }
         axios
-            .post(route("registrar.grupo"),form)
+            .post(route("registrar.grupo"),formData)
             .then((res) => {
                 // Manejar la respuesta exitosa aquí
-                console.log(res.data); 
-                // Puedes acceder a los datos de la respuesta                
+                console.log(res.data);
+                // Puedes acceder a los datos de la respuesta
                 gruposIntegra.value = res.data.data;
                 if(res.data.code == 200) {
-                    form.reset();              
+                    form.reset();
                     ok(res.data);
 
                 }
@@ -424,7 +435,7 @@ const submit = () => {
                 if (error.response && error.response.status == 422) {
                     //alert("El usuario ya esta registrado en otro grupo");
                     errors.value = error.response.data.errors;
-                    
+
                     if(error.response.data.error){
                         Swal.fire({
                             icon: 'error',
@@ -434,10 +445,10 @@ const submit = () => {
                     }
 
                 }else{
-                    
-                       
+
+
                 }
-            }); 
+            });
 };
 const ok = (obj) => {
     form.reset();
@@ -465,7 +476,41 @@ const fullNameOptions = computed(() => {
 
 
 
-const handleFileChange = (fieldName, event) => {
-  files[fieldName] = event.target.files[0];
+const handleFileChange = (event) => {
+    let sizeKb = parseInt(event.target.files[0].size/1024);
+    if(sizeKb > 10000){
+        Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Debe registrar máximo 10MB",
+      });
+    }
+
+    const allowedExtensions = ref(['xls','xlsx']);
+    const extensionArchivo = event.target.files[0].name
+      .split(".")
+      .pop()
+      ?.toLowerCase();
+    if (allowedExtensions.value.length > 0 && !allowedExtensions.value.includes(extensionArchivo)) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `Solo se admite archivos con extensiónes: ${allowedExtensions.value.join(
+          ", ",
+        )}`,
+        customClass: {
+          container: 'my-swal'
+        }
+      });
+      clearData();
+      return false;
+    }
+
+  let archiveData = event.target.files[0];
+  console.log('archiveData',archiveData);
 };
+
+const clearData = () => {
+
+}
 </script>

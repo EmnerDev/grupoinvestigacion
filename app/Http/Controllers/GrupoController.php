@@ -116,17 +116,17 @@ class GrupoController extends Controller
      */
     public function store(GrupoCreateRequest $request)
     {
-         //return $request->all();
-        try {            
+        //return $request->all();
+        try {
             $user = auth()->user();
-    
+
             $integranteExistente = Integrante::where('id_persona', $request->id_persona)->first();
-    
+
             if($integranteExistente){
                 return response()->json(['error' => 'El coordinador ya esta registrado en otro grupo'],422);
-                
+
             }
-    
+
             $grupo = new Grupo;
             $grupo->name = $request->name;
             $grupo->space_inves = $request->space_inves;
@@ -147,21 +147,21 @@ class GrupoController extends Controller
             $grupo->id_facultad = $request->id_facultad;
             $grupo->id_escuela = $request->id_escuela;
             $grupo->save();
-            
+
             if($user->roles->pluck('name')->contains('Administrador')) {
                 $integrante = Integrante::create([
                     'id_grupo' => $grupo->id,
                     'id_persona' => $request->id_persona
-    
+
             ]);
             }else {
                 $integrante = Integrante::create([
                     'id_grupo' => $grupo->id,
                     'id_persona' => $request->id_person,
-    
+
             ]);
-            }           
-            
+            }
+
             $integrante->save();
 
             $pivot = PivotGrupoLinea::create([
@@ -174,20 +174,23 @@ class GrupoController extends Controller
             ]);
             $pivot->save();
 
-            if ($request->has('file')) {
-                $nombre_archivo = $request->file('file')->getClientOriginalName();
-
-                $ruta = $request->file('file')->store('public/plan_trabajo/'.''.date('d-m-Y'));
-    
+            if ($request->file('plan_trabajo')) {
+                $file = $request->file('plan_trabajo');
+                $pathPlanTrabajo = $request->root().'/storage/'.$file->store('/grupos/grupo_'.$grupo->id.'/'.$request->input('plan_trabajo'),'public');
+            }
+            if ($request->file('anexo')) {
+                $file = $request->file('anexo');
+                $pathAnexo = $request->root().'/storage/'.$file->store('/grupos/grupo_'.$grupo->id.'/'.$request->input('anexo'),'public');
+            }
             $files = File::create([
                 'id_grupo' => $grupo->id,
-                'plan_trabajo' =>$ruta,
-                'anexo' =>'',
+                'plan_trabajo' =>isset($pathPlanTrabajo) ? $pathPlanTrabajo:'',
+                'anexo' =>isset($pathAnexo) ? $pathAnexo:'',
 
             ]);
 
             $files->save();
-          }
+
             DB::commit();
 
             $validator = Validator::make($request->all(), $request->rules());
@@ -220,7 +223,7 @@ class GrupoController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(Grupo $grupo)
-    {        
+    {
         $facultades = Facultad::all();
         $escuelas = Escuela::all();
         $areas = AreaInvestigacion::all();
@@ -254,7 +257,7 @@ class GrupoController extends Controller
                 $integrante->update($integranteData);
             }
         }
-        
+
         return Redirect::route('grupos.index');
     }
 
@@ -262,7 +265,7 @@ class GrupoController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(Grupo $grupo)
-    {   
+    {
         $grupo->integrante()->delete();
         $grupo->evaluacion()->delete();
         $grupo->evaluacionCriterio()->delete();
