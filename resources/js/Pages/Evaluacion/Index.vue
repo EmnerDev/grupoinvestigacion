@@ -11,11 +11,11 @@
                 <div class="overflow-x-auto rounded-lg shadow mt-6">
                         <div class="mb-4">
                             <div class="flex justify-center gap-5">
-                                <div class="flex justify-center mb-6">
-                                <PrimaryButton @click="openModal(1)" class="" :disabled="gruposIntegra?.evaluacion_grupos?.length > 0 ? true : false">
-                                    <i class="fa-solid fa-plus-circle"></i>
-                                    Categorizar Grupo
-                                </PrimaryButton>
+                                <div class="flex justify-center mb-6" v-if="(gruposIntegra?.evaluacion_criterio?.length > 0) ? true : false">
+                                    <PrimaryButton @click="openModal(1)" class="" :disabled="gruposIntegra?.evaluacion_grupos?.length > 0 ? true : false">
+                                        <i class="fa-solid fa-plus-circle"></i>
+                                        Categorizar Grupo
+                                    </PrimaryButton>
                                 </div>
                                 <div class="flex justify-center mb-6">
                                         <a :href="route('grupos.index')" class="rounded-md bg-blue-700 px-4 py-2 text-center text-sm text-white hover:bg-blue-500">
@@ -149,7 +149,7 @@
                                             <p
                                                 class="text-gray-900 whitespace-no-wrap"
                                             >
-                                                {{ Number(evaluacion.ptj_total_indicador) % 1 === 0 ? Number(evaluacion.ptj_total_indicador).toFixed(0) : Number(evaluacion.ptj_total_indicador).toFixed(1) }}
+                                                {{ Number(evaluacion?.ptj_total_indicador) % 1 === 0 ? Number(evaluacion?.ptj_total_indicador).toFixed(0) : Number(evaluacion?.ptj_total_indicador).toFixed(1) }}
                                             </p>
                                         </td>
                                         <td v-for="eva in inte.evaluacion_total" :key="eva.id"
@@ -159,7 +159,7 @@
                                             <p
                                                 class="text-gray-900 whitespace-no-wrap"
                                             >
-                                            {{ Number(eva.ptj_total_integrante) % 1 === 0 ? Number(eva.ptj_total_integrante).toFixed(0) : Number(eva.ptj_total_integrante).toFixed(1) }}
+                                            {{ Number(eva?.ptj_total_integrante) % 1 === 0 ? Number(eva?.ptj_total_integrante).toFixed(0) : Number(eva?.ptj_total_integrante).toFixed(1) }}
                                             </p>
                                         </td>
                                         <td

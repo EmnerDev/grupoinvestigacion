@@ -11,6 +11,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramacionController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\RevalidacionController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -64,8 +65,13 @@ Route::middleware('auth')->group(function () {
     Route::get('edit/grupos/{grupo}', [GrupoController::class, 'edit'])->middleware('permission:grupos.edit')->name('grupos.editar');
     Route::post('grupos/agregar', [GrupoController::class, 'store'])->middleware('permission:grupos.store')->name('registrar.grupo');
     Route::get('grupos/ver/{id}', [GrupoController::class, 'verGrupo'])->middleware('permission:grupos.verGrupo')->name('ver.grupo');
-    Route::put('grupos/actualizar/{grupo}',[GrupoController::class, 'update'])->middleware('permission:grupos.update')->name('actualizar.grupo');
+    //Route::put('grupos/actualizar/{grupo}',[GrupoController::class, 'update'])->middleware('permission:grupos.update')->name('actualizar.grupo');
+    Route::post('grupos/actualizar',[GrupoController::class, 'update'])->middleware('permission:grupos.update')->name('actualizar.grupo');
     Route::delete('grupos/eliminar/{grupo}',[GrupoController::class, 'destroy'])->middleware('permission:grupos.destroy')->name('eliminar.grupo');
+
+    //Revalidacion -subir archivo
+    Route::post('revalidacion', [RevalidacionController::class, 'store'])->name('registrar.revalidacion');
+    Route::post('revalidacion/actualizar', [RevalidacionController::class, 'update'])->name('actualizar.revalidacion');
 
     Route::post('agregar/pivot', [PivotGrupoLineaController::class, 'store'])->middleware('permission:registrar.pivot')->name('registrar.pivot');
     Route::put('actualizar/pivot/{pivotGrupoLinea}', [PivotGrupoLineaController::class, 'update'])->middleware('permission:actualizar.pivot')->name('actualizar.pivot');

@@ -64,11 +64,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <template v-for="user in users.data" :key="user.id">
+                    <template v-for="user in users.data" :key="user.id" :value="user.id">
                         <!-- <template v-for=" person in user.persona" :key="person.id"> -->
                             <tr
                                 v-for="r in user.roles"
                                 :key="r.id"
+                                :value="r.id"
                                 class="text-gray-700"
                             >
                                 <td
@@ -469,8 +470,9 @@ const closeModal = () => {
     form.reset();
 };
 
-onMounted(() => {
+onMounted(async() => {
     userInte.value = props.users;
+    intePerson.value = props.personas;
 });
 
 console.log('probando',userInte)
@@ -487,29 +489,21 @@ const submit = async () => {
             handleSuccess(response, "Registrado Actualizado Correctamente");
         }
 
-        await refreshTable();
-
     } catch (error) {
         handleError(error);
-    }
-};
-
-const refreshTable = async () => {
-    // Llama a la función para recargar los datos de la tabla
-    try {
-        const tableData = await axios.get('/users');
-        userInte.value = tableData.data;  // Actualiza los datos en users.data
-    } catch (error) {
-        console.error('Error al recargar datos de la tabla:', error);
     }
 };
 
 const handleSuccess = (response, successMessage) => {
     console.log(response.data);
     userInte.value = response.data.data;
+    intePerson.value = response.data.data;
     form.reset();
     closeModal();
     toast.toast("Exito", successMessage, "success");
+    setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
 };
 
 const handleError = (error) => {

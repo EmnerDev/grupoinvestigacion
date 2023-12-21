@@ -13,7 +13,7 @@
         </div>
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 border-b border-gray-200">
-                <div>
+                <div>                    
                     <div class="grid gap-6 mb-6 md:grid-cols-2">
                         <div class="flex-initial ml-6">
                             <InputLabel for="name" value="Nombre del Grupo: " />
@@ -43,7 +43,7 @@
                         <h1 class="text-2 font-bold text-gray-800">LÍNEA DE INVESTIGACIÓN</h1>
                         </div>                        
                         <div class="flex justify-center mb-6">
-                            <PrimaryButton  @click="openModalPivot(1)" :disabled="deshabilitarBotonAgregar()">
+                            <PrimaryButton v-if="mostrarBoton" @click="openModalPivot(1)" :disabled="deshabilitarBotonAgregar()">
                                 <i class="fa-solid fa-plus-circle"></i>
                                     Agregar Linea de Investigación
                             </PrimaryButton>
@@ -398,6 +398,87 @@
                     </div>
                 </div>
             </div>
+            <div class="p-5">
+                <div class="divide-y-4 divide-slate-400/25 ...">
+                    <div class="text-center mb-8 mt-3">
+                    <h1 class="text-2xl font-bold text-blue-800 mb-5">Archivos necesarios</h1>
+                    </div>
+                    <div class="grid gap-6 mb-6 md:grid-cols-3">
+                        <div class="flex-initial ml-6">
+                            <h2 class="text-lg font-semibold mb-5">Plan de Trabajo</h2>
+                            <a class="bg-lime-600 text-white px-4 py-2 rounded hover:bg-lime-700" :href="file.plan_trabajo" target="_blank">Descargar</a>
+                        </div>
+                        <div class="flex-initial ml-6">
+                            <h2 class="text-lg font-semibold mb-5">Anexo</h2>
+                            <a class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-700" :href="file.anexo">Descargar</a>
+                        </div>
+                        <div v-if="(grupos?.revalidacion?.length > 0) ? true: false" class="flex flex-col ml-6">
+                            <h2 class="text-lg font-semibold mb-5">Revalidación</h2>
+                            <a :href="revalidacion?.file_revalidacion"
+                                class="bg-cyan-400 text-white px-4 py-2 rounded hover:bg-cyan-500"
+                            >
+                                {{ revalidacion?.name_revalidacion }}
+                            </a> 
+                            <!-- <span v-else class="text-md font-semibold text-red-500 mb-5" >
+                                archivo no cargado
+                            </span>                        -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+          <div class="p-5" v-if="mostrarContenRevalidacion" >
+            <div class="divide-y-4 divide-slate-400/25 ...">
+                <div class="text-center mb-8 mt-3">
+                        <h1 class="text-2xl font-bold text-blue-800 mb-5">Subir archivo para revalidación de grupo </h1>
+                </div>
+                    <div class="grid gap-6 mb-6 md:grid-cols-3">
+                        <div >
+                            <InputLabel for="file_revalidacion" value="Revalidacion de grupo" />
+                            <label class="block mt-3">
+                                <input name="file_revalidacion" id="file_revalidacion" type="file"  class="block w-full text-sm text-slate-500
+                                    file:mr-4 file:py-2 file:px-4
+                                    file:rounded-full file:border-0
+                                    file:text-sm file:font-semibold
+                                    file:bg-blue-50 file:text-blue-700
+                                    hover:file:bg-blue-100
+                                    "
+                                    @change="archiveRevalidacion.handleImageSelected" :key="archiveRevalidacion.key" required/>
+                            </label>
+                            <p v-if="fileError" style="color: #b91d1d; font-size: 12px;">{{ fileError }}</p>
+                        </div>
+                        <div class="mt-8 flex justify-center gap-4">
+                            <button v-if="(grupos?.revalidacion?.length > 0) ? false: true " type="submit" @click="submitFile" 
+                                class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700"
+                            >
+                                Guardar
+                            </button>
+                            <button v-else @click ="updateFile" type="submit"
+                                class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700"
+                            >
+                                Guardar Editar
+                            </button>                      
+                        </div>
+                        <div class="mt-8 flex">
+                            <a :href="revalidacion?.file_revalidacion" v-if="(grupos?.revalidacion?.length > 0) ? true: false"
+                                class="bg-cyan-400 text-white px-4 py-2 rounded hover:bg-cyan-500"
+                            >
+                                {{ revalidacion?.name_revalidacion }}
+                            </a> 
+                            <span v-else class="text-md font-semibold text-red-500 mb-5">
+                                archivo no cargado
+                            </span>                       
+                        </div>
+                    </div>
+            </div>
+          </div>
+        </div>
+        <div>
+            <div class="flex justify-end mt-6">
+            <a :href="route('grupos.index')" class="rounded-md bg-blue-700 px-4 py-2 text-center text-sm text-white hover:bg-blue-500">
+                <i class="fa-solid fa-right-from-bracket rotate-180"></i>
+                    Regresar
+            </a>
+            </div>
         </div>
         <Modal :show="modal" @close="closeModal">
             <h2 class="p-3 text-lg font-medium text-gray-900">{{ title }}</h2>
@@ -650,7 +731,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import WarningButton from "@/Components/WarningButton.vue";
-import LinkWarningButton from "@/Components/LinkWarningButton.vue";
+import LinkButton from "@/Components/LinkButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import Modal from "@/Components/Modal.vue";
@@ -661,6 +742,13 @@ import "@fortawesome/fontawesome-free/css/all.css";
 import { nextTick, ref, computed, watch } from "vue";
 import axios from "axios";
 import { onMounted } from "vue";
+
+import { useImageUpload } from "@/Composables/useImageUpload"
+
+const archiveRevalidacion = ref(useImageUpload());
+archiveRevalidacion.value.allowedExtensions = ['pdf','doc','docx'];
+
+
 
 //uso del Toast
 import { Toast } from "@/Composables/Toast.js";
@@ -688,6 +776,8 @@ const intePerson = ref([]);
 const gruposIntegra = ref([]);
 const programacion = ref(props.programacions);
 
+const fileError =ref(null);
+
 const props = defineProps({
     grupos: {
         type: Object,
@@ -713,6 +803,8 @@ const props = defineProps({
     areas: Array,
     lineas: Array,
     sublineas: Array,
+    file: Object,
+    revalidacion:Object
 });
 
 //console.log('props',$page.props)
@@ -722,6 +814,12 @@ onMounted(async() =>{
     //console.log('comenta', intePerson.value);
 
 })
+
+const formRevalidacion = useForm({
+    id_grupo:props.grupos.id,
+    file_revalidacion:null,
+});
+
 
 const formLinea = useForm({
     id_grupo:props.grupos.id,
@@ -1056,6 +1154,92 @@ const deletePivotGrupoLinea = (id) => {
         }
     });
 }
+
+const submitFile = () => {
+        // Para una solicitud POST
+        formRevalidacion.file_revalidacion = archiveRevalidacion.value.imageFile;
+        const formData = new FormData();
+        for (let key in formRevalidacion) {
+            formData.append(key, formRevalidacion[key]);
+        }
+        if(!archiveRevalidacion.value.imageFile){
+        fileError.value = "Por favor, Selecciona un archivo"
+        return true;
+        }else{
+            fileError.value = ""
+        }
+        axios
+            .post(route("registrar.revalidacion"),formData)
+            .then((res) => {
+                // Manejar la respuesta exitosa aquí
+                console.log(res.data);
+                // Puedes acceder a los datos de la respuesta
+                props.revalidacion = res.data.data;
+                if(res.data.code == 200) {
+                    form.reset();
+                    toast.toast('Exito', 'Archivo Subido Correctamente','success');
+
+                }
+            })
+            .catch((error) => {
+                // Manejar el error aquí
+                console.error(error);
+            });
+};
+
+const updateFile = () => {
+        // Para una solicitud POST
+        formRevalidacion.file_revalidacion = archiveRevalidacion.value.imageFile;
+        const formData = new FormData();
+        for (let key in formRevalidacion) {
+            formData.append(key, formRevalidacion[key]);
+        }
+        formData.append('revalidacion_id', props.revalidacion.id)
+        if(!archiveRevalidacion.value.imageFile){
+        fileError.value = "Por favor, Selecciona un archivo"
+        return true;
+        }else{
+            fileError.value = ""
+        }
+        axios
+            .post(route("actualizar.revalidacion"),formData)
+            .then((res) => {
+                // Manejar la respuesta exitosa aquí
+                console.log(res.data);
+                // Puedes acceder a los datos de la respuesta
+                props.revalidacion = {...res.data.data};                
+                formRevalidacion.reset();
+                toast.toast('Exito', 'Archivo Actualizado Correctamente','success');
+                //window.location.reload();
+                setTimeout(() => {
+                window.location.reload();
+            }, 2000);
+                
+            })
+            .catch((error) => {
+                // Manejar el error aquí
+                console.error(error);
+            });
+};
+
+const mostrarContenRevalidacion = computed(() => {
+    const fechaActual = new Date();
+    //console.log('fechaActual', fechaActual)
+
+    for(const evento of programacion.value){
+        const fechaInicio = new Date(evento.start_date);
+       // console.log('fechaInicio', fechaInicio)
+        const fechaFin = new Date(evento.end_date);
+        const esActivo = evento.status === 1;
+        const esTipo = evento.programin_type === 'REVALIDACION';
+
+        if(fechaActual >= fechaInicio && fechaActual <= fechaFin && esActivo && esTipo){
+            return true;
+        }
+    }
+    return false;
+});
+
 
 const deshabilitarBotonAgregar = () => {
  

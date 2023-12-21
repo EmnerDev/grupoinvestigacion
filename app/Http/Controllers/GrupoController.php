@@ -14,6 +14,7 @@ use App\Models\Linea;
 use App\Models\Persona;
 use App\Models\PivotGrupoLinea;
 use App\Models\Programacion;
+use App\Models\Revalidacion;
 use App\Models\SubLinea;
 use App\Models\Tipo;
 use Illuminate\Http\RedirectResponse;
@@ -25,6 +26,7 @@ use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Str;
 
 class GrupoController extends Controller
 {
@@ -176,17 +178,27 @@ class GrupoController extends Controller
 
             if ($request->file('plan_trabajo')) {
                 $file = $request->file('plan_trabajo');
-                $pathPlanTrabajo = $request->root().'/storage/'.$file->store('/grupos/grupo_'.$grupo->id.'/'.$request->input('plan_trabajo'),'public');
+                $nombrePlanTrabajo = $file->getClientOriginalName();
+                $nombreLimpioPlanTrabajo = Str::slug(pathinfo($nombrePlanTrabajo, PATHINFO_FILENAME));
+                $extensionPlanTrabajo = $file->getClientOriginalExtension();
+
+                $nombreFinalPlanTrabajo = $nombreLimpioPlanTrabajo . '.' . $extensionPlanTrabajo;
+
+                $pathPlanTrabajo = $request->root().'/storage/'.$file->storeAs('/grupos/grupo_'.$grupo->id.'/'.$request->input('plan_trabajo'), $nombreFinalPlanTrabajo,'public');
             }
             if ($request->file('anexo')) {
                 $file = $request->file('anexo');
-                $pathAnexo = $request->root().'/storage/'.$file->store('/grupos/grupo_'.$grupo->id.'/'.$request->input('anexo'),'public');
+                $nombreAnexo = $file->getClientOriginalName();
+                $nombreLimpioAnexo  = Str::slug(pathinfo($nombreAnexo, PATHINFO_FILENAME));
+                $extensionAnexo = $file->getClientOriginalExtension();
+                $nombreFinalAnexo = $nombreLimpioAnexo . '.' . $extensionAnexo;
+
+                $pathAnexo = $request->root().'/storage/'.$file->storeAs('/grupos/grupo_'.$grupo->id.'/'.$request->input('anexo'), $nombreFinalAnexo,'public');
             }
             $files = File::create([
                 'id_grupo' => $grupo->id,
                 'plan_trabajo' =>isset($pathPlanTrabajo) ? $pathPlanTrabajo:'',
                 'anexo' =>isset($pathAnexo) ? $pathAnexo:'',
-
             ]);
 
             $files->save();
@@ -224,6 +236,7 @@ class GrupoController extends Controller
      */
     public function edit(Grupo $grupo)
     {
+        $user =auth()->user();
         $facultades = Facultad::all();
         $escuelas = Escuela::all();
         $areas = AreaInvestigacion::all();
@@ -232,6 +245,9 @@ class GrupoController extends Controller
         $tipos = Tipo::all();
         $personas = Persona::with('tipo')->where('id_tipo', 1)->get();
 
+        $integrante = Integrante::where('id_grupo', $grupo->id)->first();
+        $file = Integrante::where('id_grupo', $grupo->id)->first();
+       
         return Inertia::render('Groups/Edit',[
             'grupos' =>$grupo,
             'facultades' => $facultades,
@@ -240,25 +256,80 @@ class GrupoController extends Controller
             'lineas' => $lineas,
             'sublineas' => $sublineas,
             'personas' => $personas,
-            'tipos' => $tipos
+            'tipos' => $tipos,
+            'users' => $user,
+            'integrante' => $integrante,
+            'file' => $file
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(GrupoUpdateRequest $request, Grupo $grupo): RedirectResponse
+    //public function update(Request $request, Grupo $grupo)
+    public function update(Request $request)
     {
+        //return $request->all();
+
+        //return $request->input('integrantes');
+        $user = auth()->user();
+        $grupo_id = $request['grupo_id'];
+        unset($request['grupo_id']);
+
+        $grupo = Grupo::find($grupo_id);
         $grupo->update($request->all());
 
-        if($request->has('integrantes')) {
-            foreach($request->input('integrantes') as $integranteData){
-                $integrante = Integrante::find($integranteData['id']);
-                $integrante->update($integranteData);
-            }
+        $integrante = Integrante::where('id_grupo',$grupo->id)->first();
+
+        if(isset($integrante)){
+
+            $integrante->update([
+                'id_grupo' => $grupo->id,
+                'id_persona' => $request->id_persona,
+            ]);
         }
 
-        return Redirect::route('grupos.index');
+        if ($request->file('plan_trabajo')) {
+            $file = $request->file('plan_trabajo');
+            $nombrePlanTrabajo = $file->getClientOriginalName();
+            $nombreLimpioPlanTrabajo = Str::slug(pathinfo($nombrePlanTrabajo, PATHINFO_FILENAME));
+            $extensionPlanTrabajo = $file->getClientOriginalExtension();
+
+            $nombreFinalPlanTrabajo = $nombreLimpioPlanTrabajo . '.' . $extensionPlanTrabajo;
+
+            $pathPlanTrabajo = $request->root().'/storage/'.$file->storeAs('/grupos/grupo_'.$grupo->id.'/'.$request->input('plan_trabajo'), $nombreFinalPlanTrabajo,'public');
+        }
+        if ($request->file('anexo')) {
+            $file = $request->file('anexo');
+            $nombreAnexo = $file->getClientOriginalName();
+            $nombreLimpioAnexo  = Str::slug(pathinfo($nombreAnexo, PATHINFO_FILENAME));
+            $extensionAnexo = $file->getClientOriginalExtension();
+            $nombreFinalAnexo = $nombreLimpioAnexo . '.' . $extensionAnexo;
+
+            $pathAnexo = $request->root().'/storage/'.$file->storeAs('/grupos/grupo_'.$grupo->id.'/'.$request->input('anexo'), $nombreFinalAnexo,'public');
+        }
+
+        //return $pathAnexo;
+        $files = File::where('id_grupo', $grupo->id)->first();
+
+        if(isset($files)){
+            $files->update([
+                'id_grupo' => $grupo->id,
+                'plan_trabajo' =>isset($pathPlanTrabajo) ? $pathPlanTrabajo:'',
+                'anexo' =>isset($pathAnexo) ? $pathAnexo:'',     
+    
+            ]);
+        }else{
+            File::create([
+                'id_grupo' => $grupo->id,
+                'plan_trabajo' =>isset($pathPlanTrabajo) ? $pathPlanTrabajo:'',
+                'anexo' =>isset($pathAnexo) ? $pathAnexo:'',              
+    
+            ]);
+        }
+
+
+        return response()->json(['msj' =>'Registro Actualizado correctamente','code' =>200,'data'=>$grupo, 'id' => $grupo->id]);
     }
 
     /**
@@ -281,11 +352,14 @@ class GrupoController extends Controller
         $areas = AreaInvestigacion::all();
         $lineas = Linea::all();
         $sublineas = SubLinea::all();
+
+        $file = File::where('id_grupo', $id)->first();
+        $file_revalidacion = Revalidacion::where('id_grupo', $id)->first();
         //$personas = Persona::get();
         //$persoObje = collect($personas)->all();
         //dd($persoObje);
         return Inertia::render('Groups/Show',[
-            'grupos' => Grupo::with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea', 'pivotGrupoLinea')->find($id),
+            'grupos' => Grupo::with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea', 'pivotGrupoLinea', 'revalidacion')->find($id),
             'integrantes' => $integrantes,
             'condition' =>Integrante::enumConditionOption(),
             'programacions' => Programacion::get(),
@@ -294,6 +368,8 @@ class GrupoController extends Controller
             'areas' => $areas,
             'lineas' => $lineas,
             'sublineas' => $sublineas,
+            'file' => $file,
+            'revalidacion' => $file_revalidacion
             //'personas' => $personas
         ]);
     }

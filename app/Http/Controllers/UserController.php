@@ -64,8 +64,9 @@ class UserController extends Controller
 
         DB::commit();
         
+        $users = User::with('persona')->where('id',$user->id)->get();
         //return $user;
-        return response()->json(['message' =>'Usuario creado correctamente','data'=>$user], 201);
+        return response()->json(['message' =>'Usuario creado correctamente',$user,'data'=>$users], 201);
 
     }
 

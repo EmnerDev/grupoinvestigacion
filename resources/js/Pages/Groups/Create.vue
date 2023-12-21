@@ -16,14 +16,15 @@
                         <div >
                             <InputLabel for="name" value="Nombre del Grupo" /><span style="color: #e53e3e;"> *</span>
                             <!-- <TextInput id="name" name="name" type="text" class="mt-1" v-model="form.name"/> -->
-                            <v-text-field id="name" name="name" type="text" class="mt-1" v-model="form.name" placeholder="Nombre del Grupo" variant="solo"></v-text-field>
-                            <InputError class="mt-2" :message="errors.name" />
+                            <v-text-field id="name" name="name" type="text" class="mt-1" :rules="grupoRules" v-model="form.name" placeholder="Nombre del Grupo" variant="solo"></v-text-field>
+                            <!-- <InputError class="mt-2" :message="errors.name" /> -->
                         </div>
                         <div >
                             <InputLabel for="name" value="Facultad" /><span style="color: #e53e3e;"> *</span>
                             <v-select
                                 v-model="form.id_facultad"
                                 :items="facultades"
+                                :rules="facultadRules"
                                 item-value="id"
                                 item-title = "name"
                                 placeholder="Seleccione su Facultad"
@@ -34,7 +35,7 @@
                                 <option value="0">Seleccione su Facultad</option>
                                 <option v-for="fac in facultades" :key="fac.id" :value="fac.id">{{ fac.name }}</option>
                             </select> -->
-                            <InputError class="mt-2" :message="errors.id_facultad" />
+                            <!-- <InputError class="mt-2" :message="errors.id_facultad" /> -->
                         </div>
                         <div>
                             <InputLabel for="name" value="Escuela" /><span style="color: #e53e3e;"> *</span>
@@ -43,6 +44,7 @@
                                 name="id_escuela"
                                 id="id_escuela"
                                 :items="escuelasfilter"
+                                :rules="escuelaRules"
                                 item-value="id"
                                 item-title = "name"
                                 variant="solo"
@@ -63,6 +65,7 @@
                                 name="id_area"
                                 id="id_area"
                                 :items="areas"
+                                :rules="areaRules"
                                 item-value="id"
                                 item-title = "name"
                                 variant="solo"
@@ -82,6 +85,7 @@
                                 name="id_linea"
                                 id="id_linea"
                                 :items="lineafiltered"
+                                :rules="lineaRules"
                                 item-value="id"
                                 item-title = "name"
                                 variant="solo"
@@ -101,6 +105,7 @@
                                 name="id_sublinea"
                                 id="id_sublinea"
                                 :items="sublineasFiltered"
+                                :rules="sublineasRules"
                                 item-value="id"
                                 item-title = "name"
                                 variant="solo"
@@ -122,6 +127,7 @@
                                 name="id_persona"
                                 id="id_persona"
                                 :items="fullNameOptions"
+                                :rules="responsableRules"
                                 item-value="id"
                                 item-title = "name"
                                 placeholder="Seleccione Responsable"
@@ -145,41 +151,36 @@
                     <div class="grid gap-6 mb-6 md:grid-cols-3">
                         <div>
                             <InputLabel for="name" value="Presentacion del grupo" /><span style="color: #e53e3e;"> *</span>
-                            <v-textarea name="pre_group_inv" id="pre_group_inv" cols="20" rows="5" class="w-full" v-model="form.pre_group_inv" placeholder="Que describa el propósito del GI y la relevancia de su constitución en cuanto a la generación de nuevos conocimientos y como es que contribuye la(s) línea(s) de investigacion en las que trabaja."></v-textarea>
-                            <InputError class="mt-2" :message="errors.pre_group_inv" />
+                            <v-textarea name="pre_group_inv" id="pre_group_inv" cols="20" rows="5" class="w-full" :rules="presentacionRules" v-model="form.pre_group_inv" placeholder="Que describa el propósito del GI y la relevancia de su constitución en cuanto a la generación de nuevos conocimientos y como es que contribuye la(s) línea(s) de investigacion en las que trabaja."></v-textarea>
                         </div>
                         <div>
                             <InputLabel for="name" value="objetivos" /><span style="color: #e53e3e;"> *</span>
-                            <v-textarea name="objective" id="objective" cols="20" rows="5" class="w-full" v-model="form.objective" placeholder="Incluir por lo menos tres objetivos que prioricen: (I) La producción de nuevo conocimiento (Ejemplo: Publicaciones en revistas científicas, libros o capítulo de libros y/o patentes registradas) (II) La formación de investigadores (Ejemplo: Asesoría de tesis y/o proyectos de investigacion) y (III) La difusión del nuevo conocimiento (Ejemplo: Organización de congresos y/o ponencias en eventos). (máximo 200 palabras)"></v-textarea>
-                            <InputError class="mt-2" :message="errors.objective" />
+                            <v-textarea name="objective" id="objective" cols="20" rows="5" class="w-full" :rules="objetivosRules" v-model="form.objective" placeholder="Incluir por lo menos tres objetivos que prioricen: (I) La producción de nuevo conocimiento (Ejemplo: Publicaciones en revistas científicas, libros o capítulo de libros y/o patentes registradas) (II) La formación de investigadores (Ejemplo: Asesoría de tesis y/o proyectos de investigacion) y (III) La difusión del nuevo conocimiento (Ejemplo: Organización de congresos y/o ponencias en eventos). (máximo 200 palabras)"></v-textarea>
                         </div>
                         <div>
                             <InputLabel for="name" value="Objetivo desarrollo sostenible" /><span style="color: #e53e3e;"> *</span>
-                            <v-textarea name="obj_desa_soste_l_i" id="obj_desa_soste_l_i" cols="20" rows="5" class="w-full" v-model="form.obj_desa_soste_l_i" placeholder="Objetivo de Desarrollo Sostenible con el cual contribuye a través de las líneas de investigacion (máximo 2 ODS)"></v-textarea>
-                            <InputError class="mt-2" :message="errors.obj_desa_soste_l_i" />
+                            <v-textarea name="obj_desa_soste_l_i" id="obj_desa_soste_l_i" cols="20" rows="5" class="w-full" :rules="objsosteRepitRules" v-model="form.obj_desa_soste_l_i" placeholder="Objetivo de Desarrollo Sostenible con el cual contribuye a través de las líneas de investigacion (máximo 2 ODS)"></v-textarea>
                         </div>
                     </div>
                     <div class="grid gap-6 mb-6 md:grid-cols-3">
                         <div>
                             <InputLabel for="name" value="Servicios" /><span style="color: #e53e3e;"> *</span>
-                            <v-textarea name="services" id="services" cols="20" rows="5" class="w-full" v-model="form.services" placeholder="Servicios que realiza o puede realizar (máximo 100 palabras)"></v-textarea>
-                            <InputError class="mt-2" :message="errors.services" />
+                            <v-textarea name="services" id="services" cols="20" rows="5" class="w-full" :rules="serviciosRules" v-model="form.services" placeholder="Servicios que realiza o puede realizar (máximo 100 palabras)"></v-textarea>                           
                         </div>
                     </div>
                     <div class="grid gap-6 mb-6 md:grid-cols-3">
                         <div>
                             <InputLabel for="name" value="Laboratorio" /><span style="color: #e53e3e;"> *</span>
-                            <v-textarea name="laboratory" id="laboratory" cols="20" rows="5" class="w-full" v-model="form.laboratory" placeholder="Indicar el nombre y código de laboratorio(s) en los cuales el GI desarrolla sus actividades, responsables de los mismos. Incluir documento Sustentatorio de asignación de ambiente (en caso corresponda). (máximo 200 palabras)" ></v-textarea>
-                            <InputError class="mt-2" :message="errors.laboratory" />
+                            <v-textarea name="laboratory" id="laboratory" cols="20" rows="5" class="w-full" :rules="laboratorioRules" v-model="form.laboratory" placeholder="Indicar el nombre y código de laboratorio(s) en los cuales el GI desarrolla sus actividades, responsables de los mismos. Incluir documento Sustentatorio de asignación de ambiente (en caso corresponda). (máximo 200 palabras)" ></v-textarea>
                         </div>
                         <div >
                             <InputLabel for="name" value="Espacio de Investigación" /><span style="color: #e53e3e;"> *</span>
-                            <v-textarea name="space_inves" id="space_inves" cols="20" rows="5" class="w-full" v-model="form.space_inves" placeholder="Describa los ambientes físicos del GI (máximo 100 palabras)"></v-textarea>
+                            <v-textarea name="space_inves" id="space_inves" cols="20" rows="5" class="w-full" :rules="espacioRules" v-model="form.space_inves" placeholder="Describa los ambientes físicos del GI (máximo 100 palabras)"></v-textarea>
                             <InputError class="mt-2" />
                         </div>
                         <div >
                             <InputLabel for="name" value="Equipamiento de  laboratorio" /><span style="color: #e53e3e;"> *</span>
-                            <v-textarea name="labora_equip" id="labora_equip" cols="20" rows="5" class="w-full" v-model="form.labora_equip" placeholder="Enumerar el equipamiento de laboratorio/gabinete (máximo 100 pablaras)"></v-textarea>
+                            <v-textarea name="labora_equip" id="labora_equip" cols="20" rows="5" class="w-full" :rules="equipamientoRules" v-model="form.labora_equip" placeholder="Enumerar el equipamiento de laboratorio/gabinete (máximo 100 pablaras)"></v-textarea>
                         </div>
                     </div>
                     <div class="grid gap-6 mb-6 md:grid-cols-3">
@@ -195,6 +196,7 @@
                                 "
                                 @change="archive.handleImageSelected" :key="archive.key" />
                             </label>
+                            <p v-if="fileError" style="color: #b91d1d; font-size: 12px;">{{ fileError }}</p>
                         </div>
                         <div >
                             <InputLabel for="anexo" value="Anexo" /><span style="color: #e53e3e;"> *</span>
@@ -205,9 +207,10 @@
                                 file:rounded-full file:border-0
                                 file:text-sm file:font-semibold
                                 file:bg-blue-50 file:text-blue-700
-                                hover:file:bg-blue-100"
+                                hover:file:bg-blue-100"                                
                                 @change="archiveAnexo.handleImageSelected" :key="archiveAnexo.key" />
                             </label>
+                            <p v-if="fileError" style="color: #b91d1d;font-size: 12px;">{{ fileError }}</p>
                         </div>
                     </div>
                     <div class="text-center mb-8 mt-3">
@@ -299,10 +302,69 @@ let escuelasfilter = [];
 const gruposIntegra = ref([]);
 const errors = ref({});
 
-const files = {
-  plan_trabajo: null,
-  anexo: null,
-};
+const fileError =ref(null);
+
+
+const grupoRules = [
+  value => !!value || 'El Nombre del grupo es requerido.',
+];
+
+const facultadRules =[
+value => !!value || 'Por favor seleccione una opcion.',
+];
+
+const escuelaRules =[
+value => !!value || 'Por favor seleccione una opcion.',
+];
+
+const areaRules =[
+value => !!value || 'Por favor seleccione una opcion.',
+];
+
+const lineaRules =[
+value => !!value || 'Por favor seleccione una opcion.',
+];
+
+const sublineasRules =[
+value => !!value || 'Por favor seleccione una opcion.',
+];
+
+const responsableRules =[
+value => !!value || 'Por favor seleccione una opcion.',
+];
+
+const presentacionRules =[
+value => !!value || 'Este campo es requerido.',
+];
+
+const objetivosRules =[
+value => !!value || 'Este campo es requerido.',
+];
+
+const objsosteRules =[
+value => !!value || 'Este campo es requerido.',
+];
+
+const serviciosRules =[
+value => !!value || 'Este campo es requerido.',
+];
+
+const objsosteRepitRules =[
+value => !!value || 'Este campo es requerido.',
+];
+
+const laboratorioRules =[
+value => !!value || 'Este campo es requerido.',
+];
+
+const espacioRules =[
+value => !!value || 'Este campo es requerido.',
+];
+
+const equipamientoRules =[
+value => !!value || 'Este campo es requerido.',
+];
+
 
 const props = defineProps({
     facultades: Object,
@@ -416,6 +478,12 @@ const submit = () => {
         for (let key in form) {
             formData.append(key, form[key]);
         }
+        if(!archiveAnexo.value.imageFile && !archive.value.imageFile){
+        fileError.value = "Por favor, Selecciona un archivo"
+        return true;
+        }else{
+            fileError.value = ""
+        }
         axios
             .post(route("registrar.grupo"),formData)
             .then((res) => {
@@ -475,42 +543,4 @@ const fullNameOptions = computed(() => {
 });
 
 
-
-const handleFileChange = (event) => {
-    let sizeKb = parseInt(event.target.files[0].size/1024);
-    if(sizeKb > 10000){
-        Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Debe registrar máximo 10MB",
-      });
-    }
-
-    const allowedExtensions = ref(['xls','xlsx']);
-    const extensionArchivo = event.target.files[0].name
-      .split(".")
-      .pop()
-      ?.toLowerCase();
-    if (allowedExtensions.value.length > 0 && !allowedExtensions.value.includes(extensionArchivo)) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: `Solo se admite archivos con extensiónes: ${allowedExtensions.value.join(
-          ", ",
-        )}`,
-        customClass: {
-          container: 'my-swal'
-        }
-      });
-      clearData();
-      return false;
-    }
-
-  let archiveData = event.target.files[0];
-  console.log('archiveData',archiveData);
-};
-
-const clearData = () => {
-
-}
 </script>

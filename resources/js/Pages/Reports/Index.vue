@@ -93,21 +93,21 @@
                                                 <p
                                                     class="text-gray-900 whitespace-no-wrap"
                                                 v-for="pivot in grupo.pivot_grupo_linea">
-                                                    - {{ pivot.area_investigacion?.name }}
+                                                    - {{ pivot?.area_investigacion?.name }}
                                                 </p>
                                                 </td>
                                                 <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">
                                                     <p
                                                     class="text-gray-900 whitespace-no-wrap"
                                                 v-for="pivot in grupo.pivot_grupo_linea">
-                                                    - {{ pivot.linea?.name }}
+                                                    - {{ pivot?.linea?.name }}
                                                 </p>
                                                 </td>
                                                 <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">
                                                 <p
                                                     class="text-gray-900 whitespace-no-wrap"
                                                 v-for="pivot in grupo.pivot_grupo_linea">
-                                                    - {{ pivot.linea?.name }}
+                                                    - {{ pivot?.linea?.name }}
                                                 </p>
                                                 </td>
                                                 <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">{{ grupo?.name }}</td>                                            

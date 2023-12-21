@@ -80,5 +80,9 @@ class Grupo extends Model
     public function file() {
         return $this->hasMany(File::class,'id_grupo');
     }
+
+    public function revalidacion(){
+        return $this->hasMany(Revalidacion::class,'id_grupo');
+    }
 }
 

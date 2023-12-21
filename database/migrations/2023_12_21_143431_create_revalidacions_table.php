@@ -11,15 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('files', function (Blueprint $table) {
+        Schema::create('revalidacions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_grupo');
             $table->foreign('id_grupo')->references('id')->on('grupos')->onDelete('cascade');
-            $table->string('plan_trabajo')->nullable();
-            $table->string('name_plan_trabajo')->nullable();
-            $table->string('anexo')->nullable();
-            $table->string('name_anexo')->nullable();
-            $table->string('revalidacion')->nullable();
+            $table->string('file_revalidacion')->nullable();
+            $table->string('name_revalidacion')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('files');
+        Schema::dropIfExists('revalidacions');
     }
 };

@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('pagina')->nullable();
             $table->string('office')->nullable();
             $table->string('annexed')->nullable();
-            $table->integer('phone')->nullable();
+            $table->string('phone')->nullable();
             $table->decimal('puntaje_total',3,2)->nullable();
             $table->enum('categorias', ['CONSOLIDADO','POR CONSOLIDAR','EMERGENTE','SIN EVALUAR'])->default('SIN EVALUAR');
 
