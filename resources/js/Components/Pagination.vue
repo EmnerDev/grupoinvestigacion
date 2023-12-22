@@ -1,5 +1,5 @@
 <template>
-  <div v-if="links.length > 3">
+  <div v-role="'Administrador'" v-if="links.length > 3">
     <div class="flex flex-wrap -mb-1">
       <template v-for="(link, key) in links">
         <div v-if="link.url === null" :key="key" class="px-2 py-1 mr-1 mb-1 text-sm leading-4 text-gray-400 rounded border" v-html="link.label" />

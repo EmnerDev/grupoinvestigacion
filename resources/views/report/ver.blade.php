@@ -125,23 +125,26 @@
                 @endforeach
             </tbody>
         </table>
-
+        @php
+                    $lastEvaluacionGrupo = $grupos->evaluacionGrupos->last();
+                    
+                @endphp
         <table class="tabla">
             <tbody>
-                @foreach($grupos->evaluacionGrupos as $evalua)
+                {{-- @foreach($grupos->evaluacionGrupos as $evalua) --}}
                 <tr>                    
                     <th class="i-tabla-th">
                         Puntaje 
                     </th>
-                    <td class="i-tabla-td">{{ number_format($evalua->ptj_total_grupo,2) }}</td>                    
+                    <td class="i-tabla-td">{{ number_format($lastEvaluacionGrupo->ptj_total_grupo,2) }}</td>                    
                 </tr>
                 <tr>                    
                     <th class="i-tabla-th">
                         Categoria del grupo
                     </th>
-                    <td class="i-tabla-td">{{ $evalua->categorias }}</td>                    
+                    <td class="i-tabla-td">{{ $lastEvaluacionGrupo->categorias }}</td>                    
                 </tr>                                            
-                @endforeach
+                {{-- @endforeach --}}
             </tbody>
         </table>
 </body>

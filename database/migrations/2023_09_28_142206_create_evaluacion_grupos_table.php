@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->decimal('ptj_total_grupo',15,8)->nullable();
             $table->enum('categorias', ['CONSOLIDADO','POR CONSOLIDAR','EMERGENTE','SIN EVALUAR'])->default('SIN EVALUAR');
-            $table->enum('revalidar', ['RENOVACIÓN','PROMOCIÓN','DESCENSO','DESCALIFICACIÓN'])->default('EVALUADO');
+            $table->enum('revalidar', ['RENOVACIÓN','PROMOCIÓN','DESCENSO','DESCALIFICACIÓN','SIN EVALUAR'])->default('SIN EVALUAR');
 
             $table->unsignedBigInteger('id_evaluacion_total');
             $table->unsignedBigInteger('id_grupo');

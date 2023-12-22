@@ -43,7 +43,7 @@
                         <h1 class="text-2 font-bold text-gray-800">LÍNEA DE INVESTIGACIÓN</h1>
                         </div>                        
                         <div class="flex justify-center mb-6">
-                            <PrimaryButton v-if="mostrarBoton" @click="openModalPivot(1)" :disabled="deshabilitarBotonAgregar()">
+                            <PrimaryButton v-if="mostrarBoton" @click="openModalPivot(1)">
                                 <i class="fa-solid fa-plus-circle"></i>
                                     Agregar Linea de Investigación
                             </PrimaryButton>

@@ -8,7 +8,7 @@
 
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 border-b border-gray-700">
-                <div class="p-5 mb-5 border-b-2 border-gray-200 bg-teal-500 px-5 py-3 text-left text-xl font-semibold uppercase tracking-wider text-white" style="text-align: center;align-items: center;">
+                <div class="p-5 mb-5 border-b-2 border-gray-200 bg-teal-500 px-5 py-3 text-center text-xl font-semibold uppercase tracking-wider text-white" style="text-align: center;align-items: center;">
                     <h1>FICHA DE EVALUACION</h1>
                 </div>
                 <div>
@@ -53,7 +53,7 @@
                                                 </td>
                                                 <td class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-sm"
                                                 >
-                                                    <TextInput v-model="indi.cantidad"  id="cantidad" @input="calcularTotal(indi, j, i)"></TextInput>
+                                                    <v-text-field v-model="indi.cantidad"  id="cantidad" @input="calcularTotal(indi, j, i)" variant="outlined"></v-text-field>
                                                 </td>
                                                 <td class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-sm"
                                                 >

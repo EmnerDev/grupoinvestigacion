@@ -10,9 +10,11 @@ use App\Models\EvaluacionTotal;
 use App\Models\Grupo;
 use App\Models\Indicador;
 use App\Models\Integrante;
+use App\Models\Programacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Carbon\Carbon;
 
 class EvaluacionController extends Controller
 {
@@ -90,6 +92,7 @@ class EvaluacionController extends Controller
         $evaluacionGrupo = EvaluacionGrupo::create([
             'ptj_total_grupo' => $request['calcularTotal'],
             'categorias' => $request['totales']['categorias'],
+            'revalidar' => $request['totales']['revalidar'],
             'id_evaluacion_total' => $request['totales']['id_evaluacion_total'],
             'id_grupo' => $request['totales']['id_grupo'],
         ]);
@@ -135,17 +138,27 @@ class EvaluacionController extends Controller
 
         //return $integrantes;
         //$evaluacionGrupo = EvaluacionGrupo::with('grupo')->get();
+        $grupo = Grupo::with('evaluacionCriterio', 'evaluacionTotal', 'evaluacionGrupos')->find($id);
+
+        // Formatear las fechas dentro de la colección de evaluacionGrupos
+        $grupo->evaluacionGrupos->map(function ($evaluacionGrupo) {
+            $evaluacionGrupo->fecha_formateada = Carbon::parse($evaluacionGrupo->created_at)->format('Y-m-d');
+            // Puedes ajustar el formato según tus necesidades
+            return $evaluacionGrupo;
+        });
         //$guardarTotal = Grupo::with('evaluacionGrupos')->get();
         $evaluacionGeneral = EvaluacionTotal::get();
 
         //return $grupos;
         return Inertia::render('Evaluacion/Index',[
-            'grupos' => Grupo::with('evaluacionCriterio', 'evaluacionTotal','evaluacionGrupos')->find($id),
+            'grupos' => $grupo,
             'evaluacion_criterios' => EvaluacionCriterio::with('integrante.persona','grupo')->get(),
             'integrantes' => $integrantes,
             //'evaluacion_grupos' => $evaluacionGrupo,
             'evaluacion_totals' => $evaluacionGeneral,
-            'categoria' => EvaluacionGrupo::enumCategoriaOption()
+            'programacions' => Programacion::get(),
+            'categoria' => EvaluacionGrupo::enumCategoriaOption(),
+            'revalidar' => EvaluacionGrupo::enumRevalidarOption()
         ]);
     }
 
@@ -230,7 +243,8 @@ class EvaluacionController extends Controller
             ->where('id_evaluacion_total',$request['totales']['id_evaluacion_total'])
             ->update([
                 'ptj_total_grupo'=>$request['calcularTotal'],
-                'categorias' => $request['totales']['categorias']
+                'categorias' => $request['totales']['categorias'],
+                'revalidar' => $request['totales']['revalidar']
             ]);
         //$evaluacion_grupo->update($request->all());
 

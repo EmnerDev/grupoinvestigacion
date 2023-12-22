@@ -11,7 +11,7 @@
                 <div class="overflow-x-auto rounded-lg shadow mt-6">
                         <div class="mb-4">
                             <div class="flex justify-center gap-5">
-                                <div class="flex justify-center mb-6" v-if="(gruposIntegra?.evaluacion_criterio?.length > 0) ? true : false">
+                                <div class="flex justify-center mb-6" :hidden="(gruposIntegra?.evaluacion_grupos?.length > 0) ? true : false" v-if="(gruposIntegra?.evaluacion_criterio?.length > 0) ? true : false">
                                     <PrimaryButton @click="openModal(1)" class="" :disabled="gruposIntegra?.evaluacion_grupos?.length > 0 ? true : false">
                                         <i class="fa-solid fa-plus-circle"></i>
                                         Categorizar Grupo
@@ -191,6 +191,14 @@
                         <InputLabel>Puntaje Total Obtenido por grupo: {{ calcularPuntajeTotalGeneral() }}</InputLabel>
 
                     </div>
+                    <div class="mt-5" v-if="mostrarContenRevalidacion">
+                        <div class="flex justify-center mb-6" v-if="(gruposIntegra?.evaluacion_grupos?.length > 0) ? true : false">
+                        <PrimaryButton @click="openModal(1)" class="">
+                            <i class="fa-solid fa-plus-circle"></i>
+                            Revalidar Grupo
+                        </PrimaryButton>
+                    </div>
+                    </div>
                     <div class="overflow-x-auto rounded-lg shadow mt-6 ml-5 mr-5">
                         <div class="mb-4">
                             <table class="w-full table-auto border-separate">
@@ -201,6 +209,8 @@
                                     <tr class="bg-blue-700 text-center">
                                         <th class="w-1/8 min-w-[160px] border-l border-transparent py-1 px-1 text-lg font-semibold text-white lg:py-1 lg:px-1">Grupo</th>
                                         <th class="w-1/8 min-w-[160px] py-1 px-1 text-lg font-semibold text-white lg:py-1 lg:px-1">Categoria</th>
+                                        <th class="w-1/8 min-w-[160px] py-1 px-1 text-lg font-semibold text-white lg:py-1 lg:px-1">Revalidacion</th>
+                                        <th class="w-1/8 min-w-[160px] py-1 px-1 text-lg font-semibold text-white lg:py-1 lg:px-1">Fecha</th>
                                         <th class="w-1/8 min-w-[160px] py-1 px-1 text-lg font-semibold text-white lg:py-1 lg:px-1">Editar</th>
                                     </tr>
                                 </thead>
@@ -208,6 +218,8 @@
                                     <tr v-for="gru in gruposIntegra.evaluacion_grupos" :key="gru.id" >
                                         <td class="text-dark border-b border-l border-[#E8E8E8] bg-[#F3F6FF] py-1 px-1 text-center text-sm font-medium">{{ gruposIntegra.name }}</td>
                                         <td class="text-dark border-b border-[#E8E8E8] bg-white py-1 px-1 text-center text-sm font-medium"> {{ gru.categorias }}</td>
+                                        <td class="text-dark border-b border-[#E8E8E8] bg-white py-1 px-1 text-center text-sm font-medium"> {{ gru.revalidar }}</td>
+                                        <td class="text-dark border-b border-[#E8E8E8] bg-white py-1 px-1 text-center text-sm font-medium"> {{ gru.fecha_formateada }}</td>
                                         <td class="text-dark border-b border-[#E8E8E8] bg-white py-1 px-1 text-center text-sm font-medium">
                                             <WarningButton
                                                 class="mr-1"
@@ -216,6 +228,7 @@
                                                         2,
                                                         gru.ptj_total_grupo,
                                                         gru.categorias,
+                                                        gru.revalidar,
                                                         gru.id_evaluacion_total,
                                                         gru.id_grupo,
                                                         gru.id
@@ -373,20 +386,35 @@
             </div>
             <div class="p-3">
                     <InputLabel for="categorias" value="Categoria del grupo: " />
-                    <select
-                        name="categorias"
-                        id="categorias"
-                        class="mt-1 block w-full"
+                    <v-select
+                        name="categoria"
+                        id="categoria"
+                        class="mt-1"
+                        :items="categoriaOptions"
                         v-model="form.categorias"
+                        item-value="id"
+                        item-title = "name"
+                        placeholder="Seleccione Categoria"
+                        variant="outlined"
                     >
-                        <option
-                            v-for="(label, value) in categoria"
-                            :key="value"
-                            :value="value"
-                        >
-                            {{ label }}
-                        </option>
-                    </select>
+                
+                    </v-select>
+            </div>
+            <div v-if="mostrarContenRevalidacion" class="p-3">
+                    <InputLabel for="revalidar" value="Revalidacion del grupo: " />
+                    <v-select
+                        name="revalidar"
+                        id="revalidar"
+                        class="mt-1"
+                        :items="revalidarOptions"
+                        v-model="form.revalidar"
+                        item-value="id"
+                        item-title = "name"
+                        placeholder="Seleccione una opcion"
+                        variant="outlined"
+                    >
+                
+                    </v-select>
             </div>
             <div class="flex justify-center">
                 <div class="p-3 mt-6">
@@ -437,6 +465,7 @@ const evaluacionGeneral = ref([]);
 const gruposevaluar = ref([]);
 const calcularTotal = ref(0);
 
+const programacion = ref(props.programacions);
 
 const mostrarInfo = ref(false);
 
@@ -459,17 +488,32 @@ const props = defineProps({
     personas: Object,
     evaluacion_grupos: Object,
     evaluacion_totals:Object,
-    categoria: {
-        'CONSOLIDADO': 'CONSOLIDADO',
-        'POR CONSOLIDAR': 'POR CONSOLIDAR',
-        'EMERGENTE': 'EMERGENTE',
-        'SIN EVALUAR': 'SIN EVALUAR',
-    },
+    categoria:{
+        type:Object,
+        default: () =>({
+            'CONSOLIDADO': 'CONSOLIDADO',
+            'POR CONSOLIDAR': 'POR CONSOLIDAR',
+            'EMERGENTE': 'EMERGENTE',
+            'SIN EVALUAR': 'SIN EVALUAR',
+        }),
+    }, 
+    revalidar:{
+        type:Object,
+        default: () =>({
+            'RENOVACION' : 'RENOVACION',
+            'PROMOCION' : 'PROMOCION',
+            'DESCENSO' : 'DESCENSO',
+            'DESCALIFICACION' : 'DESCALIFICACION',
+            'SIN EVALUAR' : 'SIN EVALUAR',
+        }),
+    },  
+    programacions:Object     
 
 });
 const form = useForm({
     ptj_total_grupo: '',
     categorias: 'SIN EVALUAR',
+    revalidar:'SIN EVALUAR',
     id_evaluacion_total: intePerson.value[0]?.evaluacion_total[0]?.id,
     id_grupo: props.grupos.id,
 });
@@ -514,13 +558,18 @@ const openModal = (
     op,
     ptj_total_grupo,
     categorias,
+    revalidar,
     id_evaluacion_total,
     id_grupo,
     categ
 ) => {
     form.id_evaluacion_total = intePerson.value[0]?.evaluacion_total[0]?.id;
     modal.value = true;
-    nextTick(() => nameInput.value.focus());
+    nextTick(() => {
+    if (nameInput.value) {
+        nameInput.value.focus()
+        }
+    });
     operation.value = op;
     id.value = categ;
     if (op == 1) {
@@ -529,6 +578,7 @@ const openModal = (
         title.value = "Editar Categorizar Grupos";
         form.ptj_total_grupo = ptj_total_grupo;
         form.categorias = categorias;
+        form.revalidar = revalidar;
         form.id_evaluacion_total = id_evaluacion_total;
         form.id_grupo = id_grupo
 
@@ -612,4 +662,31 @@ const ok = (obj) => {
     Swal.fire({ position: 'top-end',title: obj.msj, icon: "success", showConfirmButton: false,
   timer: 1500 });
 };
+
+const categoriaOptions = computed(() => {
+  return Object.entries(props.categoria).map(([id, name]) => ({ id, name }));
+});
+
+const revalidarOptions = computed(() => {
+  return Object.entries(props.revalidar).map(([id, name]) => ({ id, name }));
+});
+
+const mostrarContenRevalidacion = computed(() => {
+    const fechaActual = new Date();
+    //console.log('fechaActual', fechaActual)
+
+    for(const evento of programacion.value){
+        const fechaInicio = new Date(evento.start_date);
+       // console.log('fechaInicio', fechaInicio)
+        const fechaFin = new Date(evento.end_date);
+        const esActivo = evento.status === 1;
+        const esTipo = evento.programin_type === 'REVALIDACION';
+
+        if(fechaActual >= fechaInicio && fechaActual <= fechaFin && esActivo && esTipo){
+            return true;
+        }
+    }
+    return false;
+});
+
 </script>

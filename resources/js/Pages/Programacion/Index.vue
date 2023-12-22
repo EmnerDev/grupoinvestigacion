@@ -197,7 +197,20 @@
                 </div>
                 <div class="p-3">
                     <InputLabel for="programin_type" value="Tipo de programacion:"></InputLabel>
-                    <select
+                    <v-select
+                        name="programin_type"
+                        id="programin_type"
+                        class="mt-1"
+                        :items="condicionesOptions"
+                        v-model="form.programin_type"
+                        item-value="id"
+                        item-title = "name"
+                        placeholder="Seleccione Categoria"
+                        variant="outlined"
+                    >
+                
+                    </v-select>
+                    <!-- <select
                         name="programin_type"
                         id="programin_type"
                         class="mt-1 block w-full rounded-md"
@@ -210,7 +223,7 @@
                         >
                             {{ label }}
                         </option>
-                    </select>                    
+                    </select>                     -->
                 </div>
             </div>
             <div class="grid gap-6 mb-6 md:grid-cols-2">
@@ -312,7 +325,7 @@ import Pagination from "@/Components/Pagination.vue";
 import Modal from "@/Components/Modal.vue";
 import Swal from "sweetalert2";
 import "@fortawesome/fontawesome-free/css/all.css";
-import { nextTick, ref, onMounted, reactive } from "vue";
+import { nextTick, ref, onMounted, reactive, computed } from "vue";
 import axios from "axios";
 import { Head, useForm, usePage } from "@inertiajs/vue3";
 
@@ -332,10 +345,13 @@ const id = ref(0);
 
 const props = defineProps({
     programacions: Object,
-    condiciones: {
-        'INSCRIPCION': 'INSCRIPCION',
-        'ANEXO' : 'ANEXO',
-    }
+    condiciones:{
+        type:Object,
+        default: () =>({
+            'INSCRIPCION': 'INSCRIPCION',
+            'REVALIDACION' : 'REVALIDACION',
+        }),
+    },
 });
 
 
@@ -360,7 +376,11 @@ const openModal = (
     programacion,
 ) => {
     modal.value = true;
-    nextTick(() => {nameInput.value.focus()});
+    nextTick(() => {
+    if (nameInput.value) {
+        nameInput.value.focus()
+        }
+    });
     operation.value = op;
     id.value = programacion;
     if (op === 1) {
@@ -460,5 +480,10 @@ const deleteUser = (id) => {
         }
     });
 }
+
+const condicionesOptions = computed(() => {
+  return Object.entries(props.condiciones).map(([id, name]) => ({ id, name }));
+});
+
 
 </script>

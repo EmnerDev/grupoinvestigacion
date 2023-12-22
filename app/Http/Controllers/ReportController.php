@@ -6,6 +6,7 @@ use App\Http\Requests\GrupoCreateRequest;
 use App\Http\Requests\GrupoUpdateRequest;
 use App\Models\AreaInvestigacion;
 use App\Models\Escuela;
+use App\Models\EvaluacionGrupo;
 use App\Models\Facultad;
 use App\Models\Grupo;
 use App\Models\Integrante;
@@ -42,12 +43,36 @@ class ReportController extends Controller
                 $query->where('id', $coordinadorId);
             })
             ->paginate();
-            //return $grupos;            
+
+            $grupoIds = $grupos->pluck('id');
+
+            $lastEvaluacion = DB::table('evaluacion_grupos')
+                ->select('id_grupo', DB::raw('MAX(created_at) as max_created_at'))
+                ->groupBy('id_grupo');
+
+            $lastEvaluacion = DB::table('evaluacion_grupos as eg')
+                ->joinSub($lastEvaluacion, 'last_eval', function ($join) {
+                    $join->on('eg.id_grupo', '=', 'last_eval.id_grupo')
+                        ->on('eg.created_at', '=', 'last_eval.max_created_at');
+                })
+                ->first();
+            //return $lastEvaluaciones;            
             return Inertia::render('Reports/Index', [
                 'grupos' => $grupos,
+                'lastEvaluacion' => $lastEvaluacion
             ]);
         }
 
+        $grupoIds =  DB::table('grupos')->pluck('id');
+
+        $lastEvaluacion = EvaluacionGrupo::whereIn('id_grupo', $grupoIds)
+        ->whereIn('id', function ($query) {
+            $query->select(DB::raw('MAX(id)'))
+                ->from('evaluacion_grupos')
+                ->groupBy('id_grupo');
+        })
+        ->get();
+        //return $lastEvaluacion;
         return Inertia::render('Reports/Index',[
             'grupos' =>  Grupo::query()->with('facultad','escuela','integrante.persona','evaluacionGrupos','pivotGrupoLinea','pivotGrupoLinea.area_investigacion', 'pivotGrupoLinea.linea', 'pivotGrupoLinea.sublinea')->orderBy('created_at','DESC')
             ->when(\Illuminate\Support\Facades\Request::input('search'), function($query, $search) {
@@ -58,6 +83,7 @@ class ReportController extends Controller
             });
             })->paginate(10),
             'filters' => \Illuminate\Support\Facades\Request::only(['search']),
+            'lastEvaluacion' => $lastEvaluacion
         ]);
     }
 

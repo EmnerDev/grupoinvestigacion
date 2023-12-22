@@ -76,6 +76,11 @@
                                             >
                                                 Categoria del grupo
                                             </th>
+                                            <th v-role="'Administrador'"
+                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
+                                            >
+                                                Revalidacion del grupo
+                                            </th>
                                             <th
                                                 class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                                             >
@@ -85,7 +90,6 @@
                                     </thead>
                                     <tbody>
                                         <template v-for="(grupo, key) in grupos.data" :key="key">
-                                        <template v-for="(evalua, evalIndex) in grupo.evaluacion_grupos">
                                             <template v-for="(inte, index) in grupo.integrante" :key="index">
                                             <tr>
                                                 <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">{{ key + 1 }}</td>
@@ -114,15 +118,25 @@
                                                 <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">{{ inte.persona.name }} {{ inte.persona.first_name }} {{ inte.persona.last_name }}</td>
                                                 <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">{{ inte.condition }}</td>
                                                 <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm" v-if="index === 0" :rowspan="grupo.integrante.length">
-                                                {{  Number(evalua?.ptj_total_grupo) % 1 === 0 ? Number(evalua?.ptj_total_grupo).toFixed(2) : Number(evalua?.ptj_total_grupo).toFixed(2) }}
+                                                    <p>
+                                                        {{  Number(grupo.evaluacion_grupos[grupo.evaluacion_grupos.length - 1]?.ptj_total_grupo) % 1 === 0 ? Number(grupo.evaluacion_grupos[grupo.evaluacion_grupos.length - 1]?.ptj_total_grupo).toFixed(2) : Number(grupo.evaluacion_grupos[grupo.evaluacion_grupos.length - 1]?.ptj_total_grupo).toFixed(2) }}
+                                                    </p>
                                                 </td>
-                                                <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">{{ evalua?.categorias }}</td>
+                                                <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">
+                                                    <p>
+                                                        {{ grupo.evaluacion_grupos[grupo.evaluacion_grupos.length - 1]?.categorias }}
+                                                    </p>                                                
+                                                </td>                                                    
+                                                <td  v-role="'Administrador'" v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">
+                                                    <p>
+                                                        {{ grupo.evaluacion_grupos[grupo.evaluacion_grupos.length - 1]?.revalidar }}
+                                                    </p>
+                                                </td>
                                                 <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">
                                                 <LinkButton :href="route('individual.reporte',grupo.id)" target="_blanck"><i class="fa-solid fa-file-pdf" style="font-size: 20px;"></i></LinkButton>
                                                 </td>
                                             </tr>
                                             </template>
-                                        </template>
                                         </template>
                                         <!-- <template v-for="(gru, i) in grupos.data"
                                             :key="gru.id" :value="gru.id">
@@ -228,8 +242,8 @@
                                 <div
                                     class="flex flex-col items-center border-t bg-white px-5 py-5 xs:flex-row xs:justify-between"
                                 >
-                                    <!-- <paginator class="mt-3" :paginator="grupos" /> -->
-                                    <pagination :links="grupos.links" />
+                                    <paginator class="mt-3" :paginator="grupos" />
+                                    <!-- <pagination :links="grupos.links" /> -->
                                 </div>
                             </div>
                         </div>
@@ -259,10 +273,12 @@ import { Head, useForm, router } from "@inertiajs/vue3";
 
 import Swal from "sweetalert2";
 import "@fortawesome/fontawesome-free/css/all.css";
-import { nextTick, ref } from "vue";
+import { nextTick, ref,toRefs  } from "vue";
 import { watch } from "vue";
 import Paginator from "@/Components/Paginator.vue";
 import axios from "axios";
+
+const { grupo } = toRefs (props.grupos);
 
 const props = defineProps({
     grupos: {
@@ -276,7 +292,8 @@ const props = defineProps({
         default: () => ({}),
     },
     editMode: false,
-    pivotLineas:Object
+    pivotLineas:Object,
+    lastEvaluaciones:Object
 });
 
 const form = useForm({});
@@ -292,6 +309,13 @@ watch(search, (value) => {
         }
     );
 });
+
+console.log('grupos', props.grupos)
+
+
+const lastEvaluacionGrupo = ref(props.grupo?.evaluacionGrupos?.slice(-1)[0] || null);
+console.log('lastEvaluacionGrupo',lastEvaluacionGrupo);
+
 
 const submit = () =>{
     axios.post(route('grupos.reporte'))

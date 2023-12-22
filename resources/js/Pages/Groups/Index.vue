@@ -83,29 +83,75 @@
                                             <th
                                                 class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                                             >
-                                                Categoria del grupo
-                                            </th>
-                                            <th
-                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
-                                            >
-                                                Acciones
-                                            </th>
-                                            <th
-                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
-                                            >
                                                 Integrantes
                                             </th>
                                             <th
                                                 class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                                             >
                                                 Condicion
+                                            </th>
+                                            <th
+                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
+                                            >
+                                                Categoria del Grupo
+                                            </th>
+                                            <th
+                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
+                                            >
+                                            Acciones
                                             </th>                                            
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <template v-for="(gru, i) in grupos.data"
+                                        <template v-for="(grupo, key) in grupos.data" :key="key">
+                                            <template v-for="(inte, index) in grupo.integrante" :key="index">
+                                            <tr>
+                                                <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">{{ key + 1 }}</td>
+                                                <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">
+                                                <p
+                                                    class="text-gray-900 whitespace-no-wrap"
+                                                v-for="pivot in grupo.pivot_grupo_linea">
+                                                    - {{ pivot?.area_investigacion?.name }}
+                                                </p>
+                                                </td>
+                                                <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">
+                                                    <p
+                                                    class="text-gray-900 whitespace-no-wrap"
+                                                v-for="pivot in grupo.pivot_grupo_linea">
+                                                    - {{ pivot?.linea?.name }}
+                                                </p>
+                                                </td>
+                                                <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">
+                                                <p
+                                                    class="text-gray-900 whitespace-no-wrap"
+                                                v-for="pivot in grupo.pivot_grupo_linea">
+                                                    - {{ pivot?.linea?.name }}
+                                                </p>
+                                                </td>
+                                                <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">{{ grupo?.name }}</td>                                            
+                                                <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">{{ inte.persona.name }} {{ inte.persona.first_name }} {{ inte.persona.last_name }}</td>
+                                                <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">{{ inte.condition }}</td>
+                                                <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">
+                                                    <p class="text-gray-900 whitespace-no-wrap">
+                                                        {{ grupo.evaluacion_grupos[grupo.evaluacion_grupos.length - 1]?.categorias }}
+                                                    </p>                                                
+                                                </td>
+                                                <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">
+                                                    <a v-role="'Administrador'" :href="route('evaluar.grupo',grupo.id)" class="m-2 p-2 bg-blue-500 hover:bg-blue-700 text-white rounded flex items-center">Evaluar
+                                                    <i class="fa-solid fa-plus-circle ml-2"></i>
+                                                </a>
+                                                <a class="m-2 p-2 bg-green-500 hover:bg-green-700 text-white rounded flex items-center" :href="route('ver.grupo',grupo.id)">Ver<i class="fa-solid fa-eye ml-2"></i></a>
+                                                <a  class="m-2 p-2 bg-yellow-500 hover:bg-yellow-700 text-white rounded flex items-center" :href="route('grupos.editar',grupo.id)">Editar
+                                                    <i class="fa-solid fa-edit ml-2" :title="editMode ? 'Editar':'Editar Grupo'"></i>
+                                                </a>
+                                                <a class="m-2 p-2 bg-red-500 hover:bg-red-700 text-white rounded flex items-center" v-role="'Administrador'" type="button" @click="deleteGrupo(grupo.id, grupo.name)">Eliminar<i class="fa-solid fa-trash ml-2"></i></a>
+                                                </td>
+                                            </tr>
+                                            </template>
+                                        </template>
+                                        <!-- <template v-for="(gru, i) in grupos.data"
                                             :key="gru.id" :value="gru.id">
-                                        <tr                                           
+                                        <tr                                         
                                             
                                         >
                                             <td v-if="gru.integrante && gru.integrante.length"
@@ -162,10 +208,10 @@
                                                 :rowspan="gru.integrante.length+1"
                                                 class=" border-b border-gray-200 bg-white px-5 text-sm"
                                             >
-                                                <p v-for="cat in gru.evaluacion_grupos" :key="cat.id"
+                                                <p
                                                     class="text-gray-900 whitespace-no-wrap"
                                                 >
-                                                    {{ cat?.categorias }}
+                                                {{ gru.evaluacion_grupos[gru.evaluacion_grupos.length - 1]?.categorias }}
                                                 </p>
                                             </td>  
                                             <td v-if="gru.integrante && gru.integrante.length"
@@ -202,7 +248,7 @@
                                                 </p>
                                             </td>                                                                                        
                                         </tr>
-                                        </template>
+                                        </template> -->
                                     </tbody>
                                 </table>
                                 <div v-rol="'Administrador'"
