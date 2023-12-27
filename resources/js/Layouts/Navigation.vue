@@ -76,12 +76,12 @@
                     <ul class="overflow-hidden p-2 mx-4 mt-2 space-y-2 text-sm font-medium text-white bg-gray-700 bg-opacity-50 rounded-md shadow-inner"
                         aria-label="submenu">
                         <li class="px-2 py-1 transition-colors duration-150">
-                            <Link class="w-full" :href="route('grupos.create')">Registrar Grupo</Link>
+                            <Link v-role="'Administrador'" class="w-full" :href="route('grupos.create')">Registrar Grupo</Link>
                         </li>
                         <li v-role="'Administrador'" class="px-2 py-1 transition-colors duration-150">
                             <Link class="w-full" :href="route('grupos.index')">lista de Grupos</Link>
                         </li>
-                        <li v-role="'Coordinador'" class="px-2 py-1 transition-colors duration-150">
+                        <li v-role:any="'Coordinador|Integrante'" class="px-2 py-1 transition-colors duration-150">
                             <Link class="w-full" :href="route('grupos.index')">Mi Grupo</Link>
                         </li>
                     </ul>

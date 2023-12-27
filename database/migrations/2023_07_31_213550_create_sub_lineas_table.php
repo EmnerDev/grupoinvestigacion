@@ -19,7 +19,8 @@ return new class extends Migration
             $table->unsignedBigInteger('id_linea');
             $table->foreign('id_area')->references('id')->on('area_investigacions')->onDelete('cascade');
             $table->foreign('id_linea')->references('id')->on('lineas')->onDelete('cascade');
-
+            $table->boolean('status')->default(true);
+            
             $table->timestamps();
         });
     }

@@ -417,8 +417,10 @@
                     </v-select>
             </div>
             <div class="flex justify-center">
+                
                 <div class="p-3 mt-6">
-                    <PrimaryButton @click="submit">
+                    <div v-if="cargando" class="text-center"><i class="fas fa-spinner fa-spin"></i></div>
+                    <PrimaryButton @click="submit" :disabled="cargando">
                         <i class="fa-solid fa save"></i>Guardar
                     </PrimaryButton>
                 </div>
@@ -468,6 +470,7 @@ const calcularTotal = ref(0);
 const programacion = ref(props.programacions);
 
 const mostrarInfo = ref(false);
+const cargando = ref(false);
 
 const nameInput=ref(null);
 const modal = ref(false);
@@ -494,17 +497,17 @@ const props = defineProps({
             'CONSOLIDADO': 'CONSOLIDADO',
             'POR CONSOLIDAR': 'POR CONSOLIDAR',
             'EMERGENTE': 'EMERGENTE',
-            'SIN EVALUAR': 'SIN EVALUAR',
+            'SIN CATEGORIA': 'SIN CATEGORIA',
         }),
     }, 
     revalidar:{
         type:Object,
         default: () =>({
-            'RENOVACION' : 'RENOVACION',
-            'PROMOCION' : 'PROMOCION',
+            'RENOVACIÓN' : 'RENOVACIÓN',
+            'PROMOCIÓN' : 'PROMOCIÓN',
             'DESCENSO' : 'DESCENSO',
-            'DESCALIFICACION' : 'DESCALIFICACION',
-            'SIN EVALUAR' : 'SIN EVALUAR',
+            'DESCALIFICACIÓN' : 'DESCALIFICACIÓN',
+            'SIN REVALIDACION' : 'SIN REVALIDACION',
         }),
     },  
     programacions:Object     
@@ -512,8 +515,8 @@ const props = defineProps({
 });
 const form = useForm({
     ptj_total_grupo: '',
-    categorias: 'SIN EVALUAR',
-    revalidar:'SIN EVALUAR',
+    categorias: 'SIN CATEGORIA',
+    revalidar:'SIN REVALIDACION',
     id_evaluacion_total: intePerson.value[0]?.evaluacion_total[0]?.id,
     id_grupo: props.grupos.id,
 });
@@ -596,6 +599,7 @@ const togleInfo = () => {
 const submit = () => {
     if(operation.value === 1){
         // Para una solicitud POST
+        cargando.value = true;
         const datosEnviar = {
             totales: form,
             calcularTotal:calcularTotal.value
@@ -623,7 +627,11 @@ const submit = () => {
             .catch((error) => {
                 // Manejar el error aquí
                 console.error(error);
-            });
+            })
+            .finally(() => {
+      // Restablece el estado de carga después de la solicitud (ya sea éxito o error)
+      cargando.value = false;
+    });
     }else{
         // Para una solicitud PUT
         const datosEnviar = {
@@ -653,7 +661,11 @@ const submit = () => {
             .catch((error) => {
                 // Manejar el error aquí
                 console.error(error);
-            });
+            })
+            .finally(() => {
+      // Restablece el estado de carga después de la solicitud (ya sea éxito o error)
+      cargando.value = false;
+    });
     }
 };
 const ok = (obj) => {

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('area_investigacions', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

@@ -245,6 +245,7 @@
                             class="px-10"
                         >
                             Guardar
+                            <div v-if="cargando"><i class="fas fa-spinner fa-spin"></i></div>
                         </PrimaryButton>
                         <DangerButton class="px-10">
                             Cancelar
@@ -253,7 +254,7 @@
                                 <i class="fa-solid fa-right-from-bracket rotate-180"></i>
                                     Regresar
                             </a>
-                    </div>
+                    </div>                    
                 </v-form>
             </div>
         </div>
@@ -303,7 +304,7 @@ const gruposIntegra = ref([]);
 const errors = ref({});
 
 const fileError =ref(null);
-
+const cargando = ref(false);
 
 const grupoRules = [
   value => !!value || 'El Nombre del grupo es requerido.',
@@ -472,6 +473,7 @@ const updateSublineas = () => {
 
 const submit = () => {
         // Para una solicitud POST
+        cargando.value = true;
         form.plan_trabajo = archive.value.imageFile;
         form.anexo = archiveAnexo.value.imageFile;
         const formData = new FormData();
@@ -516,7 +518,11 @@ const submit = () => {
 
 
                 }
-            });
+            })
+            .finally(() => {
+      // Restablece el estado de carga después de la solicitud (ya sea éxito o error)
+      cargando.value = false;
+    });
 };
 const ok = (obj) => {
     form.reset();

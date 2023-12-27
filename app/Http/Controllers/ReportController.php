@@ -38,7 +38,7 @@ class ReportController extends Controller
     
             $grupos = Grupo::query()
             ->with('facultad','escuela','integrante.persona','evaluacionGrupos','pivotGrupoLinea','pivotGrupoLinea.area_investigacion', 'pivotGrupoLinea.linea', 'pivotGrupoLinea.sublinea')
-            ->orderBy('created_at','DESC')
+            ->orderBy('created_at','ASC')
             ->whereHas('integrante.persona', function ($query) use ($coordinadorId){
                 $query->where('id', $coordinadorId);
             })
@@ -74,7 +74,7 @@ class ReportController extends Controller
         ->get();
         //return $lastEvaluacion;
         return Inertia::render('Reports/Index',[
-            'grupos' =>  Grupo::query()->with('facultad','escuela','integrante.persona','evaluacionGrupos','pivotGrupoLinea','pivotGrupoLinea.area_investigacion', 'pivotGrupoLinea.linea', 'pivotGrupoLinea.sublinea')->orderBy('created_at','DESC')
+            'grupos' =>  Grupo::query()->with('facultad','escuela','integrante.persona','evaluacionGrupos','pivotGrupoLinea','pivotGrupoLinea.area_investigacion', 'pivotGrupoLinea.linea', 'pivotGrupoLinea.sublinea')->orderBy('created_at','ASC')
             ->when(\Illuminate\Support\Facades\Request::input('search'), function($query, $search) {
             $query->where(function ($subquery) use ($search){
                 $subquery->wherehas('integrante.persona', function($q) use ($search) {
@@ -89,7 +89,7 @@ class ReportController extends Controller
 
     public function pdfGrupo(){
 
-        $grupos = Grupo::orderBy('created_at','DESC')->get();
+        $grupos = Grupo::orderBy('created_at','ASC')->get();
         
 
         $pdf = Pdf::loadView('report.grupos', compact('grupos'));

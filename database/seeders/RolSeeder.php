@@ -18,7 +18,7 @@ class RolSeeder extends Seeder
         $role_coord = Role::create(['name' =>'Coordinador']);
         $role_integ = Role::create(['name' =>'Integrante']);
 
-        Permission::create(['name' => 'dashboard'])->syncRoles([$role_admin,$role_coord]);
+        Permission::create(['name' => 'dashboard'])->syncRoles([$role_admin,$role_coord,$role_integ]);
 
         Permission::create(['name' => 'users.index'])->syncRoles([$role_admin]);
         Permission::create(['name' => 'users.store'])->syncRoles([$role_admin]);
@@ -36,11 +36,11 @@ class RolSeeder extends Seeder
         Permission::create(['name' => 'personas.update'])->syncRoles([$role_admin]);
         Permission::create(['name' => 'personas.destroy'])->syncRoles([$role_admin]);
 
-        Permission::create(['name' => 'grupos.index'])->syncRoles([$role_admin,$role_coord]);
+        Permission::create(['name' => 'grupos.index'])->syncRoles([$role_admin,$role_coord,$role_integ]);
         Permission::create(['name' => 'grupos.create'])->syncRoles([$role_admin,$role_coord]);
         Permission::create(['name' => 'grupos.edit'])->syncRoles([$role_admin,$role_coord]);
         Permission::create(['name' => 'grupos.store'])->syncRoles([$role_admin,$role_coord]);
-        Permission::create(['name' => 'grupos.verGrupo'])->syncRoles([$role_admin,$role_coord]);
+        Permission::create(['name' => 'grupos.verGrupo'])->syncRoles([$role_admin,$role_coord,$role_integ]);
         Permission::create(['name' => 'grupos.update'])->syncRoles([$role_admin,$role_coord]);
         Permission::create(['name' => 'grupos.destroy'])->syncRoles([$role_admin]);
 

@@ -111,7 +111,7 @@
                         </DangerButton>
                     </div>
                 </form>
-
+<p> {{ personas }}</p>
                 <div
                     class="overflow-x-auto rounded-lg shadow mt-6"
                 >

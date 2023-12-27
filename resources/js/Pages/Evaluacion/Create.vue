@@ -78,8 +78,9 @@
                                 <h1 class="border-solid border-2 border-gray-700 bg-white px-5 py-5 text-lg text-center font-bold	" >Puntaje Total: <InputLabel>{{ calcularTotalGeneral() }}</InputLabel></h1>
                                 <div class="flex justify-center">
                                     <div class="p-3 mt-6">
-                                        <PrimaryButton class="pl-7">
-                                            <i class="fa-solid fa-plus-circle"></i>Guardar
+                                        <PrimaryButton class="pl-7" :disabled="cargando">
+                                            <div v-if="cargando"><i class="fas fa-spinner fa-spin"></i></div>
+                                            <i class="fa-solid fa-plus-circle gap-4"></i>Guardar
                                         </PrimaryButton>
                                     </div>
                                     <div class="p-3 mt-6">
@@ -141,6 +142,7 @@ const totalGeneral = ref(0);
 const intePerson = ref([]);
 const gruposIntegra = ref([]);
 const evaluaPuntaje = ref(props.evaluaciones);
+const cargando = ref(false);
 
 const form = useForm({
     cantidad:'',
@@ -238,6 +240,7 @@ console.log('grupos', gruposIntegra);
 
 const submit = () => {
         // Para una solicitud POST
+        cargando.value = true;
         const datosEnviar = {
             evaluaciones: puntajeCriterio.value,
             totalGeneral: totalGeneral.value,
@@ -256,7 +259,11 @@ const submit = () => {
             .catch((error) => {
                 // Manejar el error aquí
                 console.error(error);
-            });
+            })
+            .finally(() => {
+      // Restablece el estado de carga después de la solicitud (ya sea éxito o error)
+      cargando.value = false;
+    });
 };
 const ok = (obj) => {
     form.reset();

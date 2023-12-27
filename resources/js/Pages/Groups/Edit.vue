@@ -213,6 +213,7 @@
                             class="px-10"
                         >
                             Guardar
+                        <div v-if="cargando"><i class="fas fa-spinner fa-spin"></i></div>
                         </PrimaryButton>
                         <DangerButton class="px-10">
                             Cancelar
@@ -270,7 +271,7 @@ const errors = ref({});
 
 
 const fileError =ref(null);
-
+const cargando = ref(false);
 
 const grupoRules = [
   value => !!value || 'El Nombre del grupo es requerido.',
@@ -442,6 +443,7 @@ watch(() => props.integrante.id_persona, (newValue) => {
 });
 
 const update = () => {
+        cargando.value = true;
         form.plan_trabajo = archive.value.imageFile;
         form.anexo = archiveAnexo.value.imageFile;
         const formData = new FormData();
@@ -488,7 +490,11 @@ const update = () => {
 
 
                 }
-            });
+            })
+            .finally(() => {
+      // Restablece el estado de carga después de la solicitud (ya sea éxito o error)
+      cargando.value = false;
+    });
 };
 
 const ok = (obj) => {

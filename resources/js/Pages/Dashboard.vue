@@ -44,7 +44,7 @@
                                 statIconColor="bg-pink-500"
                             />
                         </div>
-                        <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
+                        <!-- <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
                             <card-stats
                                 statSubtitle="PERFORMANCE"
                                 statTitle="49,65%"
@@ -55,7 +55,7 @@
                                 statIconName="fas fa-percent"
                                 statIconColor="bg-emerald-500"
                             />
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

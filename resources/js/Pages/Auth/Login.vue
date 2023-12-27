@@ -33,6 +33,7 @@
                 </Link>
             </div> -->
 
+            <div v-if="cargando" class="text-center"><i class="fas fa-spinner fa-spin" style="color: blue; font-size: 35px;"></i></div>
             <div class="mt-6">
                 <PrimaryButton class="w-full" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                     Ingresar
@@ -51,6 +52,8 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import { ref } from "vue";
+const cargando = ref(false);
 
 defineProps({
     canResetPassword: Boolean,
@@ -64,8 +67,12 @@ const form = useForm({
 });
 
 const submit = () => {
+    cargando.value = true;
     form.post(route('login'), {
-        onFinish: () => form.reset('password'),
+        onFinish: () => {
+            form.reset('password');
+            cargando.value = false;
+        },
     });
 };
 </script>

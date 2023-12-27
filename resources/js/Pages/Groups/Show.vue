@@ -42,7 +42,13 @@
                         <div class="text-left mb-8 mt-3">
                         <h1 class="text-2 font-bold text-gray-800">LÍNEA DE INVESTIGACIÓN</h1>
                         </div>                        
-                        <div class="flex justify-center mb-6">
+                        <div v-role="'Administrador'" class="flex justify-center mb-6">
+                            <PrimaryButton @click="openModalPivot(1)">
+                                <i class="fa-solid fa-plus-circle"></i>
+                                    Agregar Linea de Investigación
+                            </PrimaryButton>
+                        </div>
+                        <div v-role="'Coordinador'" class="flex justify-center mb-6">
                             <PrimaryButton v-if="mostrarBoton" @click="openModalPivot(1)">
                                 <i class="fa-solid fa-plus-circle"></i>
                                     Agregar Linea de Investigación
@@ -120,10 +126,10 @@
                                                 {{ pivot.sublinea.name }}
                                             </p>
                                         </td>                                        
-                                        <td
+                                        <td v-role="'Administrador'"
                                             class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                         >
-                                            <WarningButton
+                                            <WarningButton 
                                                 class="mr-1"
                                                 @click="
                                                     openModalPivot(
@@ -137,7 +143,30 @@
                                             >
                                                 <i class="fa-solid fa-edit"></i>
                                             </WarningButton>
-                                            <DangerButton v-role="'Administrador'" @click="deletePivotGrupoLinea(pivot.id)"
+                                            <DangerButton  @click="deletePivotGrupoLinea(pivot.id)"
+                                                ><i
+                                                    class="fa-solid fa-trash"
+                                                ></i
+                                            ></DangerButton>
+                                        </td>
+                                        <td v-role="'Coordinador'" v-if="mostrarBoton"
+                                            class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                                        >
+                                            <WarningButton 
+                                                class="mr-1"
+                                                @click="
+                                                    openModalPivot(
+                                                        2,
+                                                        pivot.area_investigacion.name,
+                                                        pivot.linea.name,
+                                                        pivot.sublinea.name,
+                                                        pivot.id
+                                                    )
+                                                "
+                                            >
+                                                <i class="fa-solid fa-edit"></i>
+                                            </WarningButton>
+                                            <DangerButton @click="deletePivotGrupoLinea(pivot.id)"
                                                 ><i
                                                     class="fa-solid fa-trash"
                                                 ></i
@@ -161,12 +190,18 @@
                         <div class="mb-4 mt-5">
                             <InputLabel for="name" value="Integrantes: " />
                             <div class="flex justify-center gap-5">
-                                <div class="flex justify-center mb-6">
-                                    <PrimaryButton v-if="mostrarBoton" @click="openModal(1)" class="">
+                                <div v-role="'Administrador'" class="flex justify-center mb-6">
+                                    <PrimaryButton  @click="openModal(1)" class="">
                                         <i class="fa-solid fa-plus-circle"></i>
                                         Agregar Integrantes
                                     </PrimaryButton>
-                                </div>                               
+                                </div>  
+                                <div v-if="mostrarBoton" v-role="'Coordinador'" class="flex justify-center mb-6">
+                                    <PrimaryButton  @click="openModal(1)" class="">
+                                        <i class="fa-solid fa-plus-circle"></i>
+                                        Agregar Integrantes
+                                    </PrimaryButton>
+                                </div>                             
                             </div>
                             <table class="w-full table-auto">
                                 <thead>
@@ -261,25 +296,27 @@
                                             <p
                                                 class="text-gray-900 whitespace-no-wrap"
                                             >
-                                                {{ inte.orcid }}
+                                                <a v-if="inte?.orcid" :href="inte?.orcid"  class="text-cyan-400 px-2 rounded hover:text-cyan-500" target="_blanck">Ver orcid</a>
                                             </p>
                                         </td>
                                         <td
                                             class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                         >
                                             <p
-                                                class="text-gray-900 whitespace-no-wrap"
+                                                class="text-gray-900 whitespace-no-wrap text-center"
                                             >
-                                                {{ inte.cti_vitae }}
+                                            <a v-if="inte?.cti_vitae" :href="inte?.cti_vitae"  class="text-cyan-400 px-2 rounded hover:text-cyan-500" target="_blanck">Ver CTI Vitae</a>
+
                                             </p>
                                         </td>
                                         <td
                                             class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                         >
                                             <p
-                                                class="text-gray-900 whitespace-no-wrap"
+                                                class="text-gray-900 whitespace-no-wrap text-center"
                                             >
-                                                {{ inte.google_scholar }}
+                                            <a v-if="inte?.google_scholar" :href="inte?.google_scholar"  class="text-cyan-400 px-2 rounded hover:text-cyan-500" target="_blanck">Ver google scholar</a>
+
                                             </p>
                                         </td>
                                         <td
@@ -287,6 +324,29 @@
                                         >
                                             <WarningButton
                                                 class="mr-1" v-role="'Administrador'"
+                                                @click="
+                                                    openModal(
+                                                        2,
+                                                        inte.persona.dni,
+                                                        inte.persona.name,
+                                                        inte.persona.first_name,
+                                                        inte.persona.last_name,
+                                                        inte.persona.phone,
+                                                        inte.persona.email,
+                                                        inte.condition,
+                                                        inte.orcid,
+                                                        inte.cti_vitae,
+                                                        inte.google_scholar,
+                                                        inte.id_grupo,
+                                                        inte.id_persona,
+                                                        inte.id
+                                                    )
+                                                "
+                                            >
+                                                <i class="fa-solid fa-edit"></i>
+                                            </WarningButton>
+                                            <WarningButton
+                                                class="mr-1" v-if="mostrarBoton" v-role="'Coordinador'"
                                                 @click="
                                                     openModal(
                                                         2,
@@ -481,6 +541,7 @@
             </div>
         </div>
         <Modal :show="modal" @close="closeModal">
+            <form @submit.prevent="submit">
             <h2 class="p-3 text-lg font-medium text-gray-900">{{ title }}</h2>
             <TextInput
                 type="hidden"
@@ -504,7 +565,9 @@
                         type="text"
                         class="mt-1"
                         placeholder="Dni"
+                        :rules="dniRules"
                         variant="outlined"
+                        required
                     ></v-text-field>
                 </div>
                 <div class="p-3">
@@ -516,7 +579,9 @@
                         class="mt-1"
                         placeholder="Nombre"
                         ref="nameImput"
+                        :rules="nameRules"
                         variant="outlined"
+                        required
                     ></v-text-field>
                 </div>
             </div>
@@ -532,7 +597,9 @@
                         type="text"
                         class="mt-1"
                         placeholder="Apellido Paterno"
+                        :rules="apellidoPaternoRules"
                         variant="outlined"
+                        required
                     ></v-text-field>
                 </div>
                 <div class="p-3">
@@ -546,7 +613,9 @@
                         type="text"
                         class="mt-1"
                         placeholder="Apellido Materno"
+                        :rules="ApellidoMaternoRules"
                         variant="outlined"
+                        required
                     ></v-text-field>
                 </div>
             </div>
@@ -559,7 +628,9 @@
                         type="text"
                         class="mt-1"
                         placeholder="Telefono"
+                        :rules="phoneRules"
                         variant="outlined"
+                        required
                     ></v-text-field>
                 </div>
                 <div class="p-3">
@@ -570,7 +641,9 @@
                         type="text"
                         class="mt-1"
                         placeholder="Correo Electrónico"
+                        :rules="emailRules"
                         variant="outlined"
+                        required
                     >
                     </v-text-field>
                 </div>
@@ -586,8 +659,10 @@
                         v-model="form.condition"
                         item-value="id"
                         item-title = "name"
+                        :rules="condicionRules"
                         placeholder="Seleccione Condicion"
                         variant="outlined"
+                        required
                     >
                 
                     </v-select>
@@ -600,12 +675,14 @@
                         type="text"
                         class="mt-1"
                         placeholder="orcid"
+                        :rules="orcidRules"
                         variant="outlined"
+                        required
                     >
                     </v-text-field>
                 </div>
             </div>
-            <div class="grid md:grid-cols-2">
+            <div class="grid gap-6 md:grid-cols-2">
                 <div class="p-3">
                     <InputLabel for="cti_vitae" value="CTI VItae: " />
                     <v-text-field
@@ -614,7 +691,9 @@
                         type="text"
                         class="mt-1"
                         placeholder="cti vitae"
+                        :rules="vitaeRules"
                         variant="outlined"
+                        required
                     >
                     </v-text-field>
                 </div>
@@ -629,14 +708,16 @@
                         type="text"
                         class="mt-1"
                         placeholder="Google Scholar"
+                        :rules="ScholarRules"
                         variant="outlined"
+                        required
                     >
                     </v-text-field>
                 </div>
             </div>
             <div class="flex justify-center">
                 <div class="p-3 mt-6">
-                    <PrimaryButton :disabled="form.processing" @click="submit">
+                    <PrimaryButton :disabled="form.processing">
                         <i class="fa-solid fa save"></i>Guardar
                     </PrimaryButton>
                 </div>
@@ -650,8 +731,10 @@
                     </SecondaryButton>
                 </div>
             </div>
+        </form>
         </Modal>
         <Modal :show="modalPivot" @close="closeModalPivot">
+            <form @submit.prevent="submitForm">
                     <h2 class="p-3 text-lg font-medium text-gray-900">{{ titlePivot }}</h2>
                     <TextInput
                         type="hidden"
@@ -669,8 +752,10 @@
                                 item-value="id"
                                 item-title = "name"
                                 variant="solo"
+                                :rules="condicionRules"
                                 placeholder="Seleccione el Área"
-                                @input="updatelineas"                             
+                                @input="updatelineas"  
+                                                           
                             ></v-select>
                         </div>
                         <div>
@@ -683,8 +768,10 @@
                                 item-value="id"
                                 item-title = "name"
                                 variant="solo"
+                                :rules="condicionRules"
                                 placeholder="Seleccione la Linea"   
-                                @input="updateSublineas"                         
+                                @input="updateSublineas"  
+                                required                       
                             ></v-select>
                         </div>
                         <div>
@@ -696,8 +783,10 @@
                                 :items="sublineasFiltered"
                                 item-value="id"
                                 item-title = "name"
+                                :rules="condicionRules"
                                 variant="solo"
-                                placeholder="Seleccione la SubLinea"                           
+                                placeholder="Seleccione la SubLinea"         
+                                required                  
                             ></v-select>
                         </div>
                     </div>
@@ -706,7 +795,7 @@
                     </div>
                     <div class="flex justify-center">
                         <div class="p-3 mt-6">
-                            <PrimaryButton :disabled="formLinea.processing" @click="submitForm">
+                            <PrimaryButton :disabled="formLinea.processing">
                                 <i class="fa-solid fa save"></i>Guardar
                             </PrimaryButton>
                         </div>
@@ -720,6 +809,7 @@
                             </SecondaryButton>
                         </div>
                     </div>
+                </form>
                     </Modal>
     </AuthenticatedLayout>
 </template>
@@ -777,6 +867,50 @@ const gruposIntegra = ref([]);
 const programacion = ref(props.programacions);
 
 const fileError =ref(null);
+
+const dniRules = [
+  value => !!value || 'El DNI es requerido.',
+  value => /^[0-9]{8}$/.test(value) || 'El DNI tiene que ser de 8 digitos.',
+];
+
+const nameRules =[
+value => !!value || 'El campo nombre es requerido.',
+];
+
+const apellidoPaternoRules =[
+value => !!value || 'El campo apellido paterno es requerido.',
+];
+
+const ApellidoMaternoRules =[
+value => !!value || 'El campo apellido materno es requerido.',
+];
+
+const phoneRules =[
+value => !!value || 'Por favor seleccione una opcion.',
+value => /^\d+$/.test(value) || 'Por favor seleccione una opcion.',
+];
+
+const emailRules =[
+value => !!value || 'Este campo es requerido.',
+value => /.+@.+\..+/.test(value) || 'E-mail debe ser valido',
+];
+
+const condicionRules =[
+value => !!value || 'Por favor seleccione una opcion.',
+value => /^\d+$/.test(value) || 'Por favor seleccione una opcion.',
+];
+
+const orcidRules =[
+value => !!value || 'Este campo es requerido.',
+];
+
+const vitaeRules =[
+value => !!value || 'Este campo es requerido.',
+];
+
+const ScholarRules =[
+value => !!value || 'Este campo es requerido.',
+];
 
 const props = defineProps({
     grupos: {
@@ -1178,7 +1312,9 @@ const submitFile = () => {
                 if(res.data.code == 200) {
                     form.reset();
                     toast.toast('Exito', 'Archivo Subido Correctamente','success');
-
+                    setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
                 }
             })
             .catch((error) => {
@@ -1231,7 +1367,7 @@ const mostrarContenRevalidacion = computed(() => {
        // console.log('fechaInicio', fechaInicio)
         const fechaFin = new Date(evento.end_date);
         const esActivo = evento.status === 1;
-        const esTipo = evento.programin_type === 'REVALIDACION';
+        const esTipo = evento.programin_type === 'ANEXO';
 
         if(fechaActual >= fechaInicio && fechaActual <= fechaFin && esActivo && esTipo){
             return true;

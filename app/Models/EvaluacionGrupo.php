@@ -31,17 +31,17 @@ class EvaluacionGrupo extends Model
             'CONSOLIDADO' => 'CONSOLIDADO',
             'POR CONSOLIDAR' => 'POR CONSOLIDAR',
             'EMERGENTE' => 'EMERGENTE',
-            'SIN EVALUAR' => 'SIN EVALUAR'
+            'SIN CATEGORIA' => 'SIN CATEGORIA'
         ];
     }
 
     public static function enumRevalidarOption() {
         return [
-            'RENOVACION' => 'RENOVACION',
-            'PROMOCION' => 'PROMOCION',
+            'RENOVACIÓN' => 'RENOVACIÓN',
+            'PROMOCIÓN' => 'PROMOCIÓN',
             'DESCENSO' => 'DESCENSO',
-            'DESCALIFICACION' => 'DESCALIFICACION',
-            'SIN EVALUAR' => 'SIN EVALUAR'
+            'DESCALIFICACIÓN' => 'DESCALIFICACIÓN',
+            'SIN REVALIDACION' => 'SIN REVALIDACION'
         ];
     }
 }

@@ -17,6 +17,7 @@ return new class extends Migration
 
             $table->unsignedBigInteger('id_area');
             $table->foreign('id_area')->references('id')->on('area_investigacions')->onDelete('cascade');
+            $table->boolean('status')->default(true);
             
             $table->timestamps();
         });

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PivotCreateRequest;
+use App\Http\Requests\PivotUpdateRequest;
 use App\Models\PivotGrupoLinea;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -30,7 +32,7 @@ class PivotGrupoLineaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(PivotCreateRequest $request): RedirectResponse
     {
         //return $request->all();
         $registrosActuales = PivotGrupoLinea::where('id_grupo', $request->id_grupo)->count();
@@ -70,7 +72,7 @@ class PivotGrupoLineaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, PivotGrupoLinea $pivotGrupoLinea)
+    public function update(PivotUpdateRequest $request, PivotGrupoLinea $pivotGrupoLinea)
     {
         $pivotGrupoLinea->update($request->all());
 

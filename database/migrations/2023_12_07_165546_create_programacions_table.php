@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('programacions', function (Blueprint $table) {
             $table->id();
             $table->integer('year');
-            $table->enum('programin_type', ['INSCRIPCION','REVALIDACION'])->default('INSCRIPCION');
+            $table->enum('programin_type', ['INSCRIPCION','ANEXO','REVALIDACION'])->default('INSCRIPCION');
             $table->date('start_date');
             $table->date('end_date');
             $table->string('description')->nullable();

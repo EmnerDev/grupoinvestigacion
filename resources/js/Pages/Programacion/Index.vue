@@ -186,14 +186,15 @@
             <div class="grid gap-6 mb-6 md:grid-cols-2">
                 <div class="p-3">
                     <InputLabel for="year" value="Año:"></InputLabel>
-                    <TextInput
+                    <v-text-field
                         id="year"
                         ref="nameImput"
                         v-model="form.year"
                         type="text"
                         class="mt-1 block w-3/4"
                         placeholder="Año"
-                    ></TextInput>
+                        variant="outlined"
+                    ></v-text-field>
                 </div>
                 <div class="p-3">
                     <InputLabel for="programin_type" value="Tipo de programacion:"></InputLabel>
@@ -232,37 +233,42 @@
                         for="first_name"
                         value="Fecha de Inicio:"
                     ></InputLabel>
-                    <TextInput
+                    <v-text-field
                         id="first_name"
                         v-model="form.start_date"
                         type="date"
                         class="mt-1 block w-3/4"
-                    ></TextInput>
+                        variant="outlined"
+                    ></v-text-field>
                 </div>
                 <div class="p-3">
                     <InputLabel
                         for="end_date"
                         value="Fecha de Fin:"
                     ></InputLabel>
-                    <TextInput
+                    <v-text-field
                         id="end_date"
                         v-model="form.end_date"
                         type="date"
                         class="mt-1 block w-3/4"
-                    ></TextInput>
+                        variant="outlined"
+                    ></v-text-field>
                 </div>
             </div>
             <div class="grid gap-6 mb-6 md:grid-cols-2">                
                 <div class="p-3">
                     <InputLabel for="description" value="Descripcion:"></InputLabel>
-                    <textarea
+                    <v-textarea 
                         id="email"
                         v-model="form.description"
                         type="text"
+                        cols="20" 
+                        rows="2"
                         class="w-full rounded-md"
                         placeholder="Descripcion"
+                        variant="outlined"
                     >
-                    </textarea>
+                    </v-textarea >
                 </div>
                 <div class="p-3">
                     <InputLabel class="flex items-center" for="status" value="Estado: " />
@@ -272,18 +278,18 @@
                             type="radio"
                             v-model="form.status"
                             :value="true"
-                            class="form-radio h-5 w-5 text-indigo-600"
+                            class="form-radio h-5 w-5 text-indigo-600 cursor-pointer"
                         />
-                        <span class="ml-2 text-gray-700">Activo</span>
+                        <span class="ml-2 text-gray-700 cursor-pointer">Activo</span>
                     </label>
                     <label class="flex items-center ml-4">
                         <input
                             type="radio"
                             v-model="form.status"
                             :value="false"
-                            class="form-radio h-5 w-5 text-red-500"
+                            class="form-radio h-5 w-5 text-red-500 cursor-pointer"
                         />
-                        <span class="ml-2 text-gray-700">Inactivo</span>
+                        <span class="ml-2 text-gray-700 cursor-pointer">Inactivo</span>
                     </label>
                     </div>
                     <InputError class="mt-2" :message="form.errors.status" />
@@ -349,6 +355,7 @@ const props = defineProps({
         type:Object,
         default: () =>({
             'INSCRIPCION': 'INSCRIPCION',
+            'ANEXO' : 'ANEXO',
             'REVALIDACION' : 'REVALIDACION',
         }),
     },
@@ -474,7 +481,7 @@ const deleteUser = (id) => {
                 onSuccess: () => {
                     form.reset();
                     closeModal();
-                    toast.toast("Exito", "Eliminado Correctamente", "danger");
+                    toast.toast("Exito", "Eliminado Correctamente", "success");
                 },
             });
         }
@@ -485,5 +492,9 @@ const condicionesOptions = computed(() => {
   return Object.entries(props.condiciones).map(([id, name]) => ({ id, name }));
 });
 
+onMounted(() => {
+  const currentDate = new Date();
+  form.year = currentDate.getFullYear().toString();
+});
 
 </script>

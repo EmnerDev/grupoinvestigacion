@@ -74,8 +74,8 @@ Route::middleware('auth')->group(function () {
     Route::post('revalidacion/actualizar', [RevalidacionController::class, 'update'])->name('actualizar.revalidacion');
 
     Route::post('agregar/pivot', [PivotGrupoLineaController::class, 'store'])->middleware('permission:registrar.pivot')->name('registrar.pivot');
-    Route::put('actualizar/pivot/{pivotGrupoLinea}', [PivotGrupoLineaController::class, 'update'])->middleware('permission:actualizar.pivot')->name('actualizar.pivot');
-    Route::delete('eliminar/pivot/{pivotGrupoLinea}', [PivotGrupoLineaController::class, 'destroy'])->middleware('permission:eliminar.pivot')->name('eliminar.pivot');
+    Route::put('pivot/actualizar/{pivotGrupoLinea}', [PivotGrupoLineaController::class, 'update'])->middleware('permission:actualizar.pivot')->name('actualizar.pivot');
+    Route::delete('pivot/eliminar/{pivotGrupoLinea}', [PivotGrupoLineaController::class, 'destroy'])->middleware('permission:eliminar.pivot')->name('eliminar.pivot');
 
     Route::post('integrantes', [IntegranteController::class, 'store'])->middleware('permission:integrantes.store')->name('grupo.registrar.integrante');
     Route::put('integrantes/{integrante}', [IntegranteController::class, 'update'])->middleware('permission:integrantes.update')->name('grupo.actualizar.integrante');
@@ -89,12 +89,12 @@ Route::middleware('auth')->group(function () {
     Route::post('guardar/total', [EvaluacionController::class, 'guardarEvaluacion'])->middleware('permission:evaluacion.guardarEvaluacion')->name('guardar.total');
     Route::get('evaluacion/editar/{grupo_id}/{id}', [EvaluacionController::class, 'editarEvaluacion'])->middleware('permission:evaluacion.editarEvaluacion')->name('evaluacion.editar');
     Route::put('evaluacion/actualizar/{grupo_id}/{id}', [EvaluacionController::class, 'editUpdate'])->middleware('permission:evaluacion.editUpdate')->name('actualizar.evaluacion');
-    Route::put('actualizar/{evaluacion_grupo}/', [EvaluacionController::class, 'totalUpdate'])->middleware('permission:evaluacion.totalUpdate')->name('actualizar.total');
+    Route::put('categoria/actualizar/{evaluacion_grupo}/', [EvaluacionController::class, 'totalUpdate'])->middleware('permission:evaluacion.totalUpdate')->name('actualizar.total');
 
     Route::get('programacion',[ProgramacionController::class,'index'])->name('ver.programacion');
     Route::post('guardar/programacion',[ProgramacionController::class,'store'])->name('guardar.programacion');
-    Route::put('actualizar/programacion/{programacion}',[ProgramacionController::class,'update'])->name('actualizar.programacion');
-    Route::delete('eliminar/programacion/{programacion}',[ProgramacionController::class,'destroy'])->name('eliminar.programacion');
+    Route::put('programacion/actualizar/{programacion}',[ProgramacionController::class,'update'])->name('actualizar.programacion');
+    Route::delete('programacion/eliminar/{programacion}',[ProgramacionController::class,'destroy'])->name('eliminar.programacion');
 
     Route::get('reporte',[ReportController::class,'index'])->middleware('permission:reportes.index')->name('ver.reporte');
     Route::get('grupos/reporte',[ReportController::class,'pdfGrupo'])->middleware('permission:reportes.pdfGrupo')->name('grupos.reporte');

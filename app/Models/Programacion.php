@@ -21,6 +21,7 @@ class Programacion extends Model
     public static function enumPrograminOption() {
         return [
             'INSCRIPCION' => 'INSCRIPCION',
+            'ANEXO' => 'ANEXO',
             'REVALIDACION' => 'REVALIDACION',
         ];
     }

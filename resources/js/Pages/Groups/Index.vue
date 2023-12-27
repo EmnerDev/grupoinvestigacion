@@ -44,13 +44,18 @@
                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-60 p-2.5 "
                                             />                                        
                                     </div>
-                                    <div class="flex mb-6">
+                                    <div class="flex mb-6" v-role="'Administrador'">
                                         <LinkPrimaryButton v-if="mostrarBoton" :href="route('grupos.create')" class="">
                                         <i class="fa-solid fa-plus-circle"></i>
                                             Crear Grupo
                                         </LinkPrimaryButton>
                                     </div>                            
-
+                                    <div class="flex mb-6" v-role="'Coordinador'">
+                                        <LinkPrimaryButton v-if="mostrarBoton && ocultarSiEstadoInactivo" :href="route('grupos.create')" class="" :hidden="(grupos?.data?.length > 0) ? true : false">
+                                        <i class="fa-solid fa-plus-circle"></i>
+                                            Crear Grupo
+                                        </LinkPrimaryButton>
+                                    </div>  
                                 </div>
                                 <table class="w-full table-auto">
                                     <thead>
@@ -95,6 +100,16 @@
                                             >
                                                 Categoria del Grupo
                                             </th>
+                                            <th v-role="'Administrador'"
+                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
+                                            >
+                                            Revalidacion
+                                            </th>
+                                            <th v-role="'Administrador'"
+                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
+                                            >
+                                            Estado
+                                            </th>
                                             <th
                                                 class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                                             >
@@ -131,17 +146,35 @@
                                                 <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">{{ grupo?.name }}</td>                                            
                                                 <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">{{ inte.persona.name }} {{ inte.persona.first_name }} {{ inte.persona.last_name }}</td>
                                                 <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">{{ inte.condition }}</td>
-                                                <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">
+                                                <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">                                                   
+                                                    <p  class="text-gray-900 whitespace-no-wrap">
+                                                        {{ grupo.evaluacion_grupos[grupo.evaluacion_grupos.length-1]?.categorias || 'SIN EVALUAR'}}
+                                                    </p>                                                    
+                                                </td>
+                                                <td v-role="'Administrador'" v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">
+                                                    <p  class="text-gray-900 whitespace-no-wrap">
+                                                        <!-- {{ grupo.evaluacion_grupos[grupo.evaluacion_grupos.length - 1]?.revalidar }} -->
+                                                        {{ grupo.evaluacion_grupos[grupo.evaluacion_grupos.length - 1]?.revalidar || 'SIN REVALIDACION'}}
+
+                                                    </p>                                                
+                                                </td>
+                                                <td v-role="'Administrador'" v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">
                                                     <p class="text-gray-900 whitespace-no-wrap">
-                                                        {{ grupo.evaluacion_grupos[grupo.evaluacion_grupos.length - 1]?.categorias }}
+                                                        <div :class="{'bg-green-500 text-white text-center font-bold rounded-md': grupo.status && grupo.evaluacion_grupos[grupo.evaluacion_grupos.length - 1]?.revalidar !== 'DESCALIFICACIÓN', 'bg-red-500 text-center text-white font-bold rounded-md': !grupo.status || (grupo.evaluacion_grupos[grupo.evaluacion_grupos.length - 1]?.revalidar === 'DESCALIFICACIÓN')}">                                       
+                                                            {{ grupo.evaluacion_grupos[grupo.evaluacion_grupos.length - 1]?.revalidar === 'DESCALIFICACIÓN' ? 'Inactivo'  : (grupo.status == 1 ? 'Activo' : 'Inactivo' )}}
+                                                        </div>
                                                     </p>                                                
                                                 </td>
                                                 <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">
                                                     <a v-role="'Administrador'" :href="route('evaluar.grupo',grupo.id)" class="m-2 p-2 bg-blue-500 hover:bg-blue-700 text-white rounded flex items-center">Evaluar
                                                     <i class="fa-solid fa-plus-circle ml-2"></i>
                                                 </a>
-                                                <a class="m-2 p-2 bg-green-500 hover:bg-green-700 text-white rounded flex items-center" :href="route('ver.grupo',grupo.id)">Ver<i class="fa-solid fa-eye ml-2"></i></a>
-                                                <a  class="m-2 p-2 bg-yellow-500 hover:bg-yellow-700 text-white rounded flex items-center" :href="route('grupos.editar',grupo.id)">Editar
+                                                <a v-role="'Administrador'" class="m-2 p-2 bg-green-500 hover:bg-green-700 text-white rounded flex items-center" :href="route('ver.grupo',grupo.id)">Ver<i class="fa-solid fa-eye ml-2"></i></a>
+                                                <a v-if="ocultarSiEstadoInactivo" v-role:any="'Coordinador|Integrante'" class="m-2 p-2 bg-green-500 hover:bg-green-700 text-white rounded flex items-center" :href="route('ver.grupo',grupo.id)">Ver<i class="fa-solid fa-eye ml-2"></i></a>
+                                                <a v-role="'Administrador'" class="m-2 p-2 bg-yellow-500 hover:bg-yellow-700 text-white rounded flex items-center" :href="route('grupos.editar',grupo.id)">Editar
+                                                    <i class="fa-solid fa-edit ml-2" :title="editMode ? 'Editar':'Editar Grupo'"></i>
+                                                </a>
+                                                <a v-if="ocultarSiEstadoInactivo" v-role="'Coordinador'" class="m-2 p-2 bg-yellow-500 hover:bg-yellow-700 text-white rounded flex items-center" :href="route('grupos.editar',grupo.id)">Editar
                                                     <i class="fa-solid fa-edit ml-2" :title="editMode ? 'Editar':'Editar Grupo'"></i>
                                                 </a>
                                                 <a class="m-2 p-2 bg-red-500 hover:bg-red-700 text-white rounded flex items-center" v-role="'Administrador'" type="button" @click="deleteGrupo(grupo.id, grupo.name)">Eliminar<i class="fa-solid fa-trash ml-2"></i></a>
@@ -300,7 +333,7 @@ const props = defineProps({
     pivotLineas:Object
 });
 
-//console.log('programacion value', programacion.value);
+console.log('grupos props', props.grupos.data.evaluacion_grupos);
 
 const form = useForm({});
 
@@ -322,6 +355,16 @@ const mostrarBoton = computed(() => {
     return false;
 });
 
+const ocultarSiEstadoInactivo = computed(() => {
+    for (const event of props.grupos.data) {
+        console.log('event', event.evaluacion_grupos[event.evaluacion_grupos.length - 1])
+        if (event.evaluacion_grupos.length > 0 && event.evaluacion_grupos[event.evaluacion_grupos.length - 1]?.revalidar === 'DESCALIFICACIÓN') {
+            return false; // Si hay al menos un evento en descalificación, oculta el botón
+        }
+    }
+
+    return true;
+});
 
 const actualizarEstadoInscripciones = () => {
   const fechaActual = new Date();
