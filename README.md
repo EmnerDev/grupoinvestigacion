@@ -13,7 +13,7 @@ cp .env.example .env
 composer install
 ```
 
-3. Crear Base de Dato llamada
+3. Crear Base de Datos
 
 ```
 bd_name
