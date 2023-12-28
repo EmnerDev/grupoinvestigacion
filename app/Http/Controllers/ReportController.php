@@ -6,11 +6,13 @@ use App\Http\Requests\GrupoCreateRequest;
 use App\Http\Requests\GrupoUpdateRequest;
 use App\Models\AreaInvestigacion;
 use App\Models\Escuela;
+use App\Models\EvaluacionGrupo;
 use App\Models\Facultad;
 use App\Models\Grupo;
 use App\Models\Integrante;
 use App\Models\Linea;
 use App\Models\Persona;
+use App\Models\PivotGrupoLinea;
 use App\Models\SubLinea;
 use App\Models\Tipo;
 use Illuminate\Http\RedirectResponse;
@@ -35,20 +37,44 @@ class ReportController extends Controller
             $coordinadorId = $user->persona->id;
     
             $grupos = Grupo::query()
-            ->with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea','integrante.persona','evaluacionGrupos')
-            ->orderBy('created_at','DESC')
+            ->with('facultad','escuela','integrante.persona','evaluacionGrupos','pivotGrupoLinea','pivotGrupoLinea.area_investigacion', 'pivotGrupoLinea.linea', 'pivotGrupoLinea.sublinea')
+            ->orderBy('created_at','ASC')
             ->whereHas('integrante.persona', function ($query) use ($coordinadorId){
                 $query->where('id', $coordinadorId);
             })
             ->paginate();
-            //return $grupos;
+
+            $grupoIds = $grupos->pluck('id');
+
+            $lastEvaluacion = DB::table('evaluacion_grupos')
+                ->select('id_grupo', DB::raw('MAX(created_at) as max_created_at'))
+                ->groupBy('id_grupo');
+
+            $lastEvaluacion = DB::table('evaluacion_grupos as eg')
+                ->joinSub($lastEvaluacion, 'last_eval', function ($join) {
+                    $join->on('eg.id_grupo', '=', 'last_eval.id_grupo')
+                        ->on('eg.created_at', '=', 'last_eval.max_created_at');
+                })
+                ->first();
+            //return $lastEvaluaciones;            
             return Inertia::render('Reports/Index', [
-                'grupos' => $grupos
+                'grupos' => $grupos,
+                'lastEvaluacion' => $lastEvaluacion
             ]);
         }
 
+        $grupoIds =  DB::table('grupos')->pluck('id');
+
+        $lastEvaluacion = EvaluacionGrupo::whereIn('id_grupo', $grupoIds)
+        ->whereIn('id', function ($query) {
+            $query->select(DB::raw('MAX(id)'))
+                ->from('evaluacion_grupos')
+                ->groupBy('id_grupo');
+        })
+        ->get();
+        //return $lastEvaluacion;
         return Inertia::render('Reports/Index',[
-            'grupos' =>  Grupo::query()->with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea','integrante.persona','evaluacionGrupos')->orderBy('created_at','DESC')
+            'grupos' =>  Grupo::query()->with('facultad','escuela','integrante.persona','evaluacionGrupos','pivotGrupoLinea','pivotGrupoLinea.area_investigacion', 'pivotGrupoLinea.linea', 'pivotGrupoLinea.sublinea')->orderBy('created_at','ASC')
             ->when(\Illuminate\Support\Facades\Request::input('search'), function($query, $search) {
             $query->where(function ($subquery) use ($search){
                 $subquery->wherehas('integrante.persona', function($q) use ($search) {
@@ -57,12 +83,13 @@ class ReportController extends Controller
             });
             })->paginate(10),
             'filters' => \Illuminate\Support\Facades\Request::only(['search']),
+            'lastEvaluacion' => $lastEvaluacion
         ]);
     }
 
     public function pdfGrupo(){
 
-        $grupos = Grupo::orderBy('created_at','DESC')->get();
+        $grupos = Grupo::orderBy('created_at','ASC')->get();
         
 
         $pdf = Pdf::loadView('report.grupos', compact('grupos'));
@@ -76,9 +103,10 @@ class ReportController extends Controller
 
         $grupos = Grupo::find($id);
         $integrantes = Integrante::where('id_grupo',$id)->get();
+        $pivotGrupo = PivotGrupoLinea::where('id_grupo',$id)->get();
         //dd($grupos);
 
-            $pdf = Pdf::loadView('report.ver', compact('grupos','integrantes'));
+            $pdf = Pdf::loadView('report.ver', compact('grupos','integrantes','pivotGrupo'));
             $pdf->setPaper('a4');
      
             return $pdf->stream('reporte.pdf');

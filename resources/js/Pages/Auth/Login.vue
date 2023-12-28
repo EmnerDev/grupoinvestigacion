@@ -12,14 +12,14 @@
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="email" value="Email" />
-                <TextInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autofocus autocomplete="username" />
-                <InputError class="mt-2" :message="form.errors.email" />
+                <InputLabel for="name" value="Usuario" />
+                <v-text-field id="name" type="text" class="mt-1 block w-full"  variant="outlined" v-model="form.name" required autofocus autocomplete="username" />
+                <InputError class="mt-2" :message="form.errors.name" />
             </div>
 
             <div class="mt-3">
                 <InputLabel for="password" value="Contraseña" />
-                <TextInput id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="current-password" />
+                <v-text-field id="password" type="password" class="mt-1 block w-full" variant="outlined"  v-model="form.password" required autocomplete="current-password" />
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>
 
@@ -33,6 +33,7 @@
                 </Link>
             </div> -->
 
+            <div v-if="cargando" class="text-center"><i class="fas fa-spinner fa-spin" style="color: blue; font-size: 35px;"></i></div>
             <div class="mt-6">
                 <PrimaryButton class="w-full" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                     Ingresar
@@ -51,6 +52,8 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import { ref } from "vue";
+const cargando = ref(false);
 
 defineProps({
     canResetPassword: Boolean,
@@ -58,14 +61,18 @@ defineProps({
 });
 
 const form = useForm({
-    email: '',
+    name: '',
     password: '',
     remember: false
 });
 
 const submit = () => {
+    cargando.value = true;
     form.post(route('login'), {
-        onFinish: () => form.reset('password'),
+        onFinish: () => {
+            form.reset('password');
+            cargando.value = false;
+        },
     });
 };
 </script>

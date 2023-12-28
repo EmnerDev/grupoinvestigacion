@@ -24,4 +24,7 @@ class AreaInvestigacion extends Model
     public function sublinea(){
         return $this->belongsTo(SubLinea::class);
     }
+    public function pivotGrupoLinea() {
+        return $this->hasMany(PivotGrupoLinea::class,'id_grupo');
+    }
 }

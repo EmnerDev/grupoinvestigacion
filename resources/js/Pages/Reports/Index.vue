@@ -76,6 +76,11 @@
                                             >
                                                 Categoria del grupo
                                             </th>
+                                            <th v-role="'Administrador'"
+                                                class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
+                                            >
+                                                Revalidacion del grupo
+                                            </th>
                                             <th
                                                 class="border-b-2 border-gray-200 bg-gray-700 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
                                             >
@@ -85,31 +90,58 @@
                                     </thead>
                                     <tbody>
                                         <template v-for="(grupo, key) in grupos.data" :key="key">
-                                        <template v-for="(evalua, evalIndex) in grupo.evaluacion_grupos">
                                             <template v-for="(inte, index) in grupo.integrante" :key="index">
                                             <tr>
                                                 <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">{{ key + 1 }}</td>
-                                                <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">{{ grupo.area_investigacion.name }}</td>
-                                                <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">{{ grupo.linea.name }}</td>
-                                                <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">{{ grupo.sublinea.name }}</td>
-                                                <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">{{ grupo.name }}</td>                                            
+                                                <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">
+                                                <p
+                                                    class="text-gray-900 whitespace-no-wrap"
+                                                v-for="pivot in grupo.pivot_grupo_linea">
+                                                    - {{ pivot?.area_investigacion?.name }}
+                                                </p>
+                                                </td>
+                                                <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">
+                                                    <p
+                                                    class="text-gray-900 whitespace-no-wrap"
+                                                v-for="pivot in grupo.pivot_grupo_linea">
+                                                    - {{ pivot?.linea?.name }}
+                                                </p>
+                                                </td>
+                                                <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">
+                                                <p
+                                                    class="text-gray-900 whitespace-no-wrap"
+                                                v-for="pivot in grupo.pivot_grupo_linea">
+                                                    - {{ pivot?.linea?.name }}
+                                                </p>
+                                                </td>
+                                                <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">{{ grupo?.name }}</td>                                            
                                                 <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">{{ inte.persona.name }} {{ inte.persona.first_name }} {{ inte.persona.last_name }}</td>
                                                 <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">{{ inte.condition }}</td>
                                                 <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm" v-if="index === 0" :rowspan="grupo.integrante.length">
-                                                {{  Number(evalua.ptj_total_grupo) % 1 === 0 ? Number(evalua.ptj_total_grupo).toFixed(2) : Number(evalua.ptj_total_grupo).toFixed(2) }}
+                                                    <p>
+                                                        {{  Number(grupo.evaluacion_grupos[grupo.evaluacion_grupos.length - 1]?.ptj_total_grupo) % 1 === 0 ? Number(grupo.evaluacion_grupos[grupo.evaluacion_grupos.length - 1]?.ptj_total_grupo).toFixed(2) : Number(grupo.evaluacion_grupos[grupo.evaluacion_grupos.length - 1]?.ptj_total_grupo).toFixed(2) }}
+                                                    </p>
                                                 </td>
-                                                <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">{{ evalua.categorias }}</td>
+                                                <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">
+                                                    <p>
+                                                        {{ grupo.evaluacion_grupos[grupo.evaluacion_grupos.length - 1]?.categorias }}
+                                                    </p>                                                
+                                                </td>                                                    
+                                                <td  v-role="'Administrador'" v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">
+                                                    <p>
+                                                        {{ grupo.evaluacion_grupos[grupo.evaluacion_grupos.length - 1]?.revalidar }}
+                                                    </p>
+                                                </td>
                                                 <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">
                                                 <LinkButton :href="route('individual.reporte',grupo.id)" target="_blanck"><i class="fa-solid fa-file-pdf" style="font-size: 20px;"></i></LinkButton>
                                                 </td>
                                             </tr>
                                             </template>
                                         </template>
-                                        </template>
                                         <!-- <template v-for="(gru, i) in grupos.data"
                                             :key="gru.id" :value="gru.id">
                                         <tr                                           
-                                            
+                                        v-for="(evalua, j) in gru.evaluacion_grupos" :key="evalua.id"
                                         >
                                             <td v-if="gru.integrante && gru.integrante.length"
                                             :rowspan="gru.integrante.length+1"
@@ -118,7 +150,7 @@
                                                 <p
                                                     class="text-gray-900 whitespace-no-wrap"
                                                 >
-                                                    {{ i + 1 }}
+                                                    {{ j + 1 }}
                                                 </p>
                                             </td>
                                             <td v-if="gru.integrante && gru.integrante.length"
@@ -127,8 +159,8 @@
                                             >
                                                 <p
                                                     class="text-gray-900 whitespace-no-wrap"
-                                                >
-                                                    {{ gru.area_investigacion.name }}
+                                                v-for="pivot in gru.pivot_grupo_linea">
+                                                    - {{ pivot.area_investigacion?.name }}
                                                 </p>
                                             </td>
                                             <td v-if="gru.integrante && gru.integrante.length"
@@ -137,8 +169,8 @@
                                             >
                                                 <p
                                                     class="text-gray-900 whitespace-no-wrap"
-                                                >
-                                                    {{ gru.linea.name }}
+                                                    v-for="pivot in gru.pivot_grupo_linea">
+                                                    - {{ pivot.linea?.name }}
                                                 </p>
                                             </td>
                                             <td v-if="gru.integrante && gru.integrante.length"
@@ -147,8 +179,8 @@
                                             >
                                                 <p
                                                     class="text-gray-900 whitespace-no-wrap"
-                                                >
-                                                    {{ gru.sublinea.name }}
+                                                    v-for="pivot in gru.pivot_grupo_linea">
+                                                    - {{ pivot.sublinea?.name }}
                                                 </p>
                                             </td>
                                             <td v-if="gru.integrante && gru.integrante.length"
@@ -161,26 +193,14 @@
                                                     {{ gru.name }}
                                                 </p>
                                             </td>
-                                            <td v-if="gru.integrante && gru.integrante.length"
-                                                :rowspan="gru.integrante.length+1"
-                                                class=" border-b border-gray-200 bg-white px-5 text-sm"
-                                            >
-                                                <p v-for="cat in gru.evaluacion_grupos" :key="cat.id"
-                                                    class="text-gray-900 whitespace-no-wrap"
-                                                >
-                                                    {{ cat.categorias }}
-                                                </p>
-                                            </td>                                          
-                                        </tr>
-                                        <tr v-for="integ in gru.integrante" :key="integ.id">
                                             <td 
                                                 class="border-b border-gray-200 bg-white px-5 text-sm"
                                             >
                                                 <p
                                                 
                                                     class="text-gray-900 whitespace-no-wrap"
-                                                >
-                                                    {{ integ.persona.name }} {{ integ.persona.first_name }} {{ integ.persona.last_name }}
+                                                    v-for="integ in gru.integrante" :key="integ.id">
+                                                  - {{ integ.persona.name }} {{ integ.persona.first_name }} {{ integ.persona.last_name }}
                                                 </p>
                                             </td>
                                             <td 
@@ -188,11 +208,34 @@
                                             >
                                                 <p
                                                     class="text-gray-900 whitespace-no-wrap"
-                                                >
-                                                    {{ integ.condition }}
+                                                    v-for="integ in gru.integrante" :key="integ.id">
+                                                    - {{ integ.condition }}
                                                 </p>
-                                            </td>                                                                                        
-                                        </tr>
+                                            </td>  
+                                            <td v-if="gru.integrante && gru.integrante.length"
+                                            :rowspan="gru.integrante.length+1"
+                                                class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                                            >
+                                                <p
+                                                    class="text-gray-900 whitespace-no-wrap"
+                                                >
+                                                {{  Number(evalua?.ptj_total_grupo) % 1 === 0 ? Number(evalua?.ptj_total_grupo).toFixed(2) : Number(evalua?.ptj_total_grupo).toFixed(2) }}
+                                                </p>
+                                            </td>
+                                            <td v-if="gru.integrante && gru.integrante.length"
+                                            :rowspan="gru.integrante.length+1"
+                                                class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                                            >
+                                                <p
+                                                    class="text-gray-900 whitespace-no-wrap"
+                                                >
+                                                {{ evalua?.categorias }}
+                                                </p>
+                                            </td>  
+                                            <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">
+                                                <LinkButton :href="route('individual.reporte',grupo.id)" target="_blanck"><i class="fa-solid fa-file-pdf" style="font-size: 20px;"></i></LinkButton>
+                                                </td>                                        
+                                        </tr>                                        
                                         </template> -->
                                     </tbody>
                                 </table>
@@ -200,6 +243,7 @@
                                     class="flex flex-col items-center border-t bg-white px-5 py-5 xs:flex-row xs:justify-between"
                                 >
                                     <paginator class="mt-3" :paginator="grupos" />
+                                    <!-- <pagination :links="grupos.links" /> -->
                                 </div>
                             </div>
                         </div>
@@ -229,10 +273,12 @@ import { Head, useForm, router } from "@inertiajs/vue3";
 
 import Swal from "sweetalert2";
 import "@fortawesome/fontawesome-free/css/all.css";
-import { nextTick, ref } from "vue";
+import { nextTick, ref,toRefs  } from "vue";
 import { watch } from "vue";
 import Paginator from "@/Components/Paginator.vue";
 import axios from "axios";
+
+const { grupo } = toRefs (props.grupos);
 
 const props = defineProps({
     grupos: {
@@ -246,6 +292,8 @@ const props = defineProps({
         default: () => ({}),
     },
     editMode: false,
+    pivotLineas:Object,
+    lastEvaluaciones:Object
 });
 
 const form = useForm({});
@@ -261,6 +309,13 @@ watch(search, (value) => {
         }
     );
 });
+
+console.log('grupos', props.grupos)
+
+
+const lastEvaluacionGrupo = ref(props.grupo?.evaluacionGrupos?.slice(-1)[0] || null);
+console.log('lastEvaluacionGrupo',lastEvaluacionGrupo);
+
 
 const submit = () =>{
     axios.post(route('grupos.reporte'))

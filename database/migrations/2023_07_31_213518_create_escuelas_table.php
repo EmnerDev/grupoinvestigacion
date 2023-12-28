@@ -17,7 +17,8 @@ return new class extends Migration
 
             $table->unsignedBigInteger('id_facultad');
             $table->foreign('id_facultad')->references('id')->on('facultads')->onDelete('cascade');
-
+            $table->boolean('status')->default(true);
+            
             $table->timestamps();
         });
     }

@@ -76,25 +76,31 @@
                         Nombre del Grupo: 
                     </th>
                     <td class="i-tabla-td">{{ $grupos->name }}</td>                    
+                </tr>                                             
+            </tbody>
+        </table>
+
+        <table class="tabla">
+            <thead>
+                <tr>
+                    <th colspan="6" class="i-tabla-th">LINEAS DE INVESTIGACIÓN</th>
                 </tr>
-                <tr>                    
-                    <th class="i-tabla-th">
-                        Area de Investigacion:
-                    </th>
-                    <td class="i-tabla-td">{{ $grupos->area_investigacion->name }}</td>                    
+                <tr>
+                    <th class="i-tabla-th">N°</th>
+                    <th class="i-tabla-th">Area</th>
+                    <th class="i-tabla-th">Línea</th>
+                    <th class="i-tabla-th">Sublinea</th>
                 </tr>
-                <tr>                    
-                    <th class="i-tabla-th">
-                        Linea: 
-                    </th>
-                    <td class="i-tabla-td">{{ $grupos->linea->name }}</td>                    
+            </thead>
+            <tbody>
+                @foreach($pivotGrupo as $key => $pivot)
+                <tr>
+                    <td class="i-tabla-td">{{ $key+1 }}</td>
+                    <td class="i-tabla-td">{{ $pivot->area_investigacion->name }}</td>
+                    <td class="i-tabla-td">{{ $pivot->linea->name }}</td>
+                    <td class="i-tabla-td">{{ $pivot->sublinea->name }}</td>
                 </tr>
-                <tr>                    
-                    <th class="i-tabla-th">
-                       Sublinea:
-                    </th>
-                    <td class="i-tabla-td">{{ $grupos->sublinea->name }}</td>                    
-                </tr>                              
+                @endforeach
             </tbody>
         </table>
 
@@ -119,23 +125,26 @@
                 @endforeach
             </tbody>
         </table>
-
+        @php
+                    $lastEvaluacionGrupo = $grupos->evaluacionGrupos->last();
+                    
+                @endphp
         <table class="tabla">
             <tbody>
-                @foreach($grupos->evaluacionGrupos as $evalua)
+                {{-- @foreach($grupos->evaluacionGrupos as $evalua) --}}
                 <tr>                    
                     <th class="i-tabla-th">
                         Puntaje 
                     </th>
-                    <td class="i-tabla-td">{{ number_format($evalua->ptj_total_grupo,2) }}</td>                    
+                    <td class="i-tabla-td">{{ number_format($lastEvaluacionGrupo->ptj_total_grupo,2) }}</td>                    
                 </tr>
                 <tr>                    
                     <th class="i-tabla-th">
                         Categoria del grupo
                     </th>
-                    <td class="i-tabla-td">{{ $evalua->categorias }}</td>                    
+                    <td class="i-tabla-td">{{ $lastEvaluacionGrupo->categorias }}</td>                    
                 </tr>                                            
-                @endforeach
+                {{-- @endforeach --}}
             </tbody>
         </table>
 </body>

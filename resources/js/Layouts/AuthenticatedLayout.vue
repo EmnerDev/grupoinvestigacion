@@ -14,6 +14,9 @@
                     <slot />
                 </div>
             </main>
+            <footer >
+                <Footer />
+            </footer>
         </div>
     </div>
 </template>
@@ -21,4 +24,5 @@
 <script setup>
 import Header from '@/Layouts/Header.vue';
 import Navigation from '@/Layouts/Navigation.vue';
+import Footer from './Footer.vue';
 </script>

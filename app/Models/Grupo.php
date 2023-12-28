@@ -72,5 +72,17 @@ class Grupo extends Model
     public function evaluacionGrupos(){
         return $this->hasMany(EvaluacionGrupo::class,'id_grupo', 'id');
     }
+
+    public function pivotGrupoLinea() {
+        return $this->hasMany(PivotGrupoLinea::class,'id_grupo');
+    }
+
+    public function file() {
+        return $this->hasMany(File::class,'id_grupo');
+    }
+
+    public function revalidacion(){
+        return $this->hasMany(Revalidacion::class,'id_grupo');
+    }
 }
 

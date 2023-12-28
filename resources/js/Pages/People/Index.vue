@@ -10,45 +10,49 @@
                     <div class="flex justify-around">
                         <div class="flex-initial w-64 ml-6">
                             <InputLabel for="name" value="DNI" /><span style="color: #e53e3e;"> *</span>
-                            <TextInput
+                            <v-text-field
                                 name="dni"
                                 id="dni"
                                 type="text"
-                                class="mt-1"
+                                class="mt-3"
                                 v-model="form.dni"
+                                variant="outlined"
                             />
                             <InputError class="mt-2" :message="form.errors.dni" />
                         </div>
                         <div class="flex-initial w-64 ml-6">
                             <InputLabel for="name" value="Nombre" /><span style="color: #e53e3e;"> *</span>
-                            <TextInput
+                            <v-text-field
                                 name="name"
                                 id="name"
                                 type="text"
-                                class="mt-1"
+                                class="mt-3"
                                 v-model="form.name"
+                                variant="outlined"
                             />
                             <InputError class="mt-2" :message="form.errors.name" />
                         </div>
                         <div class="flex-initial w-64 ml-6">
                             <InputLabel for="name" value="Apellido Paterno" /><span style="color: #e53e3e;"> *</span>
-                            <TextInput
+                            <v-text-field
                                 name="first_name"
                                 id="first_name"
                                 type="text"
-                                class="mt-1"
+                                class="mt-3"
                                 v-model="form.first_name"
+                                variant="outlined"
                             />
                             <InputError class="mt-2" :message="form.errors.first_name" />
                         </div>
                         <div class="flex-initial w-64 ml-6">
                             <InputLabel for="name" value="Apellido Materno" /><span style="color: #e53e3e;"> *</span>
-                            <TextInput
+                            <v-text-field
                                 name="last_name"
                                 id="last_name"
                                 type="text"
-                                class="mt-1"
+                                class="mt-3"
                                 v-model="form.last_name"
+                                variant="outlined"
                             />
                             <InputError class="mt-2" :message="form.errors.last_name" />
                         </div>
@@ -57,42 +61,39 @@
                     <div class="flex justify-around mt-6">
                         <div class="flex-initial w-64 ml-6" id="app">
                             <InputLabel for="name" value="Tipo de Persona" /><span style="color: #e53e3e;"> *</span>
-                            <select
-                                v-model="form.id_tipo"
-                                name="id_tipo"
-                                id="id_tipo"
-                                class="mt-1 block w-full"
-                            >
-                            <option value="0">Elige una Opcion</option>
-                                <option
-                                    v-for="tipo in tipos"
-                                    :key="tipo.id"
-                                    :value="tipo.id"
-                                >
-                                    {{ tipo.name }}
-                                </option>
-                            </select>
+                            <v-select 
+                            id="id_tipo" 
+                            :items="tipos"
+                            v-model="form.id_tipo" 
+                            item-value="id"
+                            class="mt-3"
+                            item-title = "name"
+                            placeholder="Seleccione tipo de Persona"
+                            variant="solo-filled">
+                            </v-select>
                             <InputError class="mt-2" :message="form.errors.id_tipo" />
                         </div>
                         <div class="flex-initial w-64 ml-6">
                             <InputLabel for="name" value="Telefono" />
-                            <TextInput
+                            <v-text-field
                                 name="phone"
                                 id="phone"
                                 type="text"
-                                class="mt-1"
+                                class="mt-3"
                                 v-model="form.phone"
+                                variant="outlined"
                             />
                             <InputError class="mt-2" :message="form.errors.phone" />
                         </div>
                         <div class="flex-initial w-64 ml-6">
                             <InputLabel for="name" value="Email" />
-                            <TextInput
+                            <v-text-field
                                 name="email"
                                 id="email"
                                 type="email"
-                                class="mt-1"
+                                class="mt-3"
                                 v-model="form.email"
+                                variant="outlined"
                             />
                             <InputError class="mt-2" :message="form.errors.email" />
                         </div>
@@ -110,7 +111,6 @@
                         </DangerButton>
                     </div>
                 </form>
-
                 <div
                     class="overflow-x-auto rounded-lg shadow mt-6"
                 >
@@ -171,7 +171,7 @@
                         </thead>
                         <tbody>
                             <tr
-                                v-for="persona, i in personas.data"
+                                v-for="(persona, i) in personas.data"
                                 :key="persona.id"
                                 class="text-gray-700"
                             >
@@ -179,7 +179,7 @@
                                     class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                 >
                                     <p class="text-gray-900 whitespace-no-wrap">
-                                        {{ i+1 }}
+                                        {{ (personas.current_page - 1) * personas.per_page + i + 1 }}
                                     </p>
                                 </td>
                                 <td
@@ -244,54 +244,61 @@
         </div>
         <Modal :show="modal" @close="closeModal">
             <h2 class="p-3 text-lg font-medium text-gray-900">{{ title }}</h2>
-            <div class="grid gap-6 mb-6 md:grid-cols-2">
+            <div class="grid gap-6 md:grid-cols-2">
                 <div class="p-3">
                     <InputLabel for="dni" value="Dni: " /><span style="color: #e53e3e;"> *</span>
-                    <TextInput id="dni" ref="nameImput" v-model="form.dni" type="text" class="mt-1 block w-3/4"
-                    placeholder="Dni"></TextInput>
+                    <v-text-field id="dni" ref="nameImput" v-model="form.dni" type="text" variant="outlined" class="mt-3"
+                    placeholder="Dni"></v-text-field>
                     <InputError class="mt-2" :message="form.errors.dni" />
                 </div>
                 <div class="p-3">
                     <InputLabel for="name" value="Nombres: "/><span style="color: #e53e3e;"> *</span>
-                    <TextInput id="name" v-model="form.name" type="text" class="mt-1 block w-3/4"
-                    placeholder="Nombre" ref="nameImput"></TextInput>
+                    <v-text-field id="name" v-model="form.name" type="text" variant="outlined" class="mt-3"
+                    placeholder="Nombre" ref="nameImput"></v-text-field>
                     <InputError class="mt-2" :message="form.errors.name" />
                 </div>
             </div>
-            <div class="grid gap-6 mb-6 md:grid-cols-2">
+            <div class="grid gap-6 md:grid-cols-2">
                 <div class="p-3">
                     <InputLabel for="first_name" value="Apellido Paterno:"></InputLabel><span style="color: #e53e3e;"> *</span>
-                    <TextInput id="first_name" v-model="form.first_name" type="text" class="mt-1 block w-3/4"
-                    placeholder="Apellido Paterno"></TextInput>
+                    <v-text-field id="first_name" v-model="form.first_name" type="text" variant="outlined" class="mt-3"
+                    placeholder="Apellido Paterno"></v-text-field>
                     <InputError class="mt-2" :message="form.errors.first_name" />
                 </div>
                 <div class="p-3">
                     <InputLabel for="last_name" value="Apellido Materno:"></InputLabel><span style="color: #e53e3e;"> *</span>
-                    <TextInput id="last_name" v-model="form.last_name" type="text" class="mt-1 block w-3/4"
-                    placeholder="Apellido Materno"></TextInput>
+                    <v-text-field id="last_name" v-model="form.last_name" type="text" variant="outlined" class="mt-3"
+                    placeholder="Apellido Materno"></v-text-field>
                     <InputError class="mt-2" :message="form.errors.last_name" />
                 </div>
             </div>
-            <div class="grid gap-6 mb-6 md:grid-cols-2">
+            <div class="grid gap-6 md:grid-cols-2">
                 <div class="p-3">
                     <InputLabel for="id_tipo" value="Tipo de Persona:"></InputLabel><span style="color: #e53e3e;"> *</span>
-                    <SelectInput id="id_tipo" :options="tipos"
-                    v-model="form.id_tipo" type="text" class="mt-1 block w-full">
-                    </SelectInput>
+                    <v-select 
+                    id="id_tipo" 
+                    :items="tipos"
+                    v-model="form.id_tipo" 
+                    item-value="id"
+                    class="mt-3"
+                    item-title = "name"
+                    placeholder="Seleccione tipo de Persona"
+                    variant="solo-filled">
+                    </v-select>
                     <InputError class="mt-2" :message="form.errors.id_tipo" />
                 </div>
                 <div class="p-3">
                     <InputLabel for="phone" value="Telefono:"></InputLabel>
-                    <TextInput id="phone" v-model="form.phone" type="text" class="mt-1 block w-3/4"
-                    placeholder="Telefono"></TextInput>
+                    <v-text-field id="phone" v-model="form.phone" type="text" variant="outlined" class="mt-3"
+                    placeholder="Telefono"></v-text-field>
                     <InputError class="mt-2" :message="form.errors.phone" />
                 </div>
             </div>
             <div class="p-3">
                 <InputLabel for="email" value="Email:"></InputLabel>
-                <TextInput id="email" v-model="form.email" type="text" class="mt-1 block w-3/4"
+                <v-text-field variant="outlined" id="email" v-model="form.email" type="text" class="mt-3"
                 placeholder="Correo Electrónico">
-            </TextInput>
+            </v-text-field>
             <InputError class="mt-2" :message="form.errors.email" />
             </div>
             <div class="flex justify-center">
@@ -356,7 +363,7 @@ const form = useForm({
     name: "",
     first_name: "",
     last_name: "",
-    id_tipo: 0,
+    id_tipo: "Seleccione",
     phone: "",
     email: "",
 });

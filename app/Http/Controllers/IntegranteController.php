@@ -36,10 +36,12 @@ class IntegranteController extends Controller
     {
         //dd($request->all());
         try {
+            
             $dni = $request->dni;
 
             $persona = Persona::where('dni', $dni)->first();
-    
+            
+            
             if(!$persona) {
                 $persona = new Persona();
                 $persona->dni = $dni;            
@@ -55,6 +57,14 @@ class IntegranteController extends Controller
         
                 return response()->json(['error' => 'El integrante ya esta registrado en otro grupo'], 422);
             } 
+
+            if($persona->user && $persona->user->roles->isNotEmpty()){
+
+                $rolUser = $persona->user->roles->first()->name;
+                if($rolUser === 'Coordinador'){
+                    return response()->json(['error' => 'Un coordinador no puede agregarse al grupo'], 422);
+                }
+            }
             $persona->name = $request->name;
             $persona->first_name = $request->first_name;
             $persona->last_name = $request->last_name;

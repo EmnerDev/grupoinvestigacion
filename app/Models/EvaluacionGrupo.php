@@ -13,6 +13,7 @@ class EvaluacionGrupo extends Model
     protected $fillable = [
         'ptj_total_grupo',
         'categorias',
+        'revalidar',
         'id_evaluacion_total',
         'id_grupo',
     ];
@@ -30,7 +31,17 @@ class EvaluacionGrupo extends Model
             'CONSOLIDADO' => 'CONSOLIDADO',
             'POR CONSOLIDAR' => 'POR CONSOLIDAR',
             'EMERGENTE' => 'EMERGENTE',
-            'SIN EVALUAR' => 'SIN EVALUAR'
+            'SIN CATEGORIA' => 'SIN CATEGORIA'
+        ];
+    }
+
+    public static function enumRevalidarOption() {
+        return [
+            'RENOVACIÓN' => 'RENOVACIÓN',
+            'PROMOCIÓN' => 'PROMOCIÓN',
+            'DESCENSO' => 'DESCENSO',
+            'DESCALIFICACIÓN' => 'DESCALIFICACIÓN',
+            'SIN REVALIDACION' => 'SIN REVALIDACION'
         ];
     }
 }

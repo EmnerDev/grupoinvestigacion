@@ -21,4 +21,8 @@ class Escuela extends Model
     public function grupo() {
         return $this->hasMany(Grupo::class,'id_escuela');
     }
+
+    public function pivotGrupoLinea() {
+        return $this->hasMany(PivotGrupoLinea::class,'id_grupo');
+    }
 }

@@ -28,12 +28,11 @@ class GrupoUpdateRequest extends FormRequest
             'obj_desa_soste_l_i'=>'required|string|max:255',
             'services'=>'required|string|max:255',
             'laboratory'=>'required|string|max:255',
-            'id_area'=>'required|exists:area_investigacions,id',
-            'id_linea'=>'required|exists:lineas,id',
-            'id_sublinea'=>'required|exists:sub_lineas,id',
+            // 'id_area'=>'required|exists:area_investigacions,id',
+            // 'id_linea'=>'required|exists:lineas,id',
+            // 'id_sublinea'=>'required|exists:sub_lineas,id',
             'id_facultad'=>'required|exists:facultads,id',
             'id_escuela'=>'required|exists:escuelas,id',
-            'integrante.id_persona' => 'required|exists:integrantes,id'
         ];
     }
 
@@ -46,18 +45,16 @@ class GrupoUpdateRequest extends FormRequest
             'obj_desa_soste_l_i.required' => 'El campo Objetivo de desarrollo sostenible es obligatorio',
             'services.required' => 'El campo Servicios es obligatorio',
             'laboratory.required' => 'El campo Laboratorio es obligatorio',
-            'id_area.required' => 'El campo Area de Investigacion es obligatorio',
-            'id_area.exists' => 'El tipo de area de investigacion seleccionado no es valido',
-            'id_linea.required' => 'El campo Linea es obligatorio',
-            'id_linea.exists' => 'El Tipo de linea seleccionado no es valido',
-            'id_sublinea.required' => 'El campo Sublinea es obligatorio',
-            'id_sublinea.exists' => 'El tipo de sublinea seleccionado no es valido',
+            // 'id_area.required' => 'El campo Area de Investigacion es obligatorio',
+            // 'id_area.exists' => 'El tipo de area de investigacion seleccionado no es valido',
+            // 'id_linea.required' => 'El campo Linea es obligatorio',
+            // 'id_linea.exists' => 'El Tipo de linea seleccionado no es valido',
+            // 'id_sublinea.required' => 'El campo Sublinea es obligatorio',
+            // 'id_sublinea.exists' => 'El tipo de sublinea seleccionado no es valido',
             'id_facultad.required' => 'El campo Facultad es obligatorio',
             'id_facultad.exists' => 'El tipo de facultad seleccionado no es valido',
             'id_escuela.required' => 'El campo Escuela es obligatorio',
             'id_escuela.exists' => 'El tipo de escuela seleccionado no es valido',
-            'integrante.id_persona' => 'El campo Persona es obligatorio',
-            'integrante.id_persona' => 'El tipo de Persona seleccionado no es valido'
         ];
     }
 }

@@ -25,21 +25,21 @@ return new class extends Migration
             $table->string('pagina')->nullable();
             $table->string('office')->nullable();
             $table->string('annexed')->nullable();
-            $table->integer('phone')->nullable();
+            $table->string('phone')->nullable();
             $table->decimal('puntaje_total',3,2)->nullable();
             $table->enum('categorias', ['CONSOLIDADO','POR CONSOLIDAR','EMERGENTE','SIN EVALUAR'])->default('SIN EVALUAR');
 
-            $table->unsignedBigInteger('id_area');
-            $table->unsignedBigInteger('id_linea');
-            $table->unsignedBigInteger('id_sublinea');
-            $table->unsignedBigInteger('id_facultad');
-            $table->unsignedBigInteger('id_escuela');
+            $table->unsignedBigInteger('id_area')->nullable();
+            $table->unsignedBigInteger('id_linea')->nullable();
+            $table->unsignedBigInteger('id_sublinea')->nullable();
+            $table->unsignedBigInteger('id_facultad')->nullable();
+            $table->unsignedBigInteger('id_escuela')->nullable();
             $table->foreign('id_area')->references('id')->on('area_investigacions')->onDelete('cascade');
             $table->foreign('id_linea')->references('id')->on('lineas')->onDelete('cascade');
             $table->foreign('id_sublinea')->references('id')->on('sub_lineas')->onDelete('cascade');
             $table->foreign('id_facultad')->references('id')->on('facultads')->onDelete('cascade');
             $table->foreign('id_escuela')->references('id')->on('escuelas')->onDelete('cascade');
-            
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

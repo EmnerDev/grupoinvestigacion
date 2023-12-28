@@ -48,10 +48,10 @@ class Integrante extends Model
 
     public static function enumConditionOption() {
         return [
-            'inv. Titular' => 'inv. Titular',
-            'Inv. Colaborador' => 'Inv. Colaborador',
-            'Inv. En formacion' => 'Inv. En formacion',
-            'Inv. Posdoctorado' => 'Inv. Posdoctorado',
+            'Investigador Titular' => 'Investigador Titular',
+            'Investigador Colaborador' => 'Investigador Colaborador',
+            'Investigador En formacion' => 'Investigador En formacion',
+            'Investigador Posdoctorado' => 'Investigador Posdoctorado',
             'Coordinador' => 'Coordinador'
         ];
     }

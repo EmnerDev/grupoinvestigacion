@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
             PruebaSeeder::class,
             LineaSeeder::class,
             UserSeeder::class,
-            PersonaSeeder::class,
+            // PersonaSeeder::class,
             EvaluacionSeeder::class,
         ]);
     }
