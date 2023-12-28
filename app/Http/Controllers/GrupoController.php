@@ -39,7 +39,7 @@ class GrupoController extends Controller
         //$grupos = Grupo::with('facultad','escuela', 'area_investigacion', 'linea', 'sublinea','integrante.persona')->get();
         $user = auth()->user();
 
-    if($user->roles->pluck('name')->contains('Coordinador')) {
+    if($user->roles->pluck('name')->contains('Coordinador') || $user->roles->pluck('name')->contains('Integrante')) {
         $coordinadorId = $user->persona->id;
 
         $grupos = Grupo::query()

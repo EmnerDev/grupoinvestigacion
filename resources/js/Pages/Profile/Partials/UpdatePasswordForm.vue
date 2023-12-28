@@ -47,13 +47,14 @@ const updatePassword = () => {
             <div>
                 <InputLabel for="current_password" value="Contraseña actual" />
 
-                <TextInput
+                <v-text-field
                     id="current_password"
                     ref="currentPasswordInput"
                     v-model="form.current_password"
                     type="password"
                     class="mt-1 block w-full"
                     autocomplete="current-password"
+                    variant="outlined"
                 />
 
                 <InputError :message="form.errors.current_password" class="mt-2" />
@@ -62,13 +63,14 @@ const updatePassword = () => {
             <div>
                 <InputLabel for="password" value="Nueva contraseña" />
 
-                <TextInput
+                <v-text-field
                     id="password"
                     ref="passwordInput"
                     v-model="form.password"
                     type="password"
                     class="mt-1 block w-full"
                     autocomplete="new-password"
+                    variant="outlined"
                 />
 
                 <InputError :message="form.errors.password" class="mt-2" />
@@ -77,12 +79,13 @@ const updatePassword = () => {
             <div>
                 <InputLabel for="password_confirmation" value="confirmar Contraseña" />
 
-                <TextInput
+                <v-text-field
                     id="password_confirmation"
                     v-model="form.password_confirmation"
                     type="password"
                     class="mt-1 block w-full"
                     autocomplete="new-password"
+                    variant="outlined"
                 />
 
                 <InputError :message="form.errors.password_confirmation" class="mt-2" />

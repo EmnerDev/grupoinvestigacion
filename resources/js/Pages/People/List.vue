@@ -90,7 +90,7 @@
                                                             class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                                         >
                                                             <p class="text-gray-900 whitespace-no-wrap">
-                                                                {{ i+1 }}
+                                                                {{ (personas.current_page - 1) * personas.per_page + i + 1 }}
                                                             </p>
                                                         </td>
                                                         <td
@@ -204,7 +204,7 @@
                                                             class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                                         >
                                                             <p class="text-gray-900 whitespace-no-wrap">
-                                                                {{ i+1 }}
+                                                                {{ (contratados.current_page - 1) * contratados.per_page + i + 1 }}
                                                             </p>
                                                         </td>
                                                         <td

@@ -36,13 +36,14 @@ const form = useForm({
             <div>
                 <InputLabel for="name" value="Usuario" />
 
-                <TextInput
+                <v-text-field
                     id="name"
                     type="text"
                     class="mt-1 block w-full"
                     v-model="form.name"
                     required
                     autofocus
+                    variant="outlined"
                     autocomplete="name"
                 />
 
@@ -52,12 +53,13 @@ const form = useForm({
             <div>
                 <InputLabel for="email" value="Email" />
 
-                <TextInput
+                <v-text-field
                     id="email"
                     type="email"
                     class="mt-1 block w-full"
                     v-model="form.email"
                     required
+                    variant="outlined"
                     autocomplete="username"
                 />
 

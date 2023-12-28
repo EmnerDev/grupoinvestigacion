@@ -111,7 +111,6 @@
                         </DangerButton>
                     </div>
                 </form>
-<p> {{ personas }}</p>
                 <div
                     class="overflow-x-auto rounded-lg shadow mt-6"
                 >
@@ -172,7 +171,7 @@
                         </thead>
                         <tbody>
                             <tr
-                                v-for="persona, i in personas.data"
+                                v-for="(persona, i) in personas.data"
                                 :key="persona.id"
                                 class="text-gray-700"
                             >
@@ -180,7 +179,7 @@
                                     class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                 >
                                     <p class="text-gray-900 whitespace-no-wrap">
-                                        {{ i+1 }}
+                                        {{ (personas.current_page - 1) * personas.per_page + i + 1 }}
                                     </p>
                                 </td>
                                 <td

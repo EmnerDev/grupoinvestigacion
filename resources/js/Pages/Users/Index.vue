@@ -44,6 +44,11 @@
                         <th
                             class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
                         >
+                            N°
+                        </th>
+                        <th
+                            class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
+                        >
                             Usuario
                         </th>
                         <th
@@ -64,7 +69,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <template v-for="user in users.data" :key="user.id" :value="user.id">
+                    <template v-for="(user , i) in users.data" :key="user.id" :value="user.id">
                         <!-- <template v-for=" person in user.persona" :key="person.id"> -->
                             <tr
                                 v-for="r in user.roles"
@@ -72,6 +77,13 @@
                                 :value="r.id"
                                 class="text-gray-700"
                             >
+                                <td
+                                    class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                                >
+                                    <p class="text-gray-900 whitespace-no-wrap">
+                                        {{ (users.current_page - 1) * users.per_page + i + 1 }}
+                                    </p>
+                                </td>
                                 <td
                                     class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                 >
