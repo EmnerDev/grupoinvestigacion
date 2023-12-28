@@ -121,7 +121,7 @@
                                         <template v-for="(grupo, key) in grupos.data" :key="key">
                                             <template v-for="(inte, index) in grupo.integrante" :key="index">
                                             <tr>
-                                                <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">{{ key + 1 }}</td>
+                                                <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">{{ (grupos.current_page - 1) * grupos.per_page + key + 1 }}</td>
                                                 <td v-if="index === 0" class="border-b border-gray-200 bg-white px-5 py-5 text-sm" :rowspan="grupo.integrante.length">
                                                 <p
                                                     class="text-gray-900 whitespace-no-wrap"
