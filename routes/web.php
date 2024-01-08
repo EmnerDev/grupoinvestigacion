@@ -54,11 +54,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->middleware('permission:profile.destroy')->name('profile.destroy');
 
     Route::get('personas', [PersonaController::class, 'index'])->middleware('permission:personas.index')->name('personas.index');
-    Route::get('registrar', [PersonaController::class, 'create'])->middleware('permission:personas.create')->name('registrar.persona');
+    // Route::get('registrar', [PersonaController::class, 'create'])->middleware('permission:personas.create')->name('registrar.persona');
     Route::get('persona', [PersonaController::class, 'show'])->middleware('permission:personas.show')->name('ver.persona');
-    Route::post('registrar', [PersonaController::class, 'store'])->middleware('permission:personas.store');
-    Route::put('/registrar/{persona}', [PersonaController::class, 'update'])->middleware('permission:personas.update')->name('actualizar.persona');
-    Route::delete('/registrar/{persona}', [PersonaController::class, 'destroy'])->middleware('permission:personas.destroy')->name('eliminar.persona');
+    Route::post('registrar/persona', [PersonaController::class, 'store'])->middleware('permission:personas.store')->name('registrar.persona');
+    Route::put('actualizar/persona/{persona}', [PersonaController::class, 'update'])->middleware('permission:personas.update')->name('update.persona');
+    Route::delete('eliminar/persona/{persona}', [PersonaController::class, 'destroy'])->middleware('permission:personas.destroy')->name('eliminar.persona');
 
     Route::get('grupos', [GrupoController::class, 'index'])->middleware('permission:grupos.index')->name('grupos.index');
     Route::get('crear/grupos', [GrupoController::class, 'create'])->middleware('permission:grupos.create')->name('grupos.create');

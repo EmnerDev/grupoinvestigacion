@@ -409,9 +409,10 @@ const submit = () => {
             onSuccess: () => {ok('Registro creado Correctamente')},
         });    
 };
+
 const update = () => {
     console.log('asdad',id.value)
-    form.put(route('actualizar.persona', id.value),{
+    form.put(route('update.persona', id.value),{
             onSuccess: () => {ok('Registro Actualizado Correctamente')},
         
         });   
